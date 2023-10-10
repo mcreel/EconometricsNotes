@@ -14,8 +14,8 @@ y = PopRegLine + e
 b = inv(X'*X)*X'*y
 
 # Plot the fitted line
-plot(x,PopRegLine, label = "population regression line")
+#plot(x,PopRegLine, label = "population regression line")
 xlabel= "X"
-scatter!(x, y, label = "data")
+scatter(x, y, label = "data")
 #savefig("TypicalData.png")
 #gui()

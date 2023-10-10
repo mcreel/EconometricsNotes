@@ -15,8 +15,8 @@ b = inv(X'*X)*X'*y
 fit = X*b
 
 # Plot the fitted line
-plot(x,PopRegLine, label = "population regression line")
-plot!(x, fit, label = "OLS fitted line")
+#plot(x,PopRegLine, label = "population regression line")
+plot(x, fit, label = "OLS fitted line")
 xlabel= "X"
 scatter!(x, y, label = "data")
 #savefig("OlsFit.png")

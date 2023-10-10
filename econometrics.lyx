@@ -2356,11 +2356,7 @@ true
 \begin_inset Formula $\epsilon_{t}$
 \end_inset
 
- is a random error that has mean zero and is independent of 
-\begin_inset Formula $x_{t2}$
-\end_inset
-
-.
+ is a random error.
  Exactly how the blue line is defined will become clear later.
  In practice, we only have the data, and we don't know where the blue line
  lies.
@@ -2645,8 +2641,7 @@ reference "fitted in X,Y space"
 
 \end_inset
 
- shows a typical fit to data, along with the true regression line.
- Note that the true line and the estimated line are different.
+ shows a typical fit to data..
  This figure was created by running the Julia program 
 \begin_inset ERT
 status open
@@ -2662,9 +2657,7 @@ href{./Examples/OLS/OlsFit.jl}{OlsFit.jl}
 
 .
  You can experiment with changing the parameter values to see how this affects
- the fit, and to see how the fitted line will sometimes be close to the
- true line, and sometimes rather far away.
- 
+ the fit.
 \begin_inset Float figure
 wide false
 sideways false
