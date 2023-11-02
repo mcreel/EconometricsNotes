@@ -2331,37 +2331,8 @@ href{./Examples/OLS/TypicalData.jl}{TypicalData.jl}
 
 \end_inset
 
- shows some data that follows the linear model 
-\begin_inset Formula $y_{t}=\beta_{1}+\beta_{2}x_{t2}+\epsilon_{t}$
-\end_inset
-
-.
- The blue line is the 
-\begin_inset Quotes sld
-\end_inset
-
-true
-\begin_inset Quotes srd
-\end_inset
-
- regression line 
-\begin_inset Formula $\beta_{1}+\beta_{2}x_{t2}$
-\end_inset
-
-, and the orange dots are the data points 
-\begin_inset Formula $(x_{t2},y_{t}),$
-\end_inset
-
- where 
-\begin_inset Formula $\epsilon_{t}$
-\end_inset
-
- is a random error.
- Exactly how the blue line is defined will become clear later.
- In practice, we only have the data, and we don't know where the blue line
- lies.
- We need to gain information about the straight line that best fits the
- data points.
+ shows some data.
+ We might want to find the straight line that best fits the data points.
  
 \begin_inset Float figure
 wide false
