@@ -1,7 +1,7 @@
 # illustrates effects of collinearity
 # try setting rho=0.1 or rho=0.9, and observe
 # the effect on standard dev of coefficients
-using Econometrics, Plots, LinearAlgebra
+using Econometrics, StatsPlots, LinearAlgebra
 function wrapper(rho, n)
   V = [1.0 rho; rho 1.0]
   P = cholesky(V).U
@@ -35,10 +35,9 @@ println("descriptive statistics for 1000 OLS replications, dropping x3")
 dstats(data[:,4:5])
 println("descriptive statistics for 1000 Restricted OLS replications, b2=b3")
 dstats(data[:,6:8])
-p1 = histogram(data[:,2],title="OLS")
-p2 = histogram(data[:,5],title="Drop X3")
-p3 = histogram(data[:,7],title="Restricted LS")
-plot(p1,p2,p3, layout=(3,1), show=true, legend=false)
+density(data[:,2],label="OLS")
+density!(data[:,5],label="Drop X3")
+density!(data[:,7],label="Restricted LS", title="collinearity: OLS and restricted OLS - true β₂=1")
 gui()
 savefig("collin.png")
 return

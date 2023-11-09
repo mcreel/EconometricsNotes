@@ -10,6 +10,7 @@
 \usepackage{dcolumn}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{longtable}
 %
 \definecolor{hellgelb}{rgb}{1,1,0.8}
 \definecolor{colKeys}{rgb}{0,0,1}
@@ -9611,78 +9612,261 @@ wine = Per capita consumption of wine measured in taxed gallons for individuals
 \begin_inset Newpage newpage
 \end_inset
 
-Consider estimation results for several models:
+
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\begin{gather*}
-\begin{split}\widehat{{\rm chd}} & =\underset{(58.939)}{334.914}+\underset{(5.156)}{5.41216}\,\mbox{cig}+\underset{(7.373)}{36.8783}\,\mbox{spirits}-\underset{(1.2513)}{5.10365}\,\mbox{beer}\\
- & +\underset{(12.735)}{13.9764}\,\mbox{wine}
-\end{split}
-\\
-T=34\quad\bar{R}^{2}=0.5528\quad F(4,29)=11.2\quad\hat{\sigma}=9.9945\\
-\centerline{\text{(standard errors in parentheses)}}
-\end{gather*}
+Consider estimation results for two models:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+newcommand{
+\backslash
+subsize}[1]{
+\backslash
+footnotesize{#1}}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{center} OLS estimates
+\backslash
+
+\backslash
+ Dependent variable: chd 
+\backslash
+
+\backslash
+ 
+\backslash
+vspace{1em}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{longtable}{lcc}  & (1)  & (2) 
+\backslash
+
+\backslash
+  [6pt]  const & 226.0 & $
+\backslash
+,
+\backslash
+,
+\backslash
+,$498.3$^{***}$ 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(146.8)} & 
+\backslash
+subsize{(88.97)} 
+\backslash
+
+\backslash
+ [4pt]  cal & $-$69.98 & $
+\backslash
+,
+\backslash
+,$$-$165.9$^{**}$ 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(78.56)} & 
+\backslash
+subsize{(69.93)} 
+\backslash
+
+\backslash
+ [4pt]  unemp & $-$0.6134 & $-$0.9523 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(1.586)} & 
+\backslash
+subsize{(1.650)} 
+\backslash
+
+\backslash
+ [4pt]  cig & $
+\backslash
+,$10.12$^{*}$ & 6.652 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(5.071)} & 
+\backslash
+subsize{(5.083)} 
+\backslash
+
+\backslash
+ [4pt]  edfat & 2.810 & 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(1.668)} & 
+\backslash
+
+\backslash
+ [4pt]  meat & 0.1116 & 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(0.2430)} & 
+\backslash
+
+\backslash
+ [4pt]  spirits & $
+\backslash
+,
+\backslash
+,$21.72$^{**}$ & $
+\backslash
+,
+\backslash
+,
+\backslash
+,$25.04$^{***}$ 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(8.457)} & 
+\backslash
+subsize{(8.591)} 
+\backslash
+
+\backslash
+ [4pt]  beer & $
+\backslash
+,
+\backslash
+,$$-$3.467$^{**}$ & $
+\backslash
+,
+\backslash
+,
+\backslash
+,$$-$4.338$^{***}$ 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(1.298)} & 
+\backslash
+subsize{(1.304)} 
+\backslash
+
+\backslash
+ [4pt]  wine & $-$4.562 & 11.70 
+\backslash
+
+\backslash
+ & 
+\backslash
+subsize{(16.25)} & 
+\backslash
+subsize{(13.54)} 
+\backslash
+
+\backslash
+ [4pt]  $n$ & 34 & 34 
+\backslash
+
+\backslash
+ $
+\backslash
+bar R^2$ & 0.6454 & 0.6041 
+\backslash
+
+\backslash
+ $
+\backslash
+ell$& $-$117.3 & $-$120.5 
+\backslash
+
+\backslash
+ 
+\backslash
+end{longtable}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{1em} Standard errors in parentheses
+\backslash
+
+\backslash
+ {}* significant at the 10 percent level
+\backslash
+
+\backslash
+ {}** significant at the 5 percent level
+\backslash
+
+\backslash
+ {}*** significant at the 1 percent level
+\backslash
+
+\backslash
+ 
+\backslash
+end{center} 
+\end_layout
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{gather*}
-\widehat{{\rm chd}}=\underset{(56.624)}{353.581}+\underset{(4.7523)}{3.17560}\,\mbox{cig}+\underset{(7.275)}{38.3481}\,\mbox{spirits}-\underset{(1.0102)}{4.28816}\,\mbox{beer}\\
-T=34\quad\bar{R}^{2}=0.5498\quad F(3,30)=14.433\quad\hat{\sigma}=10.028\\
-\centerline{\text{(standard errors in parentheses)}}
-\end{gather*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{gather*}
-\widehat{{\rm chd}}=\underset{(67.21)}{243.310}+\underset{(6.1508)}{10.7535}\,\mbox{cig}+\underset{(8.0359)}{22.8012}\,\mbox{spirits}-\underset{(12.638)}{16.8689}\,\mbox{wine}\\
-T=34\quad\bar{R}^{2}=0.3198\quad F(3,30)=6.1709\quad\hat{\sigma}=12.327\\
-\centerline{\text{(standard errors in parentheses)}}
-\end{gather*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{gather*}
-\widehat{{\rm chd}}=\underset{(49.119)}{181.219}+\underset{(4.4371)}{16.5146}\,\mbox{cig}+\underset{(6.2079)}{15.8672}\,\mbox{spirits}\\
-T=34\quad\bar{R}^{2}=0.3026\quad F(2,31)=8.1598\quad\hat{\sigma}=12.481\\
-\centerline{\text{(standard errors in parentheses)}}
-\end{gather*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Note how the signs of the coefficients change depending on the model, and
- that the magnitudes of the parameter estimates vary a lot, too.
- The parameter estimates are highly sensitive to the particular model we
+\begin_layout Itemize
+The parameter estimates are highly sensitive to the particular model we
  estimate.
- Why? We'll see that the problem is that the data exhibit 
+\end_layout
+
+\begin_layout Itemize
+For example, calcium is significant in one model, and not in the other.
+ The sign of the coefficient of wine changes.
+ 
+\end_layout
+
+\begin_layout Itemize
+Why? We'll see that the problem is that the data exhibit 
 \emph on
 collinearity
 \emph default
 .
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -9887,6 +10071,10 @@ y_{i}=\beta_{1}+\beta_{2}B_{i}+\beta_{3}G_{i}+\beta_{4}T_{i}+\beta_{5}L_{i}+x_{i
  so there is an exact relationship between these variables and the column
  of ones corresponding to the constant.
  One must either drop the constant, or one of the qualitative variables.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -10098,6 +10286,10 @@ are equivalent.
 \end_inset
 
  You should know how to interpret the parameters of both models.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -10423,6 +10615,118 @@ Intuitively, when there are strong linear relations between the regressors,
  between the regressors.
  See the figures nocollin.ps (no correlation) and collin.ps (correlation),
  available on the web site.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The VIFs for the mortality data at the beginning of the section are
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+Variance Inflation Factors
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Minimum possible value = 1.0
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Values > 10.0 may indicate a collinearity problem
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+cal 5.786
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+unemp 1.967
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+cig 11.756
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+edfat 25.570
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+meat 6.250
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+spirits 16.703
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+beer 36.218
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+wine 49.066
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+We see that collinearity is a serious problem in this data set.
+\end_layout
+
+\begin_layout Itemize
+For example, the VIF for wine is almost 50.
+ This perhaps explains why this regressor is not significant in the two
+ models that were estimated.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Example
@@ -10481,7 +10785,7 @@ reference "fig:Collinearity:-Monte-Carlo"
 
 \end_inset
 
- shows histograms for the estimated 
+ shows densities for the estimated 
 \begin_inset Formula $\beta_{2},$
 \end_inset
 
@@ -10536,6 +10840,10 @@ Collinearity: Monte Carlo results
 
 \end_layout
 
+\end_inset
+
+
+\begin_inset Newpage newpage
 \end_inset
 
 
@@ -10623,6 +10931,10 @@ ity.jl}
 \end_inset
 
  not significantly different from zero?
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -11118,6 +11430,10 @@ OLS and Ridge regression
 \end_inset
 
 
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -11217,6 +11533,10 @@ reference "eq:variance factors"
 
 ).
  
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -11657,6 +11977,10 @@ without measurement error:
 \end_inset
 
 
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -12025,6 +12349,10 @@ There are means of dealing with sample selection bias, but we will not go
  One should at least be aware that nonrandom selection of the sample will
  normally lead to bias and inconsistency if the problem is not taken into
  account.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -12126,6 +12454,10 @@ ons that have missing components.
  There is potential for reduction of MSE through filling in missing elements
  with intelligent guesses, but this could also increase MSE.
  
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -12202,6 +12534,10 @@ where the last line follows because
  Because the normal thing is to have collinearity between regressors, we
  expect that missing regressors will lead to bias and inconsistency of the
  OLS estimator.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
