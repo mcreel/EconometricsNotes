@@ -60489,7 +60489,7 @@ literal "true"
 
 \begin_layout Itemize
 Human brain power is perhaps growing over time, but not as fast as thumb
- dexterity, I would argue.
+ dexterity, at least in recent years, I would argue.
  
 \end_layout
 
@@ -60531,17 +60531,28 @@ obtaining more accurate results that what asymptotic theory gives us, using
 performing estimation of models that are complex enough so that analytic
  expressions for objective functions that define conventional estimators
  (e.g., ML, GMM) are not available.
- Once you go down this rabbit hole, you can estimate 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Once you go down this rabbit hole, you can estimate 
 \emph on
 very 
 \emph default
 complex models.
- Keeping in mind that a model is used to extract the essential, interesting
- features of a problem, we don't necessarily want to go too far in adding
- complexity.
  
 \end_layout
 
+\begin_layout Itemize
+Keeping in mind that a model is used to extract the essential, interesting
+ features of a problem, we don't necessarily want to go too far in adding
+ complexity.
+ Remember the old saying about loosing sight of the forest for the trees.
+ It is possible to burn many CPU cycles to model well some uninteresting
+ feature of the data.
+\end_layout
+
+\end_deeper
 \end_deeper
 \begin_layout Itemize
 Simulation based estimation, especially the method of simulated moments,
@@ -60579,18 +60590,8 @@ Simulation-based estimation methods open up the possibility to estimate
 \end_layout
 
 \begin_layout Itemize
-The desirability of introducing a great deal of complexity may be an issue
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Remember that a model is an abstraction from reality, and abstraction helps
- us to isolate the important features of a phenomenon.
-\end_layout
-
-\end_inset
-
-, but it least it becomes a possibility.
+The desirability of introducing a great deal of complexity may be an issue,
+ but it least it becomes a possibility.
 \end_layout
 
 \begin_layout Standard
@@ -60750,11 +60751,12 @@ Let
 \begin_inset Formula $\theta=(\beta^{\prime},\mathrm{vech}(\Omega)^{\prime})^{\prime}$
 \end_inset
 
- be the vector of parameters of the model (
+ be the vector of parameters of the model (the 
 \begin_inset Formula $\mathrm{vech}$
 \end_inset
 
-function vectorizes the lower triangle of a square matrix).
+ function vectorizes the lower triangle of a square matrix, and is commonly
+ used to eliminate the redundant parameters is a covariance matrix).
  The contribution of the 
 \begin_inset Formula $i^{th}$
 \end_inset
@@ -60879,7 +60881,7 @@ Marginalization of latent variables
 \begin_layout Standard
 Economic data often presents substantial heterogeneity that may be difficult
  to model.
- A possibility is to introduce latent random variables.
+ To account for this, a possibility is to introduce latent random variables.
  This can cause the problem that there may be no known closed form for the
  distribution of observable variables after marginalizing out the unobservable
  latent variables.
@@ -60917,6 +60919,10 @@ Economic data often presents substantial heterogeneity that may be difficult
 
  This ensures that the mean is positive (as it must be).
  Estimation by ML is straightforward.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -60936,10 +60942,35 @@ V(y)>\mathcal{E}(y).
 
 \end_inset
 
- If this is the case, a solution is to use the negative binomial distribution
- rather than the Poisson.
- An alternative is to introduce a latent variable that reflects heterogeneity
- into the specification: 
+ If this is the case, a solution is to make the Poisson parameter random,
+ by introducing a latent variable with a given distribution.
+ The addition randomness will cause the variance to increase.
+ 
+\end_layout
+
+\begin_layout Itemize
+We already saw this once, in the formulation of the negative binomial distributi
+on (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Infinite-mixture-models:"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+In that case, integrating out the latent variable led to a closed for density,
+ due to the choice of the distriubtion of the latent variable.
+\end_layout
+
+\begin_layout Standard
+An alternative is to introduce a latent variable with some other, not necessaril
+y convenient distribution: 
 \begin_inset Formula 
 \[
 \lambda_{i}=\exp(X_{i}\beta+\eta_{i})
@@ -60980,19 +61011,8 @@ V(y)>\mathcal{E}(y).
 \end_layout
 
 \begin_layout Itemize
-In some cases, this will have a closed-form solution (one can derive the
- negative binomial distribution in this way if 
-\begin_inset Formula $\eta$
-\end_inset
-
- has a certain exponential distribution - see equation 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:negbindensity"
-
-\end_inset
-
-)
+This could have a closed-form solution, as we saw in the case of the negative
+ binomial distribution.
 \end_layout
 
 \begin_layout Itemize
@@ -61098,7 +61118,11 @@ estimator solves
 \end_inset
 
  is an infeasible estimator.
- However, it may be possible to define a random function such that 
+ However, it may be possible to define a random function 
+\begin_inset Formula $p(\nu,y_{t}|X_{t},\theta)$
+\end_inset
+
+ such that 
 \begin_inset Formula 
 \[
 \mathcal{E}_{\nu}p(\nu,y_{t}|X_{t},\theta)=f(y_{t}|X_{t},\theta)
@@ -61144,6 +61168,113 @@ The SML simply substitutes
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+A simple example of computing 
+\begin_inset Formula $f$
+\end_inset
+
+ by simulation:
+\end_layout
+
+\begin_layout Standard
+Suppose the data are a set of independent outcomes of Bernoulli trials,
+ so that there is no regressor, and the true density is 
+\begin_inset Formula 
+\[
+f(y_{t}|\theta)=\text{\ensuremath{\theta}}^{y_{t}}(1-\text{\ensuremath{\theta}})^{1-y_{t}}
+\]
+
+\end_inset
+
+Suppose we define 
+\begin_inset Formula $\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)$
+\end_inset
+
+ as the average of the outcomes of 
+\begin_inset Formula $S$
+\end_inset
+
+ Bernoulli trials, sampled with probability of success being 
+\begin_inset Formula $\theta$
+\end_inset
+
+, where the outcome of each trial depends on the latent 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The expectation of 
+\begin_inset Formula $\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)$
+\end_inset
+
+ is obviously equal to 
+\begin_inset Formula $\theta$
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+Then, define
+\begin_inset Formula 
+\[
+p(\nu,y_{t}|\theta)=\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)^{y_{t}}\left(1-\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)\right)^{1-y_{t}}
+\]
+
+\end_inset
+
+We have
+\begin_inset Formula 
+\begin{align*}
+\mathcal{E}_{\nu}p(\nu,y_{t} & =1|\theta)=\theta\\
+ & =f_{y}(y_{t}=1|\theta)
+\end{align*}
+
+\end_inset
+
+and
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\mathcal{E}_{\nu}p(\nu,y_{t} & =0|\theta)=1-\theta\\
+ & =f_{y}(y_{t}=0|\theta)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+so, we have constructed an unbiased simulator of 
+\begin_inset Formula $f(y_{t}|\theta)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+this example is obviously very simple, and it is not needed in this case,
+ where ordinary ML is perfectly feasible.
+ It is just an example that shows that it may be possible to find a simulator
+ with the required property.
 \end_layout
 
 \begin_layout Standard
@@ -61286,7 +61417,11 @@ A formulation of the GMM estimator which we have studied is based upon the
 \end_inset
 
  has conditional expectation equal to zero when evaluated at the true parameter
- value.
+ value, and 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ are instruments drawn from the information set.
  Consider 
 \begin_inset Formula 
 \[
@@ -62068,7 +62203,6 @@ href{./Examples/SBEM/EstimateSV.jl}{EstimateSV.jl}
 \begin_layout Itemize
 The minimization is by simulated annealing, to ensure robustness against
  numerical problems.
- I haven't tried with gradient-based methods.
 \end_layout
 
 \begin_layout Itemize
@@ -62558,8 +62692,8 @@ do the same, but computing a MSM estimator of the probit model.
 \end_layout
 
 \begin_layout Enumerate
-(more advanced) Do a little Monte Carlo study to compare ML, SML and MSMestimati
-on of the probit model.
+(more advanced) Do a little Monte Carlo study to compare ML, SML and MSM
+ estimation of the probit model.
  Investigate how the number of simulations affect the two simulation-based
  estimators.
 \end_layout
