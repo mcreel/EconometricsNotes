@@ -62651,20 +62651,22 @@ Simulated Neural Moments estimation of the DSGE model
 \end_layout
 
 \begin_layout Standard
-Please see 
-\begin_inset CommandInset href
-LatexCommand href
-name "this page"
-target "https://github.com/mcreel/SNM/tree/master/DSGE"
-literal "false"
+The script 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
+\end_layout
 
 \end_inset
 
- for a summary of estimation and inference using MCMC-MSM, where moments
- are based on a neural net that is fitted using simulations from the model,
- at parameter vectors drawn from the prior.
- This procedure leads to parameter estimates that have low bias and RMSE,
- and confidence intervals that have approximately proper coverage.
+ allows you to estimate the simple example DSGE model using Simulated Neural
+ Moments.
+ I will make a video that explains the code.
 \end_layout
 
 \begin_layout Standard

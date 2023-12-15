@@ -1,5 +1,8 @@
 # DSGE_Neural_Net_Estimation_Example
 
+THIS IS NOT WORKING: needs update to modern Dynare.
+
+
 NN_Estimate.m
 This code shows how the parameters of a small nonlinear DSGE model may be estimated with good accuracy, very, very quickly (e.g., in around one second).
 

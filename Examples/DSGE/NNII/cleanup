@@ -2,6 +2,7 @@
 mv SimpleModel.mod backup
 mv SimpleModel_steadystate.m backup2
 rm -R -f SimpleModel*
+rm -R -f +SimpleModel*
 rm parameterfile*
 if [ -f octave-workspace ]; then
 	rm octave-workspace
