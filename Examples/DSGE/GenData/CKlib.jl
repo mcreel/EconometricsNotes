@@ -1,4 +1,4 @@
-using Statistics, LinearAlgebra, SolveDSGE
+using Econometrics, Statistics, LinearAlgebra, SolveDSGE
 
 # this block reads and processes the file, leave it be
 process_model("CK.txt")
@@ -84,19 +84,6 @@ end
         Z = vcat(rho1, sig1, b, rho2, sig2, m[:], rhos, vech(cov(es)))
     end
     Z
-end
-
-function vech(x)
-    k = size(x,1)
-    a = zeros(Int((k^2-k)/2 + k))
-    m = 1
-    for i = 1:k
-        for j = 1:i
-            a[m] = x[i,j]
-            m += 1
-        end
-    end
-    a
 end
 
 function TrueParameters()
