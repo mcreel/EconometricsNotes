@@ -17,14 +17,14 @@ defaultdata ? data = readdlm("dsgedata.txt") : data = dgp(TrueParameters(), dsge
 include("parameters.jl") # load true parameter values
 lb, ub = PriorSupport()
 n = size(data,1)
-moments = theta -> DSGEmoments(theta, data)
+moments = theta -> sqrt(n)*DSGEmoments(theta, data)
 m = theta -> vec(mean(moments(theta),dims=1)) # 1Xg
-weight = theta -> inv(cov(sqrt(n)*moments(theta)))
+weight = theta -> inv(cov(moments(theta)))
 obj = theta -> m(theta)'*weight(theta)*m(theta)
 thetastart = (ub+lb)/2.0 # prior mean as start
 
 # estimate by simulated annealing
-thetahat, objvalue, converged, details = samin(obj, thetastart, lb, ub; ns = 20, nt=5, verbosity = 1, rt = 0.25)
+thetahat, objvalue, converged, details = samin(obj, thetastart, lb, ub; ns = 20, nt=5, verbosity = 1, rt = 0.5)
 # compute the estimated standard errors and CIs
 D = ForwardDiff.jacobian(m, vec(thetahat))
 W = weight(thetahat)

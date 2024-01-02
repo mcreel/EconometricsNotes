@@ -1,14 +1,18 @@
-using Econometrics, Statistics, LinearAlgebra, SolveDSGE
+using Statistics, LinearAlgebra, SolveDSGE
+
+# this block reads and processes the file, leave it be
+process_model("CK.txt")
+const dsge = retrieve_processed_model("CK_processed.txt")
 
 # solve model and simulate data
 function dgp(θ, dsge, reps, rndseed=1234)
     p, ss = ParamsAndSS(θ)
-    model = assign_parameters(dsge, p)
+    dsge = assign_parameters(dsge, p)
     scheme = PerturbationScheme(ss, 1.0, "third")
-    solution = solve_model(model, scheme)
-    burnin = 200
+    solution = solve_model(dsge, scheme)
+    burnin = 500
     nobs = 160
-    data = simulate(solution, ss[1:3], reps*(burnin+nobs); seed=rndseed)
+    data = simulate(solution, ss[1:3], reps*(burnin+nobs); seed = rndseed)
     # the next returns reps data sets, in an array of arrays
     data = [data[4:8, (nobs+burnin)*i-(nobs+burnin)+1+burnin:i*(nobs+burnin)]' for i = 1:reps]
 end
@@ -24,7 +28,7 @@ end
 
 # These are the candidate auxiliary statistics for ABC estimation of
 # the simple DSGE model of Creel and Kristensen (2013)
-function auxstat(data)
+@views function auxstat(data)
     # check for nan, inf, no variation, or negative, all are reasons to reject
     if bad_data(data)
         return zeros(39)
@@ -38,7 +42,7 @@ function auxstat(data)
         wages = data[:,5]
         capital = α /(1.0-α )*hours.*wages./intrate
         # treat all variables
-        logdata = log.([data capital])[2:end,:]
+        logdata = log.([data capital])
         # logs
         logoutput = logdata[:,1];   # output
         logcons = logdata[:,2];     # consumption
@@ -50,24 +54,21 @@ function auxstat(data)
         e = logoutput-α*logcapital-(1.0-α)*loghours 
         y = e[2:end]
         x = e[1:end-1]
-        rho1 = cor(x,y)
+        rho1 = x\y
         u = y-x*rho1
-        sig1 = sqrt(u'*u/size(u,1))
-        Z = vcat(rho1, sig1)
+        sig1 = sqrt(mean(u .^2))
         # gam, rho2, sig2 (1/MRS=wage)
         x = [ones(size(logcons,1)) logcons]
         b = x\logwages
         e = logwages-x*b
         y = e[2:end]
         x = e[1:end-1]
-        rho2 = cor(y,x)
+        rho2 = x\y
         u = y-x*rho2
-        sig2 = sqrt(u'*u/size(u,1))
-        Z = vcat(Z, b, rho2, sig2)
+        sig2 = sqrt(mean(u .^2))
         # standard devs. and correlations
         m = mean(logdata, dims=1)
-        s = std(logdata, dims=1)
-        d = (logdata .- m) ./s # keep means and std. devs., the VAR uses standardized and normalized   
+        d = (logdata .- m)  # keep means and std. devs., the VAR uses standardized and normalized   
         # AR(1)
         maxlag = 1
         y = d[2:end,:]
@@ -80,10 +81,22 @@ function auxstat(data)
             rhos[i] = rho
             es[:,i] = y[:,i]-rho.*x[:,i]
         end        
-        varv = vech(cov(es)) # AR(1) error covariance elements 
-        Z = vcat(Z, m[:], s[:], varv)
+        Z = vcat(rho1, sig1, b, rho2, sig2, m[:], rhos, vech(cov(es)))
     end
     Z
+end
+
+function vech(x)
+    k = size(x,1)
+    a = zeros(Int((k^2-k)/2 + k))
+    m = 1
+    for i = 1:k
+        for j = 1:i
+            a[m] = x[i,j]
+            m += 1
+        end
+    end
+    a
 end
 
 function TrueParameters()
@@ -113,10 +126,14 @@ function InSupport(θ)
     all(θ .>= lb) & all(θ .<= ub)
 end
 
+# in auxstats, we already code bad data, not needed here
+function GoodData(z)
+    true
+end
+
 function Prior(θ)
     InSupport(θ) ? 1.0 : 0.0
 end    
-
 
 function ParamsAndSS(params)
     α = 0.33
@@ -136,5 +153,4 @@ function ParamsAndSS(params)
     ss = [0.0, 0.0, kss, yss, css, nss, rss, wss, MUCss, MULss]
     return p, ss
 end   
-
 

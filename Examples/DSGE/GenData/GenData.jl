@@ -14,11 +14,10 @@ data = dgp(TrueParameters(), dsge, 1)[1]
 df = DataFrame(data, ["output", "cons", "hour","r","w"])
 if !silent
     display(plot(data, legend=:outertopright, label=["output" "cons" "hours" "r" "w"]))
-    #savefig("dsgedata.svg")
+    savefig("dsgedata.svg")
     display(df)
 end    
 #writedlm("dsgedata.txt", data)
-#CSVwrite("dsgedata.csv", df)
 return true
 end
 

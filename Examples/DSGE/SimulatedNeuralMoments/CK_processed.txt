@@ -12,7 +12,7 @@ jumps_to_approximate = [4, 6]
  
 eqns_to_approximate = [7] 
  
-variables = OrderedCollections.OrderedDict("η" => 1, "z" => 2, "k" => 3, "y" => 4, "c" => 5, "n" => 6, "rate" => 7, "w" => 8, "MUC" => 9, "MUL" => 10) 
+variables = OrderedCollections.OrderedDict("η" => 1, "z" => 2, "k" => 3, "y" => 4, "c" => 5, "n" => 6, "r" => 7, "w" => 8, "MUC" => 9, "MUL" => 10) 
  
 function nlsolve_static_equations(f::Array{T,1},x::Array{T,1},p::Array{T1,1}) where {T<:Number,T1<:Real} 
  

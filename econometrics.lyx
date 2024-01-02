@@ -36182,7 +36182,11 @@ the parameter estimates are pretty good.
 
 \begin_layout Itemize
 note that the standard errors and t statistics change quite a bit depending
- on which variables are used.
+ on which variables are used, especially for 
+\begin_inset Formula $\gamma$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -36236,15 +36240,12 @@ stochastic singularity
  The code lets you explore the choice.
  It seems to work best using c and n.
  It won't work using y and r.
- For some choices, the true parameter values will be outside the confidence
- intervals.
- If interested, do a Google search for this term, along with DSGE, and you'll
- find more information.
+ 
 \end_layout
 
 \begin_layout Itemize
-Not using all of the observed variables for estimation is very likely to
- cause problems of lack of identification and inefficiency.
+Not using all of the observed variables for estimation is likely to cause
+ problems of lack of identification and inefficiency.
  This can be confirmed if you experiment with the estimation script.
  Using c and n, we get the above results.
  Using other variables, we get results that aren't so good.
@@ -36256,9 +36257,8 @@ Not using all of the observed variables for estimation is very likely to
 This is not a problem of the ML method, it is a problem due to the fact
  that we are not really estimating the true model, we're working with a
  linear approximation.
- Often, people artificially add measurement error to the variables, which
- gets around the stochastic singularity problem, possibly at the cost of
- introducing a worse problem.
+ Sometimes, people artificially add measurement error to the variables,
+ which gets around the stochastic singularity problem.
  I have not yet seen a careful study of the effect of estimating assuming
  measurement error when there really is no measurement error.
 \end_layout
@@ -44747,33 +44747,33 @@ name "DSGE GMM results"
 \end_layout
 
 \begin_layout Itemize
-the point estimates are very good, but the standard errors of 
+the point estimates for 
+\begin_inset Formula $\beta,$
+\end_inset
+
+
 \begin_inset Formula $\gamma$
 \end_inset
 
  and 
-\begin_inset Formula $\rho_{2}$
+\begin_inset Formula $nss$
 \end_inset
 
- are quite high.
- Some parameters are precisely estimated, but others, especially 
-\begin_inset Formula $\rho_{\eta}$
-\end_inset
-
- have fairly large standard errors.
- Perhaps better moments could be found to better identify these parameters.
-\end_layout
-
-\begin_layout Itemize
-The true parameters are inside the 95% confidence intervals, in all cases.
- (See Table 
+ are good.
+ The two rhos and two sigmas seem to be confused (recall that the true parameter
+ values are in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:True-parameters-and"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
 ).
+ There seems to be an identification problem here, the two sources of randomness
+ are not well picked out by the chosen moment conditions.
 \end_layout
 
 \begin_layout Itemize
@@ -44803,8 +44803,9 @@ The take home conclusions here are:
 
 \begin_deeper
 \begin_layout Itemize
-that GMM can give reliable estimates, but perhaps we should try to improve
- estimation of some parameters by looking for better moment conditions.
+that GMM can give reliable estimates, at least for some parameters, but
+ perhaps we should try to improve estimation of some parameters by looking
+ for better moment conditions.
 \end_layout
 
 \begin_layout Itemize
@@ -52138,9 +52139,9 @@ Some conclusions we can draw:
 \end_layout
 
 \begin_layout Itemize
-Estimation of the parameters is quite good, when order=1 (linearized, which
+Estimation of the parameters can be good, when order=1 (linearized, which
  allows for Kalman filtering), The first panel uses the variables c and
- n, and the second uses two others (forgot which).
+ n, and the second uses y and w.
  Note that the results for the parameter 
 \begin_inset Formula $\gamma$
 \end_inset
@@ -52198,11 +52199,6 @@ noprefix "false"
  actually say about the performance of the various methods....
 \end_layout
 
-\begin_layout Itemize
-MCMC can be a little time consuming, and estimation by particle filtering
- (set order=2) will take a looong time...
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float figure
 wide false
@@ -52230,7 +52226,7 @@ MCMC results for simple DSGE example model (two different runs using different
 
 \begin_layout Plain Layout
 MCMC, ver.
- 1
+ 1: C and N
 \end_layout
 
 \begin_layout Plain Layout
@@ -52245,7 +52241,7 @@ MCMC, ver.
 
 \begin_layout Plain Layout
 MCMC, ver.
- 2
+ 2: Y and W
 \end_layout
 
 \begin_layout Plain Layout
@@ -52284,7 +52280,7 @@ reference "fig:CGHK-model,-posteriors"
 
 \end_inset
 
- plots the priors and posteriors.
+ plots the priors and posteriors, when C and N are used.
  Note that the posterior is substantially different than the prior: we learn
  a lot from the sample.
  That's why MCMC and ML are substantially similar.
@@ -52407,13 +52403,26 @@ href{./Examples/DSGE/BayesianGMM/DoMCMC.jl}{DoMCMC.jl}
 \begin_layout Standard
 The results for all parameters follow.
  The point estimates (mean and 50% quantile) are very close to the true
- values.
- The true values of most parameters are close to the center of the 95% confidenc
-e intervals, with 
-\begin_inset Formula $\beta$
+ values, except for 
+\begin_inset Formula $\sigma_{1}$
 \end_inset
 
- and nss being the exceptions.
+ and 
+\begin_inset Formula $\sigma_{2},$
+\end_inset
+
+ which we have already seen to be confused for this data set, by the GMM
+ and Bayesian methods.
+ The true values of most parameters are inside the 95% confidence intervals,
+ with 
+\begin_inset Formula $\sigma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{2}$
+\end_inset
+
+ being the exceptions.
  A notable difference with respect to extremum-based GMM, which computes
  confidence intervals using asymptotic theory, is that the confidence intervals
  for 
@@ -52425,6 +52434,8 @@ e intervals, with
 \end_inset
 
  are much tighter here.
+ Remember that overidentified GMM does not necessarily lead to reliable
+ inferences: perhaps these confidence intervals are too tight.
 \begin_inset VSpace defskip
 \end_inset
 
@@ -62528,7 +62539,60 @@ Simulated Neural Moments
 \begin_layout Standard
 A solution to this problem is to reduce the dimension of the statistics
  by passing them through a trained neural net.
- This can be done using the package 
+ 
+\end_layout
+
+\begin_layout Itemize
+the input to the net is a vector of statistics, for example, of the sort
+ used for MSM
+\end_layout
+
+\begin_layout Itemize
+the output is the parameter vector that generated the statistics
+\end_layout
+
+\begin_layout Itemize
+a net can be trained using many simulated (parameter, statistic) pairs,
+ which is feasible when the model is simulable.
+ The net will learn to recognize the parameters that are associated with
+ given statistics.
+ Then, when fed real data statistics, the output of the net is an estimator,
+ which will fit well according to the loss function which was used in training.
+ The fit is of the same dimension as the parameter vector.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+it can be used directly, as an estimator
+\end_layout
+
+\begin_layout Itemize
+or, it can be taken as an informative, just-identifying vector of statistics,
+ upon which to base subsequent (Bayesian) MSM.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset CommandInset citation
+LatexCommand citet
+key "creel2017neural"
+literal "false"
+
+\end_inset
+
+ proposed using neural moments of this sort, and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "creel2021inference"
+literal "false"
+
+\end_inset
+
+ showed that inferences based on MSM using such moments are reliable.
+\end_layout
+
+\begin_layout Itemize
+This can be done using the package 
 \begin_inset CommandInset href
 LatexCommand href
 name "SimulatedNeuralMoments.jl"
@@ -62560,19 +62624,7 @@ noprefix "false"
  The main difference is that, for the results here, the criterion function
  was the continuous updating version of GMM, whereas the previous results
  used two step GMM.
- The results, though, are qualitatively the same: without use of the neural
- net, the confidence intervals over-reject the true values, in some cases
- by serious margins.
  
-\begin_inset CommandInset citation
-LatexCommand citet
-key "creel2021inference"
-literal "false"
-
-\end_inset
-
- reports Monte Carlo results for other models which confirm that processing
- using a neural net leads to correct coverage of confidence intervals.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -62666,11 +62718,58 @@ href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
 
  allows you to estimate the simple example DSGE model using Simulated Neural
  Moments.
- I will make a video that explains the code.
+ The raw NN fit for three random draws from the prior is on the next page.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
+	height 15cm
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+these can be computed essentially instantly, but we don't get any estimated
+ standard deviations.
+\end_layout
+
+\begin_layout Itemize
+this shows that the neural net can give good parameter estimates, and that,
+ if these estimates are used for MSM, they are informative.
+\end_layout
+
+\begin_layout Itemize
+They are also exactly identifying, which is important for obtaining reliable
+ inferences.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Bayesian MSM results, using the NN statistics as the moments, are
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SimulatedNeuralMoments/msmfit.png
+	width 15cm
+
 \end_inset
 
 
