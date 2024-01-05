@@ -2,8 +2,8 @@
 
 This is written to be used interactively, with VScode, to explain the
 methods, step by step. For good performance, it is better to wrap 
-everything into a function. See the example in the JD directory for
-how to do that.
+everything into a function. See the example in the JD directory of
+https://github.com/mcreel/SNM  for how to do that.
 
 Start julia as "julia --proj -t auto" to use threads
 
