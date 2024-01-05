@@ -2,7 +2,7 @@
 
 This is written to be used interactively, with VScode, to explain the
 methods, step by step. For good performance, it is better to wrap 
-everything into a function. See the example in the JD directory of
+everything into a function. See the example in the DSGE directory of
 https://github.com/mcreel/SNM  for how to do that.
 
 Start julia as "julia --proj -t auto" to use threads
@@ -10,8 +10,8 @@ Start julia as "julia --proj -t auto" to use threads
 =#
 using Pkg
 cd(@__DIR__)
-Pkg.activate(".")
-using SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
+#Pkg.activate(".")
+using Econometrics, SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
 using Distributions, StatsPlots, DelimitedFiles, PrettyTables
 using BSON:@save
 using BSON:@load
@@ -87,7 +87,7 @@ lnL = θ -> snmobj(θ, θnn, S, model, nnmodel, nninfo)
 ## run a short chain to improve proposal
 # tuning the chain and creating a good proposal may
 # need care - this is just an example!
-chain = mcmc(θnn, tuninglength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
+chain = SimulatedNeuralMoments.mcmc(θnn, tuninglength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
 acceptance = mean(chain[:,end])
 start = 0.
 
@@ -98,13 +98,13 @@ while acceptance < 0.2 || acceptance > 0.3
     acceptance > 0.3 ? tuning *= 1.5 : nothing
     proposal(θ) = rand(MvNormal(θ, tuning*Σp))
     start = mean(chain[:,1:end-2], dims=1)[:]
-    chain = mcmc(start, tuninglength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
+    chain = SimulatedNeuralMoments.mcmc(start, tuninglength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
     acceptance = mean(chain[:,end])
 end
 
 ## final long chain
 start = mean(chain[:,1:end-2], dims=1)[:]
-chain = mcmc(start, finallength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
+chain = SimulatedNeuralMoments.mcmc(start, finallength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
 
 ## visualize results
 chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
