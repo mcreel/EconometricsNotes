@@ -27,7 +27,7 @@ lb, ub = PriorSupport()
 model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDraw, auxstat)
 
 ## see how the NN estimator works with some random parameter draws
-for  i = 1:10
+Threads.@threads for  i = 1:10
 # generate some date and define the neural moments using the data
 θtrue = PriorDraw()
 data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
