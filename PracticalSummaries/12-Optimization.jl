@@ -58,7 +58,6 @@ f(x,y) = -(3*(1-x)^2 * exp(-(x^2) - (y+1)^2)
 ##
 # let's explore it:
 using Plots
-plotly() # this backend makes nice 3d plots
 x = range(-4, step=0.1, stop=4)
 y = x
 surface(x, y, (x,y)->f(x,y),c=:viridis)
