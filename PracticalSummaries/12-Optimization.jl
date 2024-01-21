@@ -57,15 +57,14 @@ f(x,y) = -(3*(1-x)^2 * exp(-(x^2) - (y+1)^2)
  
 ##
 # let's explore it:
-using GLMake
+using GLMakie, Plots
 x = range(-4, step=0.1, stop=4)
 y = x
-#surface(x, y, (x,y)->f(x,y),c=:viridis)
-surface(x, y, (x,y)->f(x,y))
-xlabel!("x")
-ylabel!("y")
+Makie.surface(x, y, (x,y)->f(x,y))
 ##
-contour(x,y,(x,y)->f(x,y),c=:viridis)
+Plots.contour(x,y,(x,y)->f(x,y), c=:viridis)
+Plots.xlabel!("x")
+Plots.ylabel!("y")
 
 ##
 # This function has 3 local min, and 3 local max.
@@ -113,7 +112,10 @@ using Econometrics, Plots, Optim
 gr() # using the GR backend
 x = range(-4, step=0.1, stop=4)
 y = x
-contour(x,y,f,c=:viridis)
+Plots.contour(x,y,f,c=:viridis)
+Plots.xlabel!("x")
+Plots.ylabel!("y")
+
 θstart = 8.0 .* rand(2) .-4.0 
 tol = 1e-08
 results = Optim.optimize(f, θstart, LBFGS(), 
@@ -123,7 +125,7 @@ results = Optim.optimize(f, θstart, LBFGS(),
                             f_tol=tol); autodiff=:forward)
 
 θhat = results.minimizer
-scatter!([θhat[1]],[θhat[2]],legend=false, markersize=10, c = :viridis)
+Plots.scatter!([θhat[1]],[θhat[2]],legend=false, markersize=10, c = :viridis)
 
 ##
 # A more robust algorithm is to use the known domain to define
@@ -133,7 +135,10 @@ using Econometrics, Plots, Optim
 gr() # using the GR backend
 x = range(-4, step=0.1, stop=4)
 y = x
-contour(x,y,f, c=:viridis)
+Plots.contour(x,y,f, c=:viridis)
+Plots.xlabel!("x")
+Plots.ylabel!("y")
+
 lower = [-4., -4.]
 upper = -lower
 θstart = 8.0 .* rand(2) .-4.0 
@@ -144,7 +149,7 @@ results = Optim.optimize(f, lower, upper, θstart, Fminbox(LBFGS()),
                             x_tol=tol,
                             f_tol=tol); autodiff=:forward)
 θhat = results.minimizer
-scatter!([θhat[1]],[θhat[2]],legend=false, markersize=10)
+Plots.scatter!([θhat[1]],[θhat[2]],legend=false, markersize=10)
 
 ## 
 #
@@ -153,14 +158,15 @@ scatter!([θhat[1]],[θhat[2]],legend=false, markersize=10)
 # Another option is to use a global optimizer. An example is the
 # simulated annealing algorithm. This one should find the global
 # min every time, provided the cooling schedule is slow enough
-using Econometrics
+using Econometrics, Plots
 # try setting rt=0.05, it will fail sometimes, because the 
 # search region is shrunk too quickly
 # rt=0.9 has worked every time I've tried it
 gr() # using the GR backend
 x = range(-4, step=0.1, stop=4)
 y = x
-contour(x,y,f, c=:viridis)
+Plots.contour(x,y,f, c=:viridis)
+
 rt = 0.9
 lower = [-4., -4.]
 upper = -lower
@@ -168,7 +174,7 @@ upper = -lower
 trace = (samin(f, θstart, lower, upper, rt=rt)[4])[:,4:5]
 # plot the path take to the solution (run several times to see examples)
 for i = 1:size(trace,1)-1
-    display(scatter!([trace[i,1]], [trace[i,2]], labels=:none, color=:red, markersize=3))
+    display(Plots.scatter!([trace[i,1]], [trace[i,2]], labels=:none, color=:red, markersize=3))
     sleep(0.05)
 end
 θhat = round.(trace[end,:], digits=5)
