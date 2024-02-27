@@ -27,17 +27,28 @@ lb, ub = PriorSupport()
 model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDraw, auxstat)
 
 ## see how the NN estimator works with some random parameter draws
-Threads.@threads for  i = 1:10
-# generate some date and define the neural moments using the data
-θtrue = PriorDraw()
-data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
-if GoodData(auxstat(data))
-    θnn = NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
-    pretty_table([θtrue θnn],header = (["θtrue", "θnn"]))
-else
-    i -=1
+S = 1000
+errs = zeros(S, size(lb,1))
+Threads.@threads for  i = 1:S
+    # generate some date and define the neural moments using the data
+    #θtrue = PriorDraw()
+    θtrue = TrueParameters()
+    ok = false
+    while !ok
+        data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
+        ok = GoodData(auxstat(data))
+        if ok
+            θnn =  NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
+            errs[i,:] = θnn - θtrue 
+            pretty_table([θtrue θnn], header = ["θtrue", "θnn"])
+        end
+    end    
 end
-end
+b = mean(errs, dims=1)[:]
+s = std(errs, dims=1)[:]
+r = sqrt.(b.^2 + s.^2)[:]
+pretty_table([b s r], header = (["bias", "sd", "rmse"]))
+
 
 ## Now, let's move on to Bayesian MSM
 data = readdlm("dsgedata.txt")
