@@ -27,7 +27,7 @@ lb, ub = PriorSupport()
 model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDraw, auxstat)
 
 ## see how the NN estimator works with some random parameter draws
-S = 1000
+S = 100
 errs = zeros(S, size(lb,1))
 Threads.@threads for  i = 1:S
     # generate some date and define the neural moments using the data
@@ -47,7 +47,9 @@ end
 b = mean(errs, dims=1)[:]
 s = std(errs, dims=1)[:]
 r = sqrt.(b.^2 + s.^2)[:]
-pretty_table([b s r], header = (["bias", "sd", "rmse"]))
+m = b + TrueParameters()
+printstyled("Monte Carlo results, $(S) draws", color=:green)
+pretty_table(round.([TrueParameters() m b s r], digits=4), header = (["true", "mean", "bias", "sd", "rmse"]))
 
 
 ## Now, let's move on to Bayesian MSM

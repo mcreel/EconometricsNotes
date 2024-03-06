@@ -66112,7 +66112,7 @@ href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
 \end_inset
 
  allows you to estimate the simple example DSGE model using Simulated Neural Moments.
- The raw NN fit for three random draws from the prior is on the next page.
+ The results of a Monte Carlo study of 1000 draws of the raw NN estimator are on the next page.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -66120,13 +66120,32 @@ href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "SNM for DSGE results"
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
+	width 18cm
 	special height=15cm
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+there is some bias,
+ but the results are quite good,
+ overall.
+\end_layout
+
+\begin_layout Itemize
+the results can be obtained very quickly,
+ if a previously trained net is used
 \begin_inset Newpage newpage
 \end_inset
 
@@ -66135,7 +66154,7 @@ href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
 
 \begin_layout Itemize
 these can be computed essentially instantly,
- but we don't get any estimated standard deviations.
+ but we don't get any estimated standard deviations for the individual raw NN estimates.
 \end_layout
 
 \begin_layout Itemize
@@ -66158,7 +66177,7 @@ They are also exactly identifying,
 \end_layout
 
 \begin_layout Standard
-The Bayesian MSM results,
+The Bayesian MSM results for a single sample drawn at the true parameters,
  using the NN statistics as the moments,
  are
 \end_layout
@@ -66168,6 +66187,107 @@ The Bayesian MSM results,
 	filename Examples/DSGE/SimulatedNeuralMoments/msmfit.png
 	width 15cm
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+the posterior mean or median point estimates are good
+\end_layout
+
+\begin_layout Itemize
+the 95% confidence intervals always contain the true parameter values
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Full Sample Neural Moments
+\end_layout
+
+\begin_layout Standard
+The simulated neural moments approach requires specifying a vector of summary statistics.
+ The efficiency of the final estimator will depend on the choice of statistics.
+ An alternative approach,
+ explored in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "ChassotCreel2024"
+literal "false"
+
+\end_inset
+
+,
+ constructs the neural net using the full sample data directly as the input.
+ To capture the information in the sequence of observation in the sample,
+ a more sophisticated net is required.
+ The paper proposes temporal convolutional nets (TCNs) for this purpose.
+ This approach has been found to have lower RMSE than the maximum likelihood estimator,
+ for several small test models,
+ and to have lower RMSE that a neural moment estimator that uses summary statistics.
+ This paper is certainly not the last word on the topic,
+ but it does show that neural nets have much promise for improving the efficiency of simulated method of moments type estimators.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Monte Carlo results for 1000 replications of the TCN neural net estimator,
+ for the simple DSGE model are
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SNM-TCN/montecarlo.png
+	width 20cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+if you compare these with the SNM neural moments that are based on a summary statistic (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "SNM for DSGE results"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+
+\end_inset
+
+),
+ you will see that these are considerably better for 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ and the two AR(1) parameters.
+\end_layout
+
+\begin_layout Itemize
+This shows that there may be information lost when using summary statistics,
+ and that we can do better with a well-chosen neural net.
+\end_layout
+
+\begin_layout Itemize
+
+\size footnotesize
+Note:
+ Still need to add Bayesian MSM,
+ using the neural net fit as the moments for MSM.
+\size default
+
+\begin_inset Newpage newpage
 \end_inset
 
 
