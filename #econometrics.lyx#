@@ -49765,27 +49765,7 @@ http://www.sciencedirect.com/science/article/pii/S0304407603001003
  is a very interesting article that shows how Bayesian methods may be used with criterion functions that are associated with classical estimation techniques.
  For example,
  it is possible to compute a posterior mean version of a GMM estimator.
- Chernozhukov and Hong provide their Theorem 2,
- which proves consistency and asymptotic normality for a general class of such estimators.
- When the criterion function 
-\begin_inset Formula $L_{n}(\theta)$
-\end_inset
-
- in their paper is set to the log-likelihood function,
- the pseudo-prior 
-\begin_inset Formula $\pi(\theta)$
-\end_inset
-
- is a real Bayesian prior,
- and the penalty function 
-\begin_inset Formula $\rho_{n}$
-\end_inset
-
- is the squared loss function (see the paper),
- then the class of estimators discussed by CH reduces to the ordinary Bayesian posterior mean.
- As such,
- their Theorem 2,
- in Figure 
+ Chernozhukov and Hong provide their Theorem 2 (in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Chernozhukov-and-Hong,"
@@ -49793,9 +49773,16 @@ nolink "false"
 
 \end_inset
 
- tells us that this estimator is consistent and asymptotically normally distributed.
- In particular,
- the Bayesian posterior mean has the same asymptotic distribution as does the ordinary maximum likelihood estimator.
+),
+ which proves consistency and asymptotic normality for a general class of such estimators.
+ 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement document
 alignment document
@@ -49835,7 +49822,37 @@ Chernozhukov and Hong,
 
 \end_inset
 
+When
+\end_layout
 
+\begin_layout Itemize
+the criterion function 
+\begin_inset Formula $L_{n}(\theta)$
+\end_inset
+
+ in their paper is set to the log-likelihood function
+\end_layout
+
+\begin_layout Itemize
+the pseudo-prior 
+\begin_inset Formula $\pi(\theta)$
+\end_inset
+
+ is a real Bayesian prior
+\end_layout
+
+\begin_layout Itemize
+the penalty function 
+\begin_inset Formula $\rho_{n}$
+\end_inset
+
+ is the squared loss function (see the paper),
+ then the class of estimators discussed by CH reduces to the ordinary Bayesian posterior mean.
+ As such,
+ their Theorem 2,
+ tells us that this estimator is consistent and asymptotically normally distributed.
+ In particular,
+ the Bayesian posterior mean has the same asymptotic distribution as does the ordinary maximum likelihood estimator.
 \end_layout
 
 \begin_layout Itemize

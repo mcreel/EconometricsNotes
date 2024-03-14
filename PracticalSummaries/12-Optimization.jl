@@ -57,14 +57,15 @@ f(x,y) = -(3*(1-x)^2 * exp(-(x^2) - (y+1)^2)
  
 ##
 # let's explore it:
-using GLMakie, Plots
+using Plots
+plotly()
 x = range(-4, step=0.1, stop=4)
 y = x
-Makie.surface(x, y, (x,y)->f(x,y))
+surface(x, y, (x,y)->f(x,y), color=:viridis)
 ##
-Plots.contour(x,y,(x,y)->f(x,y), c=:viridis)
-Plots.xlabel!("x")
-Plots.ylabel!("y")
+contour(x,y,(x,y)->f(x,y), c=:viridis)
+xlabel!("x")
+ylabel!("y")
 
 ##
 # This function has 3 local min, and 3 local max.
