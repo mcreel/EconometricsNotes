@@ -49765,27 +49765,7 @@ http://www.sciencedirect.com/science/article/pii/S0304407603001003
  is a very interesting article that shows how Bayesian methods may be used with criterion functions that are associated with classical estimation techniques.
  For example,
  it is possible to compute a posterior mean version of a GMM estimator.
- Chernozhukov and Hong provide their Theorem 2,
- which proves consistency and asymptotic normality for a general class of such estimators.
- When the criterion function 
-\begin_inset Formula $L_{n}(\theta)$
-\end_inset
-
- in their paper is set to the log-likelihood function,
- the pseudo-prior 
-\begin_inset Formula $\pi(\theta)$
-\end_inset
-
- is a real Bayesian prior,
- and the penalty function 
-\begin_inset Formula $\rho_{n}$
-\end_inset
-
- is the squared loss function (see the paper),
- then the class of estimators discussed by CH reduces to the ordinary Bayesian posterior mean.
- As such,
- their Theorem 2,
- in Figure 
+ Chernozhukov and Hong provide their Theorem 2 (in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Chernozhukov-and-Hong,"
@@ -49793,9 +49773,16 @@ nolink "false"
 
 \end_inset
 
- tells us that this estimator is consistent and asymptotically normally distributed.
- In particular,
- the Bayesian posterior mean has the same asymptotic distribution as does the ordinary maximum likelihood estimator.
+),
+ which proves consistency and asymptotic normality for a general class of such estimators.
+ 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement document
 alignment document
@@ -49836,11 +49823,70 @@ Chernozhukov and Hong,
 \end_inset
 
 
+\emph on
+When
+\end_layout
+
+\begin_layout Itemize
+the criterion function 
+\begin_inset Formula $L_{n}(\theta)$
+\end_inset
+
+ in their paper is set to the log-likelihood function
+\end_layout
+
+\begin_layout Itemize
+the pseudo-prior 
+\begin_inset Formula $\pi(\theta)$
+\end_inset
+
+ is a real Bayesian prior
+\end_layout
+
+\begin_layout Itemize
+the penalty function 
+\begin_inset Formula $\rho_{n}$
+\end_inset
+
+ is the squared loss function (which is symmetric,
+ so that 
+\begin_inset Formula $\xi$
+\end_inset
+
+ in the theorem is zero)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+then the class of estimators discussed by CH reduces to the ordinary Bayesian posterior mean.
+\emph default
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+As such,
+ their Theorem 2,
+ tells us that the Bayesian posterior mean is consistent and asymptotically normally distributed.
+\end_layout
+
+\begin_layout Itemize
+In particular,
+ the Bayesian posterior mean has the same asymptotic distribution as does the ordinary maximum likelihood estimator.
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 the intuition is clear:
- as the amount of information coming from the sample increases,
+ The information content from the prior is fixed.
+ As the amount of information coming from the sample increases,
  the likelihood function brings an increasing amount of information,
  relative to the prior.
  Eventually,
@@ -49848,7 +49894,8 @@ the intuition is clear:
 \end_layout
 
 \begin_layout Itemize
-when the sample is large,
+so,
+ when the sample is large,
  the shape of the posterior depends on the likelihood function.
  The likelihood function collapses around 
 \begin_inset Formula $\theta_{0}$
@@ -49875,9 +49922,11 @@ when the sample is large,
 \end_layout
 
 \begin_layout Itemize
+
+\color blue
 For an econometrician coming from the frequentist perspective,
  this is attractive.
- The Bayesian estimator has the same asymptotic behavior as the MLE.
+ The Bayesian point estimator has the same asymptotic behavior as the MLE.
  There may be computational advantages to using the Bayesian approach,
  because there is no need for optimization.
  If the objective function that defines the classical estimator is irregular (multiple local optima,
@@ -49887,6 +49936,8 @@ For an econometrician coming from the frequentist perspective,
  However,
  Bayesian methods that use integration may be more tractable.
  This is the main motivation of CH's paper.
+
+\color inherit
  
 \end_layout
 
@@ -49912,8 +49963,21 @@ To compute the posterior mean,
 \begin_inset Formula 
 \begin{align*}
 E(\theta|y) & =\int_{\Theta}\theta f(\theta|y)d\theta\\
-= & \frac{\int_{\Theta}\theta f(y|\theta)\pi(\theta)d\theta}{\int_{\Theta}f(y,\theta)d\theta}.
+ & =\int_{\Theta}\theta\frac{f(y|\theta)\pi(\theta)}{f(y)}d\theta\\
+= & \frac{1}{f(y)}\int{}_{\Theta}\theta f(y|\theta)\pi(\theta)d\theta
 \end{align*}
+
+\end_inset
+
+where the marginal density of the data 
+\begin_inset Formula $f(y)$
+\end_inset
+
+ is obtained from
+\begin_inset Formula 
+\[
+f(y)=\int_{\Theta}f(y,\theta)d\theta
+\]
 
 \end_inset
 
@@ -49931,7 +49995,12 @@ Note that both of the integrals are multiple integrals,
 \end_layout
 
 \begin_layout Itemize
-Under some special circumstances (conjugate priors),
+Under some special circumstances (
+\emph on
+e.g.,
+ 
+\emph default
+conjugate priors),
  the integrals may have analytic solutions:
  e.g.,
  Gaussian likelihood with a Gaussian prior leads to a Gaussian posterior.
@@ -50001,7 +50070,23 @@ Monte Carlo
 \end_inset
 
 .
- The 
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+The 
 \family default
 \series default
 \shape default
@@ -50188,17 +50273,34 @@ There are two parts to the numerator and denominator:
  the posterior,
  and the proposal density.
  
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Focusing on the numerator,
- when the trial value of the proposal has a higher posterior,
+ 
+\begin_inset Formula $f(\theta^{*}|y)g(\theta^{s};\theta^{*}),$
+\end_inset
+
+when the trial value of the proposal 
+\begin_inset Formula $f(\theta^{*}|y)$
+\end_inset
+
+ has a higher posterior,
  acceptance is favored.
  
 \end_layout
 
 \begin_layout Itemize
-The other factor is the density associated with returning to 
+The other factor is 
+\begin_inset Formula $g(\theta^{s};\theta^{*})$
+\end_inset
+
+,
+ the density associated with returning to 
 \begin_inset Formula $\theta^{s}$
 \end_inset
 
@@ -50236,14 +50338,6 @@ Consider a bimodal density:
  To be able to do that,
  it is important that the proposal density allows us to be able to jump between modes.
  
-\end_layout
-
-\begin_layout Itemize
-Understanding in detail why this makes sense is the tricky and elegant part of the theory,
- see the references for more information.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -50264,10 +50358,29 @@ because the marginal likelihood
 \end_inset
 
  is the same in both cases.
- We don't need to compute that integral!
- We don't need to know the posterior,
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We don't need to compute that integral!
+ 
+\end_layout
+
+\begin_layout Itemize
+We don't need to know the posterior,
  either.
- The acceptance criterion can be written as:
+ 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+With this,
+ the acceptance criterion can be written as:
  accept if
 \begin_inset Formula 
 \[
@@ -50306,6 +50419,10 @@ the likelihood function is what it is,
 
 \begin_layout Itemize
 the place where artistry comes to bear is the choice of the proposal density
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -50328,9 +50445,19 @@ so that
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Itemize
 A random walk proposal,
  where the trial value is the current value plus a shock that doesn't depend on the current value,
  satisfies symmetry.
+ This is often a reasonable choice.
+\end_layout
+
+\begin_layout Itemize
+If the prior happens to be uniform over the support,
+ then it also cancels out.
 \end_layout
 
 \begin_layout Standard
@@ -50425,8 +50552,12 @@ Once the chain is considered to have stabilized,
 \begin_layout Itemize
 the art of applying these methods consists of providing a good proposal density so that the acceptance rate is reasonably high,
  but not too high.
- There is a vast literature on this,
+ 
+\color blue
+There is a vast literature on this,
  and the vastness of the literature should serve as a warning that getting this to work in practice is not necessarily a simple matter.
+
+\color inherit
  If it were,
  there would be fewer papers on the topic.
  A good proposal is one that looks like the posterior,
