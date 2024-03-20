@@ -79,20 +79,20 @@ println(@yellow "(Remember that the true parameters are $θ₀)")
 # This works even without controlling chatter
 using Turing, AdvancedMH, Term, Econometrics
 k_data = k(x,y) # stats from the real data
-#  Define the prior and asymptotic Gaussian likelihood of the moments
+#  Define the prior and approximate Gaussian likelihood of the moments
 @model function MSM(k_data, S, x)
     θ ~ arraydist([Normal() for _=1:2]) # the prior (note: it's biased)
     # sample from the model, at the trial parameter value, and compute statistics
     ks = simulated_moments(θ, x, S, false) # NOTE: no control of chatter
     kbar = mean(ks) # mean of simulated statistics, over S replications
-    Σ = cov(ks)  # estimated covariance of statistics
+    Σ = cov(ks)  # estimated covariance of statistic
     k_data ~ MvNormal(kbar, Σ) # this corresponds to CUE GMM, but adding the determinant from the MVN 
 end
 
 ## do MCMC sampling
 # look at acceptance rate, below, and adjust
 # the tuning to make acceptance around 0.25
-S = 100 # make this as large as possible, given computation time, when doing real research
+S = 500 # make this as large as possible, given computation time, when doing real research
 tuning = 0.05
 length = 10000
 burnin = 1000

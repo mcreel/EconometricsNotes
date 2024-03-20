@@ -49964,7 +49964,7 @@ To compute the posterior mean,
 \begin{align*}
 E(\theta|y) & =\int_{\Theta}\theta f(\theta|y)d\theta\\
  & =\int_{\Theta}\theta\frac{f(y|\theta)\pi(\theta)}{f(y)}d\theta\\
-= & \frac{1}{f(y)}\int{}_{\Theta}\theta f(y|\theta)\pi(\theta)d\theta
+= & \frac{1}{f(y)}{\color{blue}\int{}_{\Theta}\theta f(y|\theta)\pi(\theta)d\theta}
 \end{align*}
 
 \end_inset
@@ -49976,7 +49976,7 @@ where the marginal density of the data
  is obtained from
 \begin_inset Formula 
 \[
-f(y)=\int_{\Theta}f(y,\theta)d\theta
+f(y)={\color{blue}\int_{\Theta}f(y,\theta)d\theta}
 \]
 
 \end_inset
@@ -49985,7 +49985,7 @@ f(y)=\int_{\Theta}f(y,\theta)d\theta
 \end_layout
 
 \begin_layout Itemize
-Note that both of the integrals are multiple integrals,
+Note that both of the integrals in blue are multiple integrals,
  with the dimension given by that of the parameter,
  
 \begin_inset Formula $\theta.$
@@ -50004,7 +50004,8 @@ conjugate priors),
  the integrals may have analytic solutions:
  e.g.,
  Gaussian likelihood with a Gaussian prior leads to a Gaussian posterior.
- 
+ In principle,
+ one shouldn't be adjusting priors for simple computational convenience....
 \end_layout
 
 \begin_layout Itemize
@@ -50550,7 +50551,11 @@ Once the chain is considered to have stabilized,
 \end_layout
 
 \begin_layout Itemize
-the art of applying these methods consists of providing a good proposal density so that the acceptance rate is reasonably high,
+the art of applying these methods consists of providing a 
+\color blue
+good proposal density
+\color inherit
+ so that the acceptance rate is reasonably high,
  but not too high.
  
 \color blue
@@ -51246,6 +51251,34 @@ Here is a summary of the chain,
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Practical summary
+\end_layout
+
+\begin_layout Standard
+I am not providing additional code,
+ I recommend just working through the examples in the chapter.
+ There are a lot of other resources available,
+ with code.
+ For examples using Julia,
+ I highly recommend looking at 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://storopoli.io/Bayesian-Julia/"
+target "https://storopoli.io/Bayesian-Julia/"
+literal "false"
+
+\end_inset
+
+ by José Eduardo Storopoli,
+ especially the chapter on MCMC,
+ which is very nice.
 \begin_inset Newpage newpage
 \end_inset
 
