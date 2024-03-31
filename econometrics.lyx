@@ -51267,7 +51267,7 @@ I am not providing additional code,
  There are a lot of other resources available,
  with code.
  For examples using Julia,
- I highly recommend looking at 
+ I recommend looking at 
 \begin_inset CommandInset href
 LatexCommand href
 name "https://storopoli.io/Bayesian-Julia/"
