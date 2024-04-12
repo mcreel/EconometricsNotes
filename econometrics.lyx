@@ -14949,10 +14949,13 @@ Without normality,
 \end_inset
 
  so we obtain 
-\begin_inset Formula $\sqrt{n}\left(\hat{\beta}-\beta\right)\overset{d}{\rightarrow}N\left(0,Q_{X}^{-1}\Omega Q_{X}^{-1}\right)$
+\begin_inset Formula 
+\begin{equation}
+\sqrt{n}\left(\hat{\beta}-\beta\right)\overset{d}{\rightarrow}N\left(0,Q_{X}^{-1}\Omega Q_{X}^{-1}\right).\label{eq: as. dist. OLS with het/aut}
+\end{equation}
+
 \end_inset
 
-.
  Note that the true asymptotic distribution of the OLS has changed with respect to the results under the classical assumptions.
  If we neglect to take this into account,
  the Wald and score tests will not be asymptotically valid.
@@ -23652,7 +23655,12 @@ A locally increasing direction of search
 \end_inset
 
 ,
- we will improve on the objective function,
+ we will improve on the objective function 
+\color blue
+(Note:
+ I'm assuming we are maximizing)
+\color inherit
+,
  at least if we don't go too far.
 \end_layout
 
@@ -24245,7 +24253,8 @@ rosenbrock(x) =  (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 
 result = optimize(rosenbrock,
  zeros(2),
- BFGS())
+ BFGS(),
+ Optim.Options(iterations=1000))
 \end_layout
 
 \end_inset
@@ -24570,7 +24579,7 @@ Gradient based optimization methods are much more likely to be successful and gi
 \begin_inset Formula 
 \begin{align*}
 s_{n}(\theta)= & \frac{1}{n}\sum_{t}\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)^{2}\\
-D_{\alpha}s_{n}(\cdot)= & \frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})x_{t}\\
+D_{\alpha}s_{n}(\cdot)= & \frac{1}{n}\sum_{t}{\color{teal}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}}x_{t}\\
 D_{\beta}s_{n}(\cdot)= & \frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})z_{t}
 \end{align*}
 
@@ -24607,14 +24616,15 @@ suppose that
 \begin_layout Itemize
 then 
 \begin_inset Formula 
-\[
-D_{\alpha^{*}}s_{n}(\cdot)=\frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})\right)g(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})x_{t}^{*}
-\]
+\begin{align*}
+D_{\alpha^{*}}s_{n}(\cdot) & =\frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})\right)g(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})x_{t}^{*}\\
+ & =\frac{1}{n}\sum_{t}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}{\color{red}x_{t}^{*}}
+\end{align*}
 
 \end_inset
 
 Everything is the same as before,
- because the 1000s cancel out,
+ because the 1000s cancel out (compare the blue highlighted parts),
  except there is an 
 \begin_inset Formula $x_{t}^{*}$
 \end_inset
@@ -24653,8 +24663,12 @@ It is easy to loose precision in calculation if you don't take care.
  In the future,
  if you start to do empirical work and get results that seem meaningless or crazy,
  try to remember this point.
+
+\color red
  This is really a very common stumbling block,
  and many people have wasted a lot of time due to forgetting about it.
+\color inherit
+
 \begin_inset Newpage newpage
 \end_inset
 
@@ -24778,141 +24792,6 @@ The theoretical support for SA requires that the region being search contracts v
  so the method as used is actually heuristic.
  One can try to check that it is working by running it more than once,
  to see if the same solution is found.
-\end_layout
-
-\begin_layout Itemize
-Run 
-\family typewriter
-samin()
-\family default
- (with the 
-\family typewriter
-Econometrics
-\family default
- package installed) to see an example,
- and see the 
-\begin_inset CommandInset href
-LatexCommand href
-name "source code for samin.jl"
-target "https://github.com/mcreel/Econometrics.jl/blob/master/src/Optimization/samin.jl"
-literal "false"
-
-\end_inset
-
-,
- or run 
-\family typewriter
-edit(samin,())
-\family default
- to get an idea of how the algorithm works.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Example
-Paste this code into Julia to see an example of simulated annealing,
- using the version in the package 
-\begin_inset CommandInset href
-LatexCommand href
-name "Optim.jl"
-target "https://julianlsolvers.github.io/Optim.jl/stable/"
-literal "false"
-
-\end_inset
-
-.
- Try experimenting by passing rt=0.9 or rt=0.25 as arguments,
- and see what happens.
- NOTE:
- as of 22 March,
- 2022,
- the convergence message of SAMIN in Optim is missleading.
- Don't worry about a 
-\family typewriter
-* Status:
- failure
-\family default
- message,
- if you see one,
- as long as you see
-\family typewriter
- ==> Normal convergence <==.
-\family default
-
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-	using Optim
-\end_layout
-
-\begin_layout Plain Layout
-
-	junk=2.
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-	# shows use of obj.
- fun.
- as a closure
-\end_layout
-
-\begin_layout Plain Layout
-
-	function sse(x) # very simple quadratic objective function
-\end_layout
-
-\begin_layout Plain Layout
-
-		objvalue = junk + sum(x.*x)
-\end_layout
-
-\begin_layout Plain Layout
-
-	end
-\end_layout
-
-\begin_layout Plain Layout
-
-    k = 5
-\end_layout
-
-\begin_layout Plain Layout
-
-    x = rand(k,1)
-\end_layout
-
-\begin_layout Plain Layout
-
-    lb = -ones(k,1)
-\end_layout
-
-\begin_layout Plain Layout
-
-    ub = -lb
-\end_layout
-
-\begin_layout Plain Layout
-
-	xopt= (Optim.optimize(sse,
- lb,
- ub,
- x,
- SAMIN(verbosity=2),Optim.Options(iterations=10^6))).minimizer
-\end_layout
-
-\end_inset
-
-
 \begin_inset Newpage newpage
 \end_inset
 
@@ -24920,7 +24799,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-An additional example is 
+An example is 
 \begin_inset ERT
 status open
 
@@ -24934,9 +24813,7 @@ href{./Examples/NonlinearOptimization/OLSviaSA.jl}{OLSviaSA.jl}
 \end_inset
 
 ,
- which uses SA (the version the code accompanying these notes,
- which is functionally equivalent to the version in Optim.jl,
- but with a different interface) to compute the OLS estimator,
+ which uses SA to compute the OLS estimator,
  and plots the trace of the improvements as they are found.
  You can see how SA narrows in on the solution,
  in Figure 
@@ -25444,54 +25321,6 @@ literal "true"
 
 \end_inset
 
-
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-Poor scaling of the data
-\end_layout
-
-\begin_layout Standard
-When the data is scaled so that the magnitudes of the first and second derivatives are of different orders,
- problems can easily result,
- because numerical accuracy can be lost,
- so gradient-based directions of movement in iterations can become very poor.
- 
-\series bold
-UPDATE:
-
-\series default
- the MLE code now uses automatic differentiation when possible (as it is here).
- This is less sensitive to scaling problems than is code that uses finite difference derivatives,
- so we will not observe a difference in the results in this example (except for in the coefficient of income).
- However,
- it is still desirable to scale data,
- to avoid potential round off errors and loss of precision.
- I
-\strikeout on
-f we comment the appropriate line in 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
- 
-\backslash
-href{./Examples/MEPS-I/EstimatePoisson.jl}{EstimatePoisson.jl}
-\end_layout
-
-\end_inset
-
-,
- the data will not be scaled,
- and the estimation program will have difficulty converging (note that the likelihood value is lower with poor scaling).
-\strikeout default
 
 \begin_inset Newpage newpage
 \end_inset
@@ -26957,7 +26786,7 @@ If
 \end_inset
 
  is compact,
- then a maximizer exists,
+ then a maximizers exists,
  by the Weierstrass maximum theorem (Debreu,
  1959).
 \end_layout
@@ -27010,7 +26839,15 @@ literal "true"
 \end_inset
 
 .
- It is interesting to compare the following proof with Amemiya's Theorem 4.1.1,
+ It is interesting to compare the following proof with 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "amemiya1985advanced"
+literal "false"
+
+\end_inset
+
+ Theorem 4.1.1,
  which is done in terms of convergence in probability.
 \end_layout
 
@@ -27111,7 +26948,11 @@ Assume
 \begin_inset Formula $s_{\infty}(\cdot)$
 \end_inset
 
- has a unique global maximum at 
+ has a unique global maximum over 
+\begin_inset Formula $\overline{\Theta}$
+\end_inset
+
+ at 
 \begin_inset Formula $\theta_{0}\in\Theta,$
 \end_inset
 
@@ -27147,6 +26988,35 @@ Then
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Comment:
+ 
+\series default
+the ''pseudo-true
+\begin_inset Quotes srd
+\end_inset
+
+ value 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ lies in the open set 
+\begin_inset Formula $\Theta,$
+\end_inset
+
+ and therefore is an interior point of the compact set 
+\begin_inset Formula $\overline{\Theta}.$
+\end_inset
+
+ We will refer to 
+\begin_inset Formula $\overline{\Theta}$
+\end_inset
+
+ as the parameter set or parameter space.
 \end_layout
 
 \begin_layout Standard
@@ -27332,7 +27202,8 @@ However,
 \end_inset
 
  by uniform convergence,
- so the above inequality can be written as
+ so the above inequality gives us,
+ in the limit:
 \begin_inset Formula 
 \[
 {\color{red}s_{\infty}(\hat{\theta})}\geq{\color{magenta}s_{\infty}(\theta_{0})}.
@@ -27433,7 +27304,15 @@ We assume that
 \end_layout
 
 \begin_layout Itemize
-See Amemiya's Example 4.1.4 for a case where discontinuity leads to breakdown of consistency.
+See 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "amemiya1985advanced"
+literal "false"
+
+\end_inset
+
+ Example 4.1.4 for a case where discontinuity leads to breakdown of consistency.
 \end_layout
 
 \begin_layout Itemize
@@ -27554,7 +27433,7 @@ The assumption that
  Just note that conventional hypothesis testing methods do not apply in this case.
  
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Later,
@@ -27563,7 +27442,7 @@ Later,
 \end_layout
 
 \begin_layout Plain Layout
-that the colapse of the mixture is a case of a parameter
+that the collapse of the mixture is a case of a parameter
 \end_layout
 
 \begin_layout Plain Layout
@@ -27586,6 +27465,8 @@ Note that
 \end_inset
 
  is.
+ Arguments involving stochastic equicontinuity can often be applied to get a continuous limiting function,
+ even if the small sample objective function is discontinous.
 \end_layout
 
 \begin_layout Standard
@@ -27672,7 +27553,16 @@ With these assumptions,
 
 \begin_layout Standard
 These are reasonable conditions in many cases,
- and henceforth when dealing with specific estimators we'll simply assume that assumption (b) holds.
+ and henceforth when dealing abstractly with estimators we'll simply assume that assumption (b) holds.
+ In certain cases with discontinuous objective functions,
+ we will need to be more careful.
+\end_layout
+
+\begin_layout Itemize
+an example of a discontinous objective function would be when doing simulation based estimation of models with discrete dependent variables.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -27731,7 +27621,7 @@ We suppose that data is generated by random sampling of
 \end_inset
 
  are independent) with support 
-\begin_inset Formula $\mathcal{Z=X}\times\mathcal{E}.$
+\begin_inset Formula $\mathcal{Z}=\mathcal{X}\times\mathcal{E}.$
 \end_inset
 
  Suppose that the variances 
@@ -27762,7 +27652,8 @@ s_{n}(\theta) & = & \frac{1}{n}\sum_{t=1}^{n}\left(y_{t}-\beta x_{t}\right)^{2}=
 
 \begin_layout Itemize
 Considering the last term,
- by the SLLN,
+ this converges to the variance of the error,
+ by the SLLN and the assumption of homoscedasticity and mean zero of the error:
  
 \begin_inset Formula 
 \[
@@ -27982,9 +27873,13 @@ The limiting objective function in assumption (b) is
 
 \begin_layout Itemize
 Remember our paradigm - data is presumed to be generated as a draw from 
+\color red
+
 \begin_inset Formula $f_{Z_{n}}(z)$
 \end_inset
 
+
+\color inherit
 ,
  and the objective function is 
 \begin_inset Formula $s_{n}(Z_{n},\theta)$
@@ -28055,12 +27950,16 @@ Now suppose that the density
 \end_inset
 
 ,
- and the data is generated by 
+ and the data is generated as a draw from this density at some true parameter vector 
 \begin_inset Formula $\rho_{0}\in\varrho$
 \end_inset
 
 .
- Now we have two parameters to worry about,
+ 
+\end_layout
+
+\begin_layout Itemize
+Now we have two parameters to worry about,
  
 \begin_inset Formula $\theta$
 \end_inset
@@ -28070,13 +27969,21 @@ Now suppose that the density
 \end_inset
 
 .
- We are probably interested in learning about the true DGP,
+ 
+\end_layout
+
+\begin_layout Itemize
+We are probably interested in learning about the true DGP,
  which means that 
 \begin_inset Formula $\rho_{0}$
 \end_inset
 
  is the item of interest.
- When the DGP is parametric,
+ 
+\end_layout
+
+\begin_layout Standard
+When the DGP is parametric,
  the limiting objective function is 
 \begin_inset Formula 
 \begin{equation}
@@ -28090,13 +27997,18 @@ and we can write the limiting objective function as
 \end_inset
 
  to emphasize the dependence on the parameter of the DGP.
- From the theorem,
+ 
+\end_layout
+
+\begin_layout Itemize
+From the consistency theorem,
  we know that 
 \begin_inset Formula $\hat{\theta}_{n}\stackrel{a.s.}{\rightarrow}\theta_{0}$
 \end_inset
 
  
 \emph on
+\color blue
 What is the relationship between 
 \begin_inset Formula $\theta_{0}$
 \end_inset
@@ -28282,7 +28194,7 @@ y_{t}=\beta_{0}x_{t}+\varepsilon_{t}.
 \end_inset
 
  are independent) with support 
-\begin_inset Formula $Z=\mathcal{X}\times\mathcal{E}.$
+\begin_inset Formula $\mathcal{Z}=\mathcal{X}\times\mathcal{E}.$
 \end_inset
 
  Suppose that the variances 
@@ -28352,18 +28264,29 @@ where
 
 ,
  and the terms that are not given a color converge to 0.
- So,
- finding the minimizer with respect to 
+ 
+\end_layout
+
+\begin_layout Itemize
+So,
+ finding the minimizer of 
+\begin_inset Formula $s_{\infty}(\gamma)$
+\end_inset
+
+ with respect to 
 \begin_inset Formula $\gamma$
 \end_inset
 
 ,
  we get 
-\begin_inset Formula $\gamma_{0}=\frac{\beta_{0}E(WX)}{E(W^{2})}$
+\begin_inset Formula 
+\[
+\gamma_{0}=\frac{\beta_{0}E(WX)}{E(W^{2})},
+\]
+
 \end_inset
 
-,
- which is the true parameter of the DGP,
+which is the true parameter of the DGP,
  multiplied by the pseudo-true value of a regression of 
 \begin_inset Formula $X$
 \end_inset
@@ -28381,10 +28304,15 @@ is not consistent
 \begin_inset Formula $\beta_{0}$
 \end_inset
 
- 
+
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\series bold
 Summary
 \end_layout
 
@@ -28462,7 +28390,9 @@ nonlinear least squares
 
 We'll study this more later,
  but for now it is clear that the foc for minimization will require solving a set of nonlinear equations.
- A common approach to the problem seeks to avoid this difficulty by 
+ A common approach (at least,
+ it was common a while ago,
+ like in 1980) to the problem seeks to avoid this difficulty by 
 \emph on
 linearizing
 \emph default
@@ -28511,7 +28441,16 @@ Define
 \end_inset
 
 as the intercept and slope of the Taylor's series tangent line.
+ So,
  
+\begin_inset Formula 
+\[
+y_{i}=\alpha^{*}+\beta^{*}x_{i}+\nu_{i}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -28524,15 +28463,16 @@ Given this,
 \begin_inset Formula $\beta^{*}$
 \end_inset
 
- by applying OLS to 
-\begin_inset Formula 
-\[
-y_{i}=\alpha+\beta x_{i}+\nu_{i}
-\]
-
+ by applying OLS,
+ regression 
+\begin_inset Formula $y$
 \end_inset
 
+ on 
+\begin_inset Formula $x$
+\end_inset
 
+.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -28791,9 +28731,18 @@ Asymptotic Normality
 
 \begin_layout Standard
 A consistent estimator is oftentimes not very useful unless we know how fast it is likely to be converging to the true value,
- and the probability that it is far away from the true value.
+ and the probability that it is far away from the true value,
+ for a given sample size.
  Establishment of asymptotic normality with a known scaling factor solves these two problems.
- The following theorem is similar to Amemiya's Theorem 4.1.3 (pg.
+ The following theorem is similar to 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "amemiya1985advanced"
+literal "false"
+
+\end_inset
+
+ Theorem 4.1.3 (pg.
  111).
 \end_layout
 
@@ -28896,7 +28845,7 @@ Proof:
  
 \begin_inset Formula 
 \[
-D_{\theta}s_{n}(\hat{\theta}_{n})=D_{\theta}s_{n}(\theta_{0})+D_{\theta}^{2}s_{n}(\theta^{*})\left(\hat{\theta}-\theta_{0}\right)
+D_{\theta}s_{n}(\hat{\theta}_{n})=D_{\theta}s_{n}(\theta_{0})+{\color{blue}D_{\theta}^{2}s_{n}(\theta^{*})}\left(\hat{\theta}-\theta_{0}\right)
 \]
 
 \end_inset
@@ -28976,7 +28925,7 @@ Also,
  assumption (b) gives 
 \begin_inset Formula 
 \[
-D_{\theta}^{2}s_{n}(\theta^{*})\stackrel{a.s.}{\rightarrow}\mathcal{J}_{\infty}(\theta_{0})
+{\color{blue}D_{\theta}^{2}s_{n}(\theta^{*})}\stackrel{a.s.}{\rightarrow}{\color{red}\mathcal{J}_{\infty}(\theta_{0})}
 \]
 
 \end_inset
@@ -28992,7 +28941,7 @@ D_{\theta}^{2}s_{n}(\theta^{*})\stackrel{a.s.}{\rightarrow}\mathcal{J}_{\infty}(
 So 
 \begin_inset Formula 
 \[
-0=D_{\theta}s_{n}(\theta_{0})+\left[\mathcal{J}_{\infty}(\theta_{0})+o_{s}(1)\right]\left(\hat{\theta}-\theta_{0}\right),
+0=D_{\theta}s_{n}(\theta_{0})+\left[{\color{red}\mathcal{J}_{\infty}(\theta_{0})}+o_{s}(1)\right]\left(\hat{\theta}-\theta_{0}\right),
 \]
 
 \end_inset
@@ -29278,8 +29227,7 @@ A SLLN tells us that this converges almost surely to the limit of its expectatio
 
 \end_inset
 
-There's no parameter in that last expression,
- so uniformity is not an issue.
+
 \begin_inset Newpage newpage
 \end_inset
 
@@ -29320,6 +29268,10 @@ or
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Itemize
 This is the same thing we saw in equation 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -29332,6 +29284,36 @@ nolink "false"
  of course.
  So,
  the theory seems to work :-)
+\end_layout
+
+\begin_layout Itemize
+it is easy to adapt this to heteroscedasticity and/or autocorrelation of unknown form.
+ The only change would be that the blue term above would be equal to 
+\begin_inset Formula $\Omega,$
+\end_inset
+
+say,
+ and then we would get 
+\begin_inset Formula 
+\[
+\sqrt{n}\left(\hat{\beta}-\beta_{0}\right)\stackrel{d}{\rightarrow}N\left[0,Q_{X}^{-1}\Omega Q_{X}^{-1}\right]
+\]
+
+\end_inset
+
+ which is the same as we saw in eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: as. dist. OLS with het/aut"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -29386,8 +29368,8 @@ Suppose that
 \begin_inset Formula $\varepsilon_{i}$
 \end_inset
 
- is iid(0,
-\begin_inset Formula $\sigma^{2}).$
+ is independently and identically distributed
+\begin_inset Formula $N(0,\sigma^{2}).$
 \end_inset
 
  Suppose we estimate the misspecified model 
@@ -30209,7 +30191,7 @@ At the beginning of period
  to maximize expected discounted utility
 \begin_inset Formula 
 \[
-E_{t}\sum_{s=0}^{\infty}\beta^{s}\left(\frac{c_{t+s}^{1-\gamma}}{1-\gamma}+(1-n_{t+s})\eta_{t}\psi\right)
+E_{t}\sum_{s=0}^{\infty}\beta^{s}\left(\frac{c_{t+s}^{1-\gamma}}{1-\gamma}+(1-n_{t+s}){\color{blue}\eta_{t}}\psi\right)
 \]
 
 \end_inset
@@ -30245,7 +30227,7 @@ and the accumulation of capital
 \begin_layout Itemize
 There is a shock,
  
-\begin_inset Formula $\eta_{t}$
+\begin_inset Formula ${\color{blue}\eta_{t}}$
 \end_inset
 
 ,
@@ -30285,7 +30267,11 @@ Firm's problem
 
 \begin_layout Standard
 The competitive firm maximizes profits 
-\begin_inset Formula $y_{t}-w_{t}n_{t}-r_{t}k_{t}$
+\begin_inset Formula 
+\[
+y_{t}-w_{t}n_{t}-r_{t}k_{t}
+\]
+
 \end_inset
 
  from production of the good 
@@ -30302,14 +30288,10 @@ The competitive firm maximizes profits
 \end_inset
 
  as given,
- using the constant returns to scale technology (remember that the price of 
-\begin_inset Formula $y$
-\end_inset
-
- is normalized to 1).
+ using the constant returns to scale technology
 \begin_inset Formula 
 \begin{equation}
-y_{t}=k_{t}^{\alpha}n_{t}^{1-\alpha}z_{t}\label{eq:DSGE production}
+y_{t}=k_{t}^{\alpha}n_{t}^{1-\alpha}{\color{blue}z_{t}}\label{eq:DSGE production}
 \end{equation}
 
 \end_inset
@@ -30318,8 +30300,23 @@ y_{t}=k_{t}^{\alpha}n_{t}^{1-\alpha}z_{t}\label{eq:DSGE production}
 \end_layout
 
 \begin_layout Itemize
+Remember that the price of 
+\begin_inset Formula $y$
+\end_inset
+
+ is normalized to 1,
+ so,
+ profit,
+ 
+\begin_inset Formula $y_{t}-w_{t}n_{t}-r_{t}k_{t}$
+\end_inset
+
+ is just revenue minus cost of production
+\end_layout
+
+\begin_layout Itemize
 Technology shocks 
-\begin_inset Formula $z_{t}$
+\begin_inset Formula ${\color{blue}z_{t}}$
 \end_inset
 
  also follow an AR(1) process in logarithms:
@@ -30436,7 +30433,7 @@ First order conditions
 \end_layout
 
 \begin_layout Standard
-Four definitions are 
+Five definitions are 
 \begin_inset Formula 
 \begin{eqnarray*}
 \textrm{marginal utility of consumption: }MUC_{t} & := & c_{t}^{-\gamma}\\
@@ -30446,6 +30443,10 @@ Four definitions are
 \textrm{marginal product of capital: }MPK_{t} & := & \alpha z_{t}k_{t}^{\alpha-1}n_{t}^{1-\alpha}
 \end{eqnarray*}
 
+\end_inset
+
+
+\begin_inset Newpage newpage
 \end_inset
 
 With these definitions,
@@ -30506,20 +30507,39 @@ literal "false"
  a registered Julia package which can be added using 
 \family typewriter
 ]add SolveDSGE.
+\end_layout
 
-\family default
- A first step for solving the model is to find the deterministic steady state.
- SolveDSGE.jl can compute the steady state itself,
+\begin_layout Itemize
+A first step for solving the model is to find the 
+\color blue
+deterministic steady state
+\color inherit
+.
+ The deterministic steady state is the equilibrium value of each variable that obtains when all shocks are set to 0.
+ 
+\end_layout
+
+\begin_layout Itemize
+SolveDSGE.jl can compute the steady state itself,
  given a reasonably good starting value,
  but it is faster to use an analytic solution,
  if one can be computed.
  In this case,
- it can be done.
+ it can be done:
 \end_layout
 
-\begin_layout Itemize
-the deterministic steady state is the equilibrium value of each variable that obtains when all shocks are set to 0.
- 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color blue
+The following may be of interest to macro people.
+ I'm going to skip it in lecture.
 \end_layout
 
 \begin_layout Standard
@@ -30537,7 +30557,6 @@ Let variables without the
 \end_inset
 
  are both 1.
- 
 \end_layout
 
 \begin_layout Itemize
@@ -30761,6 +30780,11 @@ k=\frac{c}{\varphi^{1-\alpha}-\delta}
 \begin_inset Newpage newpage
 \end_inset
 
+
+\color blue
+For lecture:
+ 
+\color inherit
 To summarize,
  the steady state values for the 9 endogenous variables are given in Table 
 \begin_inset CommandInset ref
@@ -31289,7 +31313,15 @@ Estimation by GMM does not require specifying a prior distribution for the param
 
 \begin_layout Itemize
 Instead,
- following Ruge-Murcia (2012),
+ following 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RugeMurcia"
+literal "false"
+
+\end_inset
+
+,
  we may place a prior on steady state hours,
  
 \begin_inset Formula $n$
@@ -31823,15 +31855,10 @@ Given a draw of the parameters other than
  is computed as above,
  and we can form the full parameter vector,
  
-\begin_inset Formula $\theta^{s}$
+\begin_inset Formula $\theta$
 \end_inset
 
-,
- where 
-\begin_inset Formula $s$
-\end_inset
-
- indexes the simulations.
+.
  The model is solved using SolveDSGE.jl,
  using a third order perturbation about the steady state.
  Once the model is solved,
@@ -32137,7 +32164,7 @@ parameter space
  space.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 The 
 \emph on
 maximum likelihood estimator
@@ -32153,7 +32180,7 @@ maximum likelihood estimator
  that maximizes the likelihood function.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 So,
  when we're doing ML,
  we assume we're in the Case 1 of the discussion around eq.
@@ -32169,7 +32196,11 @@ nolink "false"
 \end_inset
 
 .
- Maybe we could call this estimator the maximum assumptions estimator,
+ 
+\end_layout
+
+\begin_layout Itemize
+Maybe we could call this estimator the maximum assumptions estimator,
  as we assume everything about the data generating process is known,
  except for the particular values of the parameter vector.
 \end_layout
@@ -32351,6 +32382,8 @@ where
 \end_layout
 
 \begin_layout Standard
+
+\color blue
 Note that if 
 \begin_inset Formula $\theta$
 \end_inset
@@ -32611,8 +32644,10 @@ when
 
  is a bit complicated - these observations are often dropped,
  to keep things simple.
- Here,
- we will not worry about this problem.)
+ Dropping information is not necessarily a good idea,
+ but,
+ here,
+ we will not worry more about this problem.)
 \end_layout
 
 \begin_layout Itemize

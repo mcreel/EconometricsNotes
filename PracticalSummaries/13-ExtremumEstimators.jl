@@ -46,7 +46,7 @@ using ForwardDiff
 sc =  ForwardDiff.jacobian(objᵢ, βhat) # get the score contributions
 # from theory, we know that sc = -2x.*ϵcat. Let's use this verify
 # that the automatic differentiation worked.
-sc - (-2x.*(y - x*βhat))
+sc - (-2x.*(y - x*βhat))  # test that this is a matrix of zeros
 
 ##
 
@@ -114,7 +114,7 @@ plot!(x,fitted)
 # and verify that the pseudo-true values lie inside them approximately 100x(1-α)% of
 # the times we repeat the procedure, at least when n is large enough
 using LinearAlgebra, Statistics, Distributions
-n = 20 				# try small and large values here,
+n = 20				# try small and large values here,
 					# to see accuracy of asymptotic approximation
 reps = 10000
 α = 0.05			# try out 90, 95 and 99% CIs
@@ -124,13 +124,15 @@ inci = zeros(reps, 2)
 for i = 1:reps
 	x,y = dgp(n)
 	X = [ones(n) x] # define regressor matrix for linear approximation about 0
-	βhat, vβhat, junk = ols(y, X, silent=true) # note: OLS uses the sandwich covariance estimator, by default
+	βhat, vβhat, junk = ols(y, X, silent=true) 
+	# note: OLS uses the extremum theory-based sandwich covariance estimator, by default.
+	# as we saw above
 	se = sqrt.(diag(vβhat))
 	inci[i,:] = (β⁰ .>= βhat .- crit*se) .& (β⁰ .<= βhat .+ crit*se)
 end
 ci = Int64(100*(1-α))
-println("Coverage of $ci% CIs")
-mean(inci, dims=1) # these should be approximately 1-α, at least when n is large enough
+coverage = mean(inci, dims=1)
+println("Coverage of $ci% CIs: ", coverage) # these should be approximately 1-α, at least when n is large enough
 
 ##
 

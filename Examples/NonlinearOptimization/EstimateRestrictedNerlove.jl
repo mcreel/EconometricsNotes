@@ -10,9 +10,9 @@ y = data[:,1]
 x = [ones(n,1) data[:,2:5]]
 
 # bounds and restriction
-lb = [-1e6, -1e6, 0., 0., 0.0]
-ub = [1e6, 1e6, 1., 1., 1.]
-R = [0. 0. 1. 1. 1.]
+lb = [-1e6, -1e6, 0., 0., 0.] # factor shares non-negative
+ub = [1e6, 1e6, 1., 1., 1.]   # factor shares not greater than 1
+R = [0. 0. 1. 1. 1.] # homogeneity degree 1: factor shares sum to one
 r = [1.0]
 
 ## define the objective function and start value
@@ -23,6 +23,8 @@ startval = (ub+lb)/2.0
 thetahat, objvalue = fminunc(obj, startval) 
 println("the OLS estimates: obj. value: ", round(objvalue,digits=5))
 prettyprint(thetahat)
+# compare to analytic solution
+x\y
 
 ## restricted LS: HOD1
 thetahat, objvalue_r, flag = fmincon(obj, startval, R, r)

@@ -1,7 +1,7 @@
+##
 using Econometrics
 include("FoggyMountainObj.jl")
 
-function main()
 ## One BFGS run with poor starting values
 θ = [8.0, -8.0]
 θhat, obj_value, converged = fminunc(FoggyMountainObj, θ)
@@ -30,6 +30,3 @@ for i = 1:50
 end
 println("the estimate using BFGS with multiple start values: ", θhat)
 println("the best objective function value: ", bestobj)
-end
-nothing
-main()
