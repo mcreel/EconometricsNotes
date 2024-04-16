@@ -25040,29 +25040,74 @@ http://www.meps.ahrq.gov/
  
 \end_layout
 
+\begin_layout Standard
+The six measures of use are are
+\end_layout
+
 \begin_layout Itemize
-The six measures of use are are office-based visits (OBDV),
- outpatient visits (OPV),
- inpatient visits (IPV),
- emergency room visits (ERV),
- dental visits (VDV),
- and number of prescription drugs taken (PRESCR).
+office-based visits (OBDV)
+\end_layout
+
+\begin_layout Itemize
+outpatient visits (OPV)
+\end_layout
+
+\begin_layout Itemize
+inpatient visits (hospitalizations) (IPV)
+\end_layout
+
+\begin_layout Itemize
+emergency room visits (ERV)
+\end_layout
+
+\begin_layout Itemize
+dental visits (DV)
+\end_layout
+
+\begin_layout Itemize
+and number of prescription drugs taken (PRESCR).
  These form columns 1 - 6 of 
 \family typewriter
 meps1996.data
 \family default
 .
  
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The conditioning variables are public insurance (PUBLIC),
- private insurance (PRIV),
- sex (SEX),
- age (AGE),
- years of education (EDUC),
- and income (INCOME).
- These form columns 7 - 12 of the file
+The conditioning variables are 
+\end_layout
+
+\begin_layout Itemize
+public insurance (PUBLIC)
+\end_layout
+
+\begin_layout Itemize
+private insurance (PRIV)
+\end_layout
+
+\begin_layout Itemize
+sex (SEX)
+\end_layout
+
+\begin_layout Itemize
+age (AGE)
+\end_layout
+
+\begin_layout Itemize
+years of education (EDUC)
+\end_layout
+
+\begin_layout Itemize
+and income (INCOME).
+\end_layout
+
+\begin_layout Standard
+These form columns 7 - 12 of the file
 \family typewriter
 ,
 
@@ -25078,7 +25123,8 @@ The conditioning variables are public insurance (PUBLIC),
 \begin_layout Itemize
 Perhaps there may be common factors behind health care visits and the decision to buy private insurance.
  If there are common unobserved factors (perhaps,
- health),
+ health,
+ for example),
  then private insurace would be an endogenous variable.
  We will ignore that at present,
  but come back to it later.
@@ -25231,13 +25277,19 @@ f_{Y}(y) & = & \frac{\exp(-\lambda)\lambda^{y}}{y!},\,y=0,1,2,....
 
 \end_inset
 
+
+\color blue
 For this density,
  
 \begin_inset Formula $E(Y)=V(Y)=\lambda$
 \end_inset
 
 .
- The Poisson average log-likelihood function (assuming the cross sectional observations are independent of one another,
+ 
+\end_layout
+
+\begin_layout Standard
+The Poisson average log-likelihood function (assuming the cross sectional observations are independent of one another,
  so the joint density is the product of the marginals) is 
 \begin_inset Formula 
 \[
@@ -25280,7 +25332,7 @@ so the elasticity of the conditional mean of
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\frac{\partial\lambda}{\partial x_{j}}\frac{x_{j}}{\lambda}=\beta_{j}x_{j}.
+\frac{\partial\lambda}{\partial x_{j}}\frac{x_{j}}{\lambda}=\beta_{j}x_{j}
 \]
 
 \end_inset
@@ -32281,6 +32333,7 @@ nolink "false"
 ,
  because the estimator is the sample mean,
  and the LLN and CLT will apply.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -32303,7 +32356,14 @@ nolink "false"
 
 \end_inset
 
-) 
+).
+ 
+\color blue
+For lectures,
+ go look at that example now
+\color inherit
+,
+ as a means of motivating studying ML.
 \end_layout
 
 \begin_deeper
@@ -32456,10 +32516,13 @@ With exogeneity of
 \end_inset
 
  will be 
-\begin_inset Formula $\arg\max f_{Y|Z}(Y|Z,\theta)$
+\begin_inset Formula 
+\[
+\hat{\theta}_{n}=\arg\max f_{Y|Z}(Y|Z,\theta).
+\]
+
 \end_inset
 
-.
  
 \end_layout
 
@@ -32480,6 +32543,18 @@ We'll suppose this framework holds in what follows.
 \end_inset
 
  until it does hold.
+\end_layout
+
+\begin_layout Itemize
+Where does information about exogeneity come from?
+ From economic theory:
+ exogeneity assumptions are part of the specification of the econometric model.
+ These assumptions may be incorrect,
+ of course.
+ We can sometimes test exogeneity (e.g.,
+ Hausan test,
+ below),
+ before simply accepting the results of an econometric model.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -32546,7 +32621,6 @@ do the same thing for
 
  in the last term,
  and keep iterating.
- 
 \begin_inset Newpage newpage
 \end_inset
 
@@ -32648,6 +32722,19 @@ when
  but,
  here,
  we will not worry more about this problem.)
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This factorization is natural and fairly obvious for time series data.
+ Nevertheless,
+ it can also be done for other sorts of data,
+ too,
+ though it might get more complicated.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -32753,7 +32840,7 @@ to avoid loss of precision on a digital computer:
  the objective function gets smaller,
  and,
  before long,
- will dip below machine precision.
+ will dip below machine precision (which is about 16 decimal points in the usual case).
 \end_layout
 
 \end_deeper
@@ -32805,7 +32892,7 @@ f_{Y}(y,p)=p^{y}\left(1-p\right)^{1-y}
 and
 \begin_inset Formula 
 \[
-\ln f_{Y}(y,p)=y\ln p+\left(1-y\right)\ln\left(1-p\right)
+\ln f_{Y}(y,p)={\color{blue}y\ln p+\left(1-y\right)\ln\left(1-p\right)}
 \]
 
 \end_inset
@@ -32937,10 +33024,31 @@ A LLN tells us that,
 \begin_inset Formula $p,$
 \end_inset
 
- the objective function converges to the limit of its expectation:
+ the objective function converges to the limit of its expectation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+because the data are i.i.d.,
+ the expectation of the average log likelihood function is the expectation of a representative term:
+ 
+\begin_inset Formula 
+\begin{align*}
+E(s_{n}(p)) & =E({\color{blue}y\ln p+\left(1-y\right)\ln\left(1-p\right)})\\
+ & =p_{0}\ln p+(1-p_{0})\ln(1-p).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+so,
+ we get
 \begin_inset Formula 
 \[
-s_{n}(p)=\frac{1}{n}\sum_{t=1}^{n}y_{t}\ln p+\left(1-y_{t}\right)\ln\left(1-p\right)\rightarrow^{a.s.}p_{0}\ln p+(1-p_{0})\ln(1-p).
+s_{n}(p)\rightarrow^{a.s.}p_{0}\ln p+(1-p_{0})\ln(1-p).
 \]
 
 \end_inset
@@ -32948,6 +33056,7 @@ s_{n}(p)=\frac{1}{n}\sum_{t=1}^{n}y_{t}\ln p+\left(1-y_{t}\right)\ln\left(1-p\ri
  
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 The parameter space must be compact.
  We know that 
@@ -32983,6 +33092,15 @@ With these conditions,
  the a.s.
  convergence is also uniform.
  
+\end_layout
+
+\begin_layout Itemize
+So,
+ we have assumptions 1 and 2 of the consistency theorem.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -33038,7 +33156,7 @@ Likelihood function and MLE of classical linear regression model
  so
 \begin_inset Formula 
 \[
-f_{y}(y;\mu_{0},\sigma_{0}^{2})=\frac{1}{\sqrt{2\pi\sigma_{0}^{2}}}\exp\left(-\frac{(y-\mu_{0})^{2}}{2\sigma_{0}^{2}}\right)
+f_{y}(y;{\color{blue}\mu_{0}},\sigma_{0}^{2})=\frac{1}{\sqrt{2\pi\sigma_{0}^{2}}}\exp\left(-\frac{(y-\mu_{0})^{2}}{2\sigma_{0}^{2}}\right)
 \]
 
 \end_inset
@@ -33068,7 +33186,7 @@ Suppose that the mean,
  is 
 \begin_inset Formula 
 \[
-f_{y}(y|x;\beta_{0},\sigma_{0}^{2})=\frac{1}{\sqrt{2\pi\sigma_{0}^{2}}}\exp\left(-\frac{(y-x^{\prime}\beta_{0})^{2}}{2\sigma_{0}^{2}}\right)
+f_{y}(y|x;{\color{blue}\beta_{0}},\sigma_{0}^{2})=\frac{1}{\sqrt{2\pi\sigma_{0}^{2}}}\exp\left(-\frac{(y-x^{\prime}\beta_{0})^{2}}{2\sigma_{0}^{2}}\right)
 \]
 
 \end_inset
@@ -33117,13 +33235,21 @@ Observe that the first order conditions for
 \begin_inset Formula $\beta$
 \end_inset
 
- are the same as for the OLS estimator.
- For the 
+ are the same as for the OLS estimator,
+ because maximizing the log likelihood with respect to 
+\begin_inset Formula $\beta$
+\end_inset
+
+ is the same as minimizing the sum of the squared residuals.
+ 
+\color blue
+For the 
 \begin_inset Formula $\beta$
 \end_inset
 
 's,
- the OLS and ML estimators are identical.
+ the OLS and ML estimators are identical,
+ for the classical linear model with normal errors.
 \end_layout
 
 \begin_layout Itemize
@@ -33247,7 +33373,7 @@ Remember that
 
 \begin_inset Formula 
 \[
-{\color{red}\mathcal{E}\left(\ln\left(\frac{L(\theta)}{L(\theta_{0})}\right)\right)}\leq\ln\left({\color{green}{\color{blue}\mathcal{E}\left(\frac{L(\theta)}{L(\theta_{0})}\right)}}\right)
+{\color{red}E\left(\ln\left(\frac{L(\theta)}{L(\theta_{0})}\right)\right)}\leq\ln\left({\color{green}{\color{blue}E\left(\frac{L(\theta)}{L(\theta_{0})}\right)}}\right)
 \]
 
 \end_inset
@@ -33273,7 +33399,7 @@ Now,
  the expectation on the RHS is 
 \begin_inset Formula 
 \[
-{\color{green}{\color{blue}\mathcal{E}\left(\frac{L(\theta)}{L(\theta_{0})}\right)}}=\int\frac{L(\theta)}{L(\theta_{0})}L(\theta_{0})dy=1,
+{\color{green}{\color{blue}E\left(\frac{L(\theta)}{L(\theta_{0})}\right)}}=\int\frac{L(\theta)}{L(\theta_{0})}L(\theta_{0})dy=1,
 \]
 
 \end_inset
@@ -33303,7 +33429,7 @@ Therefore,
 
 \begin_inset Formula 
 \[
-{\color{red}\mathcal{E}\left(\ln\left(\frac{L(\theta)}{L(\theta_{0})}\right)\right)}\leq0,
+{\color{red}E\left(\ln\left(\frac{L(\theta)}{L(\theta_{0})}\right)\right)}\leq0,
 \]
 
 \end_inset
@@ -33315,7 +33441,7 @@ Therefore,
 
 \begin_inset Formula 
 \begin{align*}
-\mathcal{E}\left(s_{n}\left(\theta\right)\right)-\mathcal{E}\left(s_{n}\left(\theta_{0}\right)\right) & \leq0
+E\left(s_{n}\left(\theta\right)\right)-E\left(s_{n}\left(\theta_{0}\right)\right) & \leq0
 \end{align*}
 
 \end_inset
@@ -33323,7 +33449,7 @@ Therefore,
 or
 \begin_inset Formula 
 \[
-\mathcal{E}\left(s_{n}\left(\theta\right)\right)\leq\mathcal{E}\left(s_{n}\left(\theta_{0}\right)\right)
+E\left(s_{n}\left(\theta\right)\right)\leq E\left(s_{n}\left(\theta_{0}\right)\right)
 \]
 
 \end_inset
@@ -33396,8 +33522,26 @@ nolink "false"
 
  So,
  the ML estimator is consistent for the true parameter value.
- In practice,
+\end_layout
+
+\begin_layout Itemize
+In practice,
  we will need to check identification for the specific model under consideration.
+\end_layout
+
+\begin_layout Itemize
+Sometimes,
+ we need to define the parameter space carefully to ensure identification.
+ Examples:
+ MA models,
+ finite mixture models.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Exercise
@@ -33602,7 +33746,7 @@ g_{n}(\hat{\theta})=\frac{1}{n}\sum_{t=1}^{n}g_{t}(\hat{\theta})\equiv0.
 
 \begin_layout Standard
 We will show that 
-\begin_inset Formula $E_{\theta}\left[g_{t}(\theta)|x_{t}\right]=0,$
+\begin_inset Formula $E_{{\color{blue}\theta}}\left[g_{t}(\theta)|x_{t}\right]=0,$
 \end_inset
 
  
@@ -33614,7 +33758,7 @@ We will show that
 This is the expectation taken with respect to the density
 \emph default
  
-\begin_inset Formula $f(y_{t}|x_{t},\theta),$
+\begin_inset Formula $f(y_{t}|x_{t},{\color{blue}\theta}),$
 \end_inset
 
  not necessarily 
@@ -33626,7 +33770,7 @@ This is the expectation taken with respect to the density
 \begin{eqnarray*}
 E_{\theta}\left[g_{t}(\theta)|x_{t}\right] & = & \int[D_{\theta}\ln f(y_{t}|x_{t},\theta)]f(y_{t}|x,\theta)dy_{t}\\
  & = & \int\frac{1}{{\color{green}{\color{red}f(y_{t}|x_{t},\theta)}}}\left[D_{\theta}f(y_{t}|x_{t},\theta)\right]{\color{red}f(y_{t}|x_{t},\theta)}dy_{t}\\
- & = & \int D_{\theta}f(y_{t}|x_{t},\theta)dy_{t}.
+ & = & {\color{violet}\int D_{\theta}}f(y_{t}|x_{t},\theta)dy_{t}.
 \end{eqnarray*}
 
 \end_inset
@@ -33649,7 +33793,7 @@ literal "false"
  This gives 
 \begin_inset Formula 
 \begin{eqnarray}
-E_{\theta}\left[g_{t}(\theta)|x_{t}\right] & = & D_{\theta}\int f(y_{t}|x_{t},\theta)dy_{t}\label{eq:ExpectationScore}\\
+E_{\theta}\left[g_{t}(\theta)|x_{t}\right] & = & {\color{violet}D_{\theta}\int}f(y_{t}|x_{t},\theta)dy_{t}\label{eq:ExpectationScore}\\
  & = & D_{\theta}1\nonumber \\
  & = & 0\nonumber 
 \end{eqnarray}
@@ -33682,7 +33826,7 @@ This hold for all
 \end_inset
 
  so it implies that 
-\begin_inset Formula $\mathcal{E}_{\theta}g_{n}(Y|Z,\theta)=0.$
+\begin_inset Formula $E_{\theta}g_{n}(Y|Z,\theta)=0.$
 \end_inset
 
 
@@ -33714,7 +33858,7 @@ Law of iterated expectations.
 
 \begin_inset Formula 
 \[
-\mathcal{E}_{Y|X}Y={\color{red}\int Yf(Y|X)dY}=0
+E_{Y|X}Y={\color{red}\int Yf(Y|X)dY}=0
 \]
 
 \end_inset
@@ -33724,7 +33868,7 @@ Law of iterated expectations.
 \end_inset
 
  and a function 
-\begin_inset Formula $g(X)$
+\begin_inset Formula $h(X)$
 \end_inset
 
  of 
@@ -33744,7 +33888,7 @@ To see this,
  the unconditional expectation is 
 \begin_inset Formula 
 \[
-\mathcal{E}\left(Yg(X)\right)=\int_{\mathcal{X}}\left(\int_{\mathcal{Y}}Yg(X)f(Y,X)dY\right)dX.
+E\left(Yh(X)\right)=\int_{\mathcal{X}}\left(\int_{\mathcal{Y}}Yh(X)f(Y,X)dY\right)dX.
 \]
 
 \end_inset
@@ -33752,7 +33896,7 @@ To see this,
  Factor the joint density in to conditional and marginal:
 \begin_inset Formula 
 \[
-\mathcal{E}\left(Yg(X)\right)=\int_{\mathcal{X}}\left(\int_{\mathcal{Y}}Y{\color{blue}g(X)}f(Y|X){\color{blue}f(X)}dY\right)dX.
+E\left(Yh(X)\right)=\int_{\mathcal{X}}\left(\int_{\mathcal{Y}}Y{\color{blue}h(X)}f(Y|X){\color{blue}f(X)}dY\right)dX.
 \]
 
 \end_inset
@@ -33762,7 +33906,7 @@ To see this,
 \end_inset
 
  and 
-\begin_inset Formula $g(X)$
+\begin_inset Formula $h(X)$
 \end_inset
 
  don't depend on 
@@ -33773,7 +33917,7 @@ To see this,
  they can be pulled out of the integral 
 \begin_inset Formula 
 \[
-\mathcal{E}\left(Yg(X)\right)=\int_{\mathcal{X}}\left({\color{red}\int_{\mathcal{Y}}Yf(Y|X)dY}\right){\color{blue}g(X)f(X)}dX.
+E\left(Yh(X)\right)=\int_{\mathcal{X}}\left({\color{red}\int_{\mathcal{Y}}Yf(Y|X)dY}\right){\color{blue}h(X)f(X)}dX.
 \]
 
 \end_inset
@@ -33782,7 +33926,7 @@ To see this,
  so 
 \begin_inset Formula 
 \[
-\mathcal{E}\left(Yg(X)\right)=0
+E\left(Yh(X)\right)=0
 \]
 
 \end_inset
@@ -33815,7 +33959,11 @@ This comes from the fact that all random variables in
 \begin_inset Formula $x_{t}$
 \end_inset
 
-,
+ that 
+\begin_inset Formula $g_{t}(y_{t}|x_{t},\theta)$
+\end_inset
+
+ conditions on,
  and applying iterated expectations.
 \end_layout
 
@@ -33851,23 +33999,36 @@ Recall that we assume that the log-likelihood function
 \end_inset
 
  is twice continuously differentiable.
- Take a first order Taylor's series expansion of 
-\begin_inset Formula $g(Y,\hat{\theta})$
+ Take a first order Taylor's series expansion of the score vector 
+\begin_inset Formula $g_{n}(\hat{\theta})$
 \end_inset
 
  about the true value 
-\begin_inset Formula $\theta_{0}:$
+\begin_inset Formula $\theta_{0}$
 \end_inset
 
-
+ (dropping the sub-n's,
+ to avoid clutter):
 \begin_inset Formula 
 \begin{eqnarray*}
-0 & \equiv g(\hat{\theta})= & g(\theta_{0})+\left(D_{\theta^{\prime}}g(\theta^{*})\right)\left(\hat{\theta}-\theta_{0}\right)
+g(\hat{\theta}) & = & g(\theta_{0})+\left(D_{\theta^{\prime}}g(\theta^{*})\right)\left(\hat{\theta}-\theta_{0}\right)
 \end{eqnarray*}
 
 \end_inset
 
- or with appropriate definitions
+However,
+ 
+\begin_inset Formula 
+\[
+g(\hat{\theta})\equiv0
+\]
+
+\end_inset
+
+are the first order conditions that define the ML estimator.
+ With this,
+ and appropriate definitions,
+ we get
 \begin_inset Formula 
 \[
 \mathcal{J}(\theta^{*})\left(\hat{\theta}-\theta_{0}\right)=-g(\theta_{0}),
@@ -34092,7 +34253,7 @@ nolink "false"
 \begin{eqnarray*}
 \sqrt{n}g_{n}(\theta_{0}) & = & \sqrt{n}D_{\theta}s_{n}(\theta)\\
  & = & \sqrt{n}\frac{1}{n}\sum_{t=1}^{n}D_{\theta}\ln f_{t}(y_{t}|x_{t},\theta_{0})\\
- & = & \sqrt{n}\frac{1}{n}\sum_{t=1}^{n}g_{t}(\theta_{0})
+ & = & \sqrt{n}{\color{blue}\frac{1}{n}\sum_{t=1}^{n}g_{t}(\theta_{0})}
 \end{eqnarray*}
 
 \end_inset
@@ -34118,7 +34279,7 @@ We've already seen that
 ,
  too.
  Thus,
- the last line,
+ the part in blue of the last line,
  without scaling by 
 \begin_inset Formula $\sqrt{n}$
 \end_inset
@@ -34371,7 +34532,7 @@ s_{n}(p) & = & \frac{1}{n}\sum_{t=1}^{n}\left\{ y_{t}\ln p+\left(1-y_{t}\right)\
 so
 \begin_inset Formula 
 \[
-\mathcal{E}_{p_{0}}s_{n}(p)=p^{0}\ln p+\left(1-p^{0}\right)\ln\left(1-p\right)
+E_{p_{0}}s_{n}(p)=p^{0}\ln p+\left(1-p^{0}\right)\ln\left(1-p\right)
 \]
 
 \end_inset
@@ -34449,7 +34610,7 @@ and we wish to compute the covariance of the score vector,
 \noun off
 \color none
 
-\begin_inset Formula $\mathcal{I}_{\infty}(p_{0})=\lim_{n\rightarrow\infty}\mathcal{E}_{p_{0}}\left(n\left[g_{n}(p_{0})\right]\left[g_{n}(p_{0})\right]^{\prime}\right)$
+\begin_inset Formula $\mathcal{I}_{\infty}(p_{0})=\lim_{n\rightarrow\infty}E_{p_{0}}\left(n\left[g_{n}(p_{0})\right]\left[g_{n}(p_{0})\right]^{\prime}\right)$
 \end_inset
 
 .
@@ -34461,8 +34622,8 @@ and we wish to compute the covariance of the score vector,
 s 
 \begin_inset Formula 
 \begin{align*}
-\mathcal{E}_{p_{0}}\left(n\left[g_{n}(p_{0})\right]\left[g_{n}(p_{0})\right]^{\prime}\right) & ={\color{blue}n}\mathcal{E}_{p_{0}}\left\{ \left({\color{blue}\frac{1}{n}}\sum_{t=1}^{n}\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{{\color{blue}{\color{blue}2}}}\right\} ,\\
- & ={\color{blue}\frac{1}{n}}{\color{purple}\mathcal{E}_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}}
+E_{p_{0}}\left(n\left[g_{n}(p_{0})\right]\left[g_{n}(p_{0})\right]^{\prime}\right) & ={\color{blue}n}E_{p_{0}}\left\{ \left({\color{blue}\frac{1}{n}}\sum_{t=1}^{n}\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{{\color{blue}{\color{blue}2}}}\right\} ,\\
+ & ={\color{blue}\frac{1}{n}}{\color{purple}E_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}}
 \end{align*}
 
 \end_inset
@@ -34503,9 +34664,9 @@ Next,
  so
 \begin_inset Formula 
 \begin{align*}
-{\color{blue}\frac{1}{n}}{\color{purple}\mathcal{E}_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}} & ={\color{green}\frac{{\color{blue}1}}{{\color{blue}n}}}{\color{red}n}\mathcal{E}_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
- & =\mathcal{E}_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
- & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}\mathcal{E}_{p_{0}}\left(y^{2}-2yp_{0}+p_{0}^{2}\right)\\
+{\color{blue}\frac{1}{n}}{\color{purple}E_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}} & ={\color{green}\frac{{\color{blue}1}}{{\color{blue}n}}}{\color{red}n}E_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
+ & =E_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
+ & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}E_{p_{0}}\left(y^{2}-2yp_{0}+p_{0}^{2}\right)\\
  & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}(p_{0}-2p_{0}^{2}+p_{0}^{2})\\
  & =\frac{1}{p_{0}(1-p_{0})}
 \end{align*}
@@ -34659,9 +34820,9 @@ Let
 \begin_inset Formula 
 \begin{eqnarray}
 0 & = & \int\left[D_{\theta}^{2}\ln f_{t}(\theta)\right]f_{t}(\theta)dy+\int\left[D_{\theta}\ln f_{t}(\theta)\right]{\color{green}{\color{blue}\left\{ D_{\theta^{\prime}}f_{t}(\theta)\right\} }}dy\nonumber \\
- & = & \mathcal{E}_{\theta}\left[D_{\theta}^{2}\ln f_{t}(\theta)\right]+\int\left[D_{\theta}\ln f_{t}(\theta)\right]{\color{green}{\color{blue}\left\{ \left[D_{\theta^{\prime}}\ln f_{t}(\theta)\right]f_{t}(\theta)\right\} }}dy\nonumber \\
- & = & \mathcal{E}_{\theta}\left[D_{\theta}^{2}\ln f_{t}(\theta)\right]+\mathcal{E}_{\theta}\left[D_{\theta}\ln f_{t}(\theta)\right]\left[D_{\theta^{\prime}}\ln f_{t}(\theta)\right]\nonumber \\
- & = & \mathcal{E}_{\theta}\left[\mathcal{J}_{t}(\theta)\right]+\mathcal{E}_{\theta}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\label{informationmatrixequality,singleobservation}
+ & = & E_{\theta}\left[D_{\theta}^{2}\ln f_{t}(\theta)\right]+\int\left[D_{\theta}\ln f_{t}(\theta)\right]{\color{green}{\color{blue}\left\{ \left[D_{\theta^{\prime}}\ln f_{t}(\theta)\right]f_{t}(\theta)\right\} }}dy\nonumber \\
+ & = & E_{\theta}\left[D_{\theta}^{2}\ln f_{t}(\theta)\right]+E_{\theta}\left[D_{\theta}\ln f_{t}(\theta)\right]\left[D_{\theta^{\prime}}\ln f_{t}(\theta)\right]\nonumber \\
+ & = & E_{\theta}\left[\mathcal{J}_{t}(\theta)\right]+E_{\theta}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\label{informationmatrixequality,singleobservation}
 \end{eqnarray}
 
 \end_inset
@@ -34681,7 +34842,7 @@ Let
 
 \begin_inset Formula 
 \begin{equation}
-\mathcal{E}_{\theta}\frac{1}{n}\sum_{t=1}^{n}\left[\mathcal{J}_{t}(\theta)\right]=\mathcal{E}_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-\mathcal{E}_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right]\label{eq:outerproductsocrecontribs}
+E_{\theta}\frac{1}{n}\sum_{t=1}^{n}\left[\mathcal{J}_{t}(\theta)\right]=E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right]\label{eq:outerproductsocrecontribs}
 \end{equation}
 
 \end_inset
@@ -34720,7 +34881,7 @@ nolink "false"
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\mathcal{E}_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-\mathcal{E}_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right).
+E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right).
 \]
 
 \end_inset
@@ -34752,9 +34913,9 @@ nolink "false"
  we have
 \begin_inset Formula 
 \begin{align*}
--\mathcal{E}_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right) & =-\mathcal{E}_{\theta}\frac{\left(\sum_{t}g_{t}\right)\left(\sum_{t}g_{t}^{\prime}\right)}{n}\\
- & =-\mathcal{E}_{\theta}\frac{\left(g_{1}+g_{2}+...+g_{n}\right)\left(g_{1}^{\prime}+g_{2}^{\prime}+...+g_{n}^{\prime}\right)}{n}\\
- & =-\mathcal{E}_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right],
+-E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right) & =-E_{\theta}\frac{\left(\sum_{t}g_{t}\right)\left(\sum_{t}g_{t}^{\prime}\right)}{n}\\
+ & =-E_{\theta}\frac{\left(g_{1}+g_{2}+...+g_{n}\right)\left(g_{1}^{\prime}+g_{2}^{\prime}+...+g_{n}^{\prime}\right)}{n}\\
+ & =-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right],
 \end{align*}
 
 \end_inset
