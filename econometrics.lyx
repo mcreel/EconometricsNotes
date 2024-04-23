@@ -34532,7 +34532,7 @@ s_{n}(p) & = & \frac{1}{n}\sum_{t=1}^{n}\left\{ y_{t}\ln p+\left(1-y_{t}\right)\
 so
 \begin_inset Formula 
 \[
-E_{p_{0}}s_{n}(p)=p^{0}\ln p+\left(1-p^{0}\right)\ln\left(1-p\right)
+E_{p_{0}}s_{n}(p)=p_{0}\ln p+\left(1-p_{0}\right)\ln\left(1-p\right)
 \]
 
 \end_inset
@@ -34547,7 +34547,7 @@ by the fact that the observations are i.i.d.
  
 \begin_inset Formula 
 \[
-s_{\infty}(p)=p^{0}\ln p+\left(1-p^{0}\right)\ln\left(1-p\right).
+s_{\infty}(p)=p_{0}\ln p+\left(1-p_{0}\right)\ln\left(1-p\right).
 \]
 
 \end_inset
@@ -34555,7 +34555,7 @@ s_{\infty}(p)=p^{0}\ln p+\left(1-p^{0}\right)\ln\left(1-p\right).
  A bit of calculation shows that
 \begin_inset Formula 
 \[
-\mathcal{J}_{\infty}(p^{0})=\left.D_{\theta}^{2}s_{\infty}(p)\right|_{p=p^{0}}=\frac{-1}{p^{0}\left(1-p^{0}\right)}.
+\mathcal{J}_{\infty}(p_{0})=\left.D_{\theta}^{2}s_{\infty}(p)\right|_{p=p_{0}}=\frac{-1}{p_{0}\left(1-p_{0}\right)}.
 \]
 
 \end_inset
@@ -34623,11 +34623,29 @@ s
 \begin_inset Formula 
 \begin{align*}
 E_{p_{0}}\left(n\left[g_{n}(p_{0})\right]\left[g_{n}(p_{0})\right]^{\prime}\right) & ={\color{blue}n}E_{p_{0}}\left\{ \left({\color{blue}\frac{1}{n}}\sum_{t=1}^{n}\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{{\color{blue}{\color{blue}2}}}\right\} ,\\
- & ={\color{blue}\frac{1}{n}}{\color{purple}E_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}}
+ & ={\color{blue}\frac{1}{n}}{\color{purple}E_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}},
 \end{align*}
 
 \end_inset
 
+where the last line follows due to the fact that the score contributions are uncorrelated,
+ so that the expectations of the cross products are zero.
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 Next,
  the terms in the sum are i.i.d.,
  so the expection of the sum is 
@@ -34667,7 +34685,7 @@ Next,
 {\color{blue}\frac{1}{n}}{\color{purple}E_{p_{0}}\sum_{t=1}^{n}\left(\frac{y_{t}-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}} & ={\color{green}\frac{{\color{blue}1}}{{\color{blue}n}}}{\color{red}n}E_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
  & =E_{p_{0}}\left(\frac{y-p_{0}}{p_{0}\left(1-p_{0}\right)}\right)^{2}\\
  & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}E_{p_{0}}\left(y^{2}-2yp_{0}+p_{0}^{2}\right)\\
- & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}(p_{0}-2p_{0}^{2}+p_{0}^{2})\\
+ & =\frac{1}{p_{0}^{2}\left(1-p_{0}\right)^{2}}(p_{0}-2p_{0}^{2}+p_{0}^{2})\qquad\mathrm{(because}\,E(y)=E(y^{2})=p_{0})\\
  & =\frac{1}{p_{0}(1-p_{0})}
 \end{align*}
 
@@ -34783,9 +34801,21 @@ We will show that
 \begin_inset Formula $\mathcal{J}_{\infty}(\theta)=-\mathcal{I}_{\infty}(\theta).$
 \end_inset
 
- The example we just looked at exhibits this property.
- Now,
+ 
+\end_layout
+
+\begin_layout Itemize
+The example we just looked at exhibits this property.
+ 
+\end_layout
+
+\begin_layout Itemize
+Now,
  we will see that it's a general property of ML estimators.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -34842,7 +34872,7 @@ Let
 
 \begin_inset Formula 
 \begin{equation}
-E_{\theta}\frac{1}{n}\sum_{t=1}^{n}\left[\mathcal{J}_{t}(\theta)\right]=E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right]\label{eq:outerproductsocrecontribs}
+E_{\theta}\frac{1}{n}\sum_{t=1}^{n}\left[\mathcal{J}_{t}(\theta)\right]={\color{violet}E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]}={\color{blue}-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right]}\label{eq:outerproductsocrecontribs}
 \end{equation}
 
 \end_inset
@@ -34881,7 +34911,7 @@ nolink "false"
 \begin_layout Standard
 \begin_inset Formula 
 \[
-E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]=-E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right).
+{\color{violet}E_{\theta}\left[\mathcal{J}_{n}(\theta)\right]}={\color{red}-E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right)}.
 \]
 
 \end_inset
@@ -34913,9 +34943,9 @@ nolink "false"
  we have
 \begin_inset Formula 
 \begin{align*}
--E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right) & =-E_{\theta}\frac{\left(\sum_{t}g_{t}\right)\left(\sum_{t}g_{t}^{\prime}\right)}{n}\\
+{\color{red}-E_{\theta}\left(n\left[g_{n}(\theta)\right]\left[g_{n}(\theta)\right]^{\prime}\right)} & =-E_{\theta}\frac{\left(\sum_{t}g_{t}\right)\left(\sum_{t}g_{t}^{\prime}\right)}{n}\\
  & =-E_{\theta}\frac{\left(g_{1}+g_{2}+...+g_{n}\right)\left(g_{1}^{\prime}+g_{2}^{\prime}+...+g_{n}^{\prime}\right)}{n}\\
- & =-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right],
+ & ={\color{blue}-E_{\theta}\left[\frac{1}{n}\sum_{t=1}^{n}\left[g_{t}(\theta)\right]\left[g_{t}(\theta)\right]^{\prime}\right]},
 \end{align*}
 
 \end_inset
@@ -34988,7 +35018,11 @@ or
 \begin_inset Newpage pagebreak
 \end_inset
 
- To estimate the asymptotic variance,
+
+\series bold
+ To estimate the asymptotic variance
+\series default
+,
  we need estimators of 
 \begin_inset Formula $\mathcal{J}_{\infty}(\theta_{0})$
 \end_inset
@@ -35366,7 +35400,7 @@ An estimator
 There do exist,
  in special cases,
  estimators that are consistent such that 
-\begin_inset Formula $\sqrt{n}\left(\hat{\theta}-\theta_{0}\right)\overset{p}{\rightarrow}0.$
+\begin_inset Formula $\mbox{\sqrt{n}\left(\hat{\theta}-\theta_{0}\right)\overset{p}{\rightarrow}0.}$
 \end_inset
 
  These are known as 
@@ -35471,7 +35505,7 @@ Proof:
  and make liberal use of dominated convergence:
 \begin_inset Formula 
 \begin{eqnarray*}
-D_{\theta^{\prime}}\lim_{n\rightarrow\infty}\mathcal{E}_{\theta}(\tilde{\theta}-\theta) & = & \lim_{n\rightarrow\infty}\int D_{\theta^{\prime}}\left[f(Y,\theta)\left(\tilde{\theta}-\theta\right)\right]dy\\
+D_{\theta^{\prime}}\lim_{n\rightarrow\infty}\mathcal{E}_{\theta}(\tilde{\theta}-\theta) & = & \lim_{n\rightarrow\infty}\int D_{\theta^{\prime}}\left[\left(\tilde{\theta}-\theta\right)f(Y,\theta)\right]dy\\
  & = & 0.\textrm{ }
 \end{eqnarray*}
 
@@ -35487,7 +35521,7 @@ Now,
  take the RHS,
  and differentiate.
  Noting that 
-\begin_inset Formula $D_{\theta^{\prime}}f(Y,\theta)=f(\theta)D_{\theta^{\prime}}\ln f(\theta)$
+\begin_inset Formula $D_{\theta^{\prime}}f(\theta)=f(\theta)D_{\theta^{\prime}}\ln f(\theta)$
 \end_inset
 
  (a trick we have seen a few times already),
@@ -35498,7 +35532,7 @@ Now,
  we can write 
 \begin_inset Formula 
 \[
-{\color{green}{\color{red}\lim_{n\rightarrow\infty}\int\left(\tilde{\theta}-\theta\right)f(\theta)D_{\theta^{\prime}}\ln f(\theta)dy}}+{\color{blue}\lim_{n\rightarrow\infty}\int f(Y,\theta)D_{\theta^{\prime}}\left(\tilde{\theta}-\theta\right)dy}=0.
+{\color{green}{\color{red}\lim_{n\rightarrow\infty}\int\left(\tilde{\theta}-\theta\right)f(\theta)D_{\theta^{\prime}}\ln f(\theta)dy}}+{\color{blue}\lim_{n\rightarrow\infty}\int\left[D_{\theta^{\prime}}\left(\tilde{\theta}-\theta\right)\right]f(\theta)dy}=0.
 \]
 
 \end_inset
@@ -35508,7 +35542,7 @@ Now,
 \end_inset
 
  and 
-\begin_inset Formula ${\color{blue}\int f(Y,\theta)(-I_{K})dy=-I_{K}}.$
+\begin_inset Formula ${\color{blue}\int f(\theta)(-I_{K})dy=-I_{K}}.$
 \end_inset
 
  With this we have 
@@ -35641,7 +35675,62 @@ Interpretation:
 \end_layout
 
 \begin_layout Itemize
-any linear combination of 
+The above is taking expectations w.r.t.
+ 
+\begin_inset Formula $f(\theta).$
+\end_inset
+
+ When we do this for the true density of the data,
+ it is w.r.t.
+ 
+\begin_inset Formula $f(\theta_{0}),$
+\end_inset
+
+ and the result will be
+\begin_inset Formula 
+\[
+V_{\infty}(\tilde{\theta})-\mathcal{I}_{\infty}^{-1}(\theta_{0})
+\]
+
+\end_inset
+
+ is positive semidefinite.
+ However,
+ the asymptotic variance of the ML estimator 
+\begin_inset Formula $\hat{\theta}$
+\end_inset
+
+ is 
+\begin_inset Formula $\mathcal{I}_{\infty}^{-1}(\theta_{0})$
+\end_inset
+
+,
+ so we can say that
+\begin_inset Formula 
+\[
+V_{\infty}(\tilde{\theta})-V_{\infty}(\hat{\theta})
+\]
+
+\end_inset
+
+ is positive semidefinite.
+\end_layout
+
+\begin_layout Itemize
+An informal way of indicating this is to write
+\begin_inset Formula 
+\[
+V_{\infty}(\tilde{\theta})\ge V_{\infty}(\hat{\theta})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To interpret this,
+ it means that any linear combination of 
 \begin_inset Formula $\tilde{\theta}$
 \end_inset
 
@@ -37237,16 +37326,12 @@ In some cases,
  then 
 \begin_inset Formula 
 \begin{equation}
-f_{Y}(y|\lambda,\phi)=\frac{\Gamma(y+r)}{\Gamma(y+1)\Gamma(r)}p^{r}(1-p)^{y}\label{eq:negbindensity}
+f_{Y}(y|\lambda,\psi)=\frac{\Gamma(y+\psi)}{\Gamma(y+1)\Gamma(\psi)}p^{\psi}(1-p)^{y}\label{eq:negbindensity}
 \end{equation}
 
 \end_inset
 
 where 
-\begin_inset Formula $\phi=(\lambda,\psi)$
-\end_inset
-
- and 
 \begin_inset Formula $p=\frac{\psi}{\psi+\lambda}$
 \end_inset
 
@@ -40285,11 +40370,11 @@ Usually,
 \end_inset
 
  with 
-\begin_inset Formula $\mathcal{E}m(Z_{t},\theta_{0})=0,$
+\begin_inset Formula $Em(Z_{t},\theta_{0})=0,$
 \end_inset
 
 
-\begin_inset Formula $\mathcal{E}m(Z_{t},\theta)=0$
+\begin_inset Formula $Em(Z_{t},\theta)\ne0$
 \end_inset
 
 ,

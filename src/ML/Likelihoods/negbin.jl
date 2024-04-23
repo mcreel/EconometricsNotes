@@ -11,7 +11,7 @@ function  negbin(θ, y, x, nbtype)
     α = eps .+ exp(θ[end])
     nbtype == 1 ? ψ  = λ./α : ψ  = ones(n)/α
     p = ψ  ./ (ψ  + λ)
-    all(r .> 0.0) & all(p .> 0.0) & all(p .< 1.0) ? log.(pdf.(NegativeBinomial.(r, p),y)) : -Inf    
+    all(ψ .> 0.0) & all(p .> 0.0) & all(p .< 1.0) ? log.(pdf.(NegativeBinomial.(ψ , p),y)) : -Inf    
 end
 
 
