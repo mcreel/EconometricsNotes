@@ -17,6 +17,7 @@ function gmmresults()
     return
 end    
 
+# do 2-step if weight provided, otherwise, do CUE with NW cov.
 function gmmresults(moments, θ, weight="", title="", names="", efficient=true)
     n,g = size(moments(θ))
     CUE = false

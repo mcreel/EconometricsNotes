@@ -37432,7 +37432,16 @@ In both cases,
 \begin_inset Formula $E(y|\boldsymbol{x})=\lambda=\exp(\mathbf{x}'\beta)$
 \end_inset
 
+,
+ and the density is parameterized as 
+\begin_inset Formula $f_{Y}(y|\boldsymbol{x},\theta)$
+\end_inset
 
+ where 
+\begin_inset Formula $\theta=(\beta,\alpha)$
+\end_inset
+
+.
 \end_layout
 
 \end_deeper
@@ -39637,6 +39646,41 @@ literal "true"
 
 \end_layout
 
+\begin_layout Itemize
+The GMM estimator is a consistent and asymptotically normal estimator that does not require such strong assumptions as does the ML estimator.
+\end_layout
+
+\begin_layout Itemize
+Many widely used estimators,
+ such as instrumental variables estimators,
+ least squares estimators,
+ and maximum likelihood,
+ can be put into the form of GMM estimators
+\end_layout
+
+\begin_layout Itemize
+thus,
+ the study of the theory for GMM can be applied in many cases
+\end_layout
+
+\begin_layout Itemize
+GMM theory can be a simpler way to formulate theory than some of the original presentations.
+ 
+\end_layout
+
+\begin_layout Itemize
+,
+ it is a convenient and relatively simple way to think of things,
+ and it has wide application.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Moment conditions
 \end_layout
@@ -40316,11 +40360,11 @@ where
 \end_inset
 
  with 
-\begin_inset Formula $\mathcal{E}\bar{m}_{n}(Z_{n},\theta_{0})=0,$
+\begin_inset Formula $E\bar{m}(Z_{n},\theta_{0})=0,$
 \end_inset
 
-
-\begin_inset Formula $\mathcal{E}\bar{m}_{n}(Z_{n},\theta)=0$
+ 
+\begin_inset Formula $E\bar{m}(Z_{n},\theta)\ne0$
 \end_inset
 
 ,
@@ -40349,15 +40393,25 @@ and
 \end_layout
 
 \begin_layout Standard
-Usually,
- the moment conditions will be averages of terms:
- 
-\begin_inset Formula $\bar{m}_{n}(\theta)=\frac{1}{n}\sum_{t=1}^{n}m(Z_{t},\theta)$
+\begin_inset Newpage newpage
 \end_inset
 
- .
- In this case the moment contributions 
-\begin_inset Formula $m(Z_{t},\theta)$
+
+\end_layout
+
+\begin_layout Standard
+Usually,
+ the moment conditions will be averages of terms:
+\begin_inset Formula 
+\begin{align*}
+\bar{m}_{n}(\theta) & =\frac{1}{n}\sum_{t=1}^{n}m(Z_{t},\theta)\\
+ & \equiv\frac{1}{n}\sum_{t=1}^{n}m_{t}(\theta)
+\end{align*}
+
+\end_inset
+
+In this case the moment contributions 
+\begin_inset Formula $m_{t}(\theta)\equiv m(Z_{t},\theta)$
 \end_inset
 
  are a 
@@ -40370,19 +40424,22 @@ Usually,
 \end_inset
 
  with 
-\begin_inset Formula $Em(Z_{t},\theta_{0})=0,$
+\begin_inset Formula 
+\[
+Em_{t}(\theta_{0})=0,
+\]
+
+\end_inset
+
+and 
+\begin_inset Formula 
+\[
+Em_{t}(\theta)\ne0,\forall\theta\ne\theta_{0}.
+\]
+
 \end_inset
 
 
-\begin_inset Formula $Em(Z_{t},\theta)\ne0$
-\end_inset
-
-,
- 
-\begin_inset Formula $\forall\theta\ne\theta_{0}$
-\end_inset
-
-.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -40526,7 +40583,11 @@ nolink "false"
  This will be the case if our moment conditions are correctly specified.
  With this,
  it is clear that the minimum of the limiting objective function occurs at the true parameter value.
- The only assumption that warrants additional comment is that of identification.
+ 
+\end_layout
+
+\begin_layout Itemize
+The only assumption that warrants additional comment is that of identification.
  In Theorem 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -40563,7 +40624,11 @@ i.e.,
 \begin_inset Formula $\forall\theta\neq\theta_{0}.$
 \end_inset
 
- Taking the case of a quadratic objective function 
+ 
+\end_layout
+
+\begin_layout Itemize
+Taking the case of a quadratic objective function 
 \begin_inset Formula $s_{n}(\theta)=\bar{m}_{n}(\theta)^{\prime}W_{n}\bar{m}_{n}(\theta),$
 \end_inset
 
@@ -40574,6 +40639,7 @@ i.e.,
 
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 Applying a uniform law of large numbers,
  we get 
@@ -40596,6 +40662,7 @@ Since
 
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 Since 
 \begin_inset Formula $s_{\infty}(\theta_{0})=m_{\infty}(\theta_{0})^{\prime}W_{\infty}m_{\infty}(\theta_{0})=0,$
@@ -40908,6 +40975,18 @@ D_{n}(\theta)\equiv\frac{\partial}{\partial\theta}\bar{m}_{n}^{\prime}\left(\the
 \end_inset
 
  but it is omitted to unclutter the notation).
+\end_layout
+
+\begin_layout Standard
+
+\color blue
+This is the gradient vector.
+ To get the GMM estimator,
+ set these equal to zero,
+ and solve.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -41162,7 +41241,19 @@ nolink "false"
 \end_inset
 
 ,
- and noting that the scores have mean zero at 
+ and noting that the scores (in eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "gmmscores"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+
+\end_inset
+
+) have mean zero at 
 \begin_inset Formula $\theta_{0}$
 \end_inset
 
@@ -41528,6 +41619,47 @@ status open
 
 \begin_layout Section
 Choosing the weighting matrix
+\end_layout
+
+\begin_layout Standard
+The following figure shows how the GMM criterion function,
+ 
+\begin_inset Formula $s_{n}(\theta)$
+\end_inset
+
+ combines information from two moment conditions.
+ The place where the green line minimizes is between the places where the red and blue lines have their roots.
+ Play around with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/GMM/GMMcriterion.jl}{GMM/GMMcriterion.jl}
+\end_layout
+
+\end_inset
+
+ to see how changing the weight matrix changes the GMM criterion.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/GMM/gmmcriterion.png
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

@@ -14,7 +14,7 @@ function gmm(moments, θ, weight)
     θhat, objvalue, converged = fminunc(obj, θ)
     # derivative of average moments
     D = try
-        ForwardDiff.jacobian(m, vec(θhat))'
+        ForwardDiff.jacobian(m, vec(θhat))'  # jacobian get ∂m/∂θ', but D is the transpose
     catch    
         Calculus.jacobian(m, vec(θhat), :central)'
     end    
