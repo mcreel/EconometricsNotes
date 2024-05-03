@@ -19493,6 +19493,12 @@ Exogeneity and Endogeneity (adapted from Cameron and Trivedi)
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Simultaneous-equations"
+
+\end_inset
+
 Simultaneous equations
 \end_layout
 
@@ -42316,7 +42322,12 @@ Show that
 \begin_inset Formula $\mathcal{E}(m_{t}m_{t+s}^{\prime})=\Gamma_{s}^{\prime}.$
 \end_inset
 
- 
+ Hint:
+ note that 
+\begin_inset Formula $E(A^{\prime})=\left[E(A)\right]^{\prime}.$
+\end_inset
+
+
 \begin_inset Newpage newpage
 \end_inset
 
@@ -42381,7 +42392,17 @@ Recall that
 \end_inset
 
  in the denominator instead).
- This is consistent because of the LLN,
+ This is consistent,
+ holding 
+\begin_inset Formula $s$
+\end_inset
+
+ fixed and letting 
+\begin_inset Formula $n$
+\end_inset
+
+ grow,
+ because of the LLN,
  and the fact that 
 \begin_inset Formula $\hat{\theta}$
 \end_inset
@@ -42390,7 +42411,7 @@ Recall that
 \begin_inset Formula $\theta_{0}$
 \end_inset
 
- (Slutky theorem).
+ (Slutsky theorem).
  
 \begin_inset Newpage newpage
 \end_inset
@@ -42411,8 +42432,12 @@ Recall that
 
 \end_inset
 
- This estimator is inconsistent in general,
- since the number of parameters to estimate is more than the number of observations,
+
+\end_layout
+
+\begin_layout Itemize
+This estimator is inconsistent in general,
+ because the number of parameters to estimate is more than the number of observations,
  and increases more rapidly than 
 \begin_inset Formula $n$
 \end_inset
@@ -42422,7 +42447,11 @@ Recall that
 \begin_inset Formula $n\rightarrow\infty.$
 \end_inset
 
- There is always only one observation to estimate the highest order autocovariance.
+
+\end_layout
+
+\begin_layout Itemize
+There is always only one observation to estimate the highest order autocovariance.
 \end_layout
 
 \begin_layout Standard
@@ -42470,7 +42499,7 @@ this will be consistent,
 
 ,
  so that the higher order terms are eventually estimated,
- as the sample size becomes large enough (control the bias)`
+ as the sample size becomes large enough (control the bias)
 \end_layout
 
 \begin_layout Itemize
@@ -42478,7 +42507,7 @@ this will be consistent,
 \end_inset
 
  grows sufficiently slowly,
- so that we don't try to estimate terms unless we have enough informations (control the variance)
+ so that we don't try to estimate terms unless we have enough information (control the variance)
 \end_layout
 
 \begin_layout Itemize
@@ -42487,6 +42516,15 @@ The term
 \end_inset
 
  can be dropped because it converges to 1.
+\end_layout
+
+\begin_layout Itemize
+as long as there is a balance between the rate at which 
+\begin_inset Formula $q(n)$
+\end_inset
+
+ grows and the rate at which autocovariances decline over time,
+ this will be consistent.
 \end_layout
 
 \begin_layout Itemize
@@ -42533,9 +42571,17 @@ literal "true"
 
 \end_inset
 
- This estimator is p.d.
+
+\end_layout
+
+\begin_layout Itemize
+This estimator is p.d.
  by construction.
- The condition for consistency is that 
+ 
+\end_layout
+
+\begin_layout Itemize
+The condition for consistency is that 
 \begin_inset Formula $n^{-1/4}q\rightarrow0.$
 \end_inset
 
@@ -42543,7 +42589,11 @@ literal "true"
 \begin_inset Formula $q.$
 \end_inset
 
- This estimator is nonparametric - we've placed no parametric restrictions on the form of 
+ 
+\end_layout
+
+\begin_layout Itemize
+This estimator is nonparametric - we've placed no parametric restrictions on the form of 
 \begin_inset Formula $\Omega.$
 \end_inset
 
@@ -42561,7 +42611,10 @@ nolink "false"
 \end_inset
 
 .
- 
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -42576,8 +42629,14 @@ If there is no autocorrelation of the moments,
 \begin_inset Formula $\Gamma_{s},\,s>0$
 \end_inset
 
- may be set to zero.
- The result is White's heteroscedastic consistent variance covariance estimator,
+ are in fact zero,
+ and don't need to be estimated.
+ Then,
+ 
+\begin_inset Formula $\hat{\Omega}=\widehat{\Gamma_{0}}$
+\end_inset
+
+ is White's heteroscedastic consistent variance covariance estimator,
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -42587,6 +42646,7 @@ literal "true"
 \end_inset
 
 .
+ This earlier paper no doubt inspired the papers that came later.
 \end_layout
 
 \begin_layout Itemize
@@ -42838,6 +42898,14 @@ href{./src/GMM/gmmresults.jl}{gmmresults.jl}
 .
 \end_layout
 
+\begin_layout Itemize
+The two step estimator may be iterated,
+ by recomputing the weight after the second step,
+ and estimating again with the new weight.
+ If this is done until neither the parameters nor the weight matrix change,
+ it is equivalent to doing CUE (assuming we find the global minimizer in both cases).
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -42977,6 +43045,19 @@ Set
 \begin_inset Formula $q_{t}-\beta_{1}^{0}-\beta_{2}^{0}p_{t}=\varepsilon_{2t}$
 \end_inset
 
+.
+ Note:
+ the parameter vector 
+\begin_inset Formula $\theta$
+\end_inset
+
+ holds all parameters,
+ so,
+ in this case 
+\begin_inset Formula $\theta=(\beta_{1},\beta_{2})$
+\end_inset
+
+.
  
 \end_layout
 
@@ -42995,7 +43076,7 @@ Set
 \noun off
 \color none
 So 
-\begin_inset Formula $\epsilon_{t}(\theta_{0})=\epsilon_{2t}$
+\begin_inset Formula $\epsilon(y_{t},x_{t},\theta_{0})=\epsilon_{2t}$
 \end_inset
 
 ,
@@ -43012,7 +43093,7 @@ So
 \begin_layout Itemize
 At other parameter values,
  
-\begin_inset Formula $\epsilon_{t}(\theta)=q_{t}-\beta_{1}+\beta_{2}p_{t}\ne\epsilon_{2t},$
+\begin_inset Formula $\epsilon(y_{t},x_{t},\theta)=q_{t}-\beta_{1}+\beta_{2}p_{t}\ne\epsilon_{2t},$
 \end_inset
 
  and this will not have conditional expectation equal to zero.
@@ -43027,7 +43108,7 @@ Returning to the general case,
  then we will have
 \begin_inset Formula 
 \[
-\mathcal{E}\epsilon_{t}(\theta)|I_{t}\ne0,\,\theta\ne\theta_{0}.
+E\epsilon_{t}(\theta)|I_{t}\ne0,\,\theta\ne\theta_{0}.
 \]
 
 \end_inset
@@ -43147,7 +43228,7 @@ In the above supply function example,
 \begin_inset Formula $y_{t}$
 \end_inset
 
- is a variable in the information set.
+ (income) is a variable in the information set.
  We can create instruments by using functions of 
 \begin_inset Formula $y_{t}.$
 \end_inset
@@ -43289,7 +43370,11 @@ The IV estimator may appear a bit unusual at first,
 
 \begin_layout Standard
 Let's look at the previous section's results in more detail,
- for the commonly encountered special case of a linear model with iid errors (the iid part is easy to generalize),
+ for the commonly encountered 
+\color blue
+special case of a linear model
+\color inherit
+ with iid errors (the iid part is easy to generalize),
  but with correlation between regressors and errors (failure of weak exogeneity):
  
 \begin_inset Formula 
@@ -43306,7 +43391,10 @@ y_{t} & = & x_{t}^{\prime}\theta_{0}+\varepsilon_{t}\\
 \begin_layout Itemize
 Let's assume,
  just to keep things simple,
- that the errors are iid
+ that the errors are iid (homoscedastic and non-autocorrelated).
+ The generalization is very straightforward,
+ but we want to focus on the endogeneity problem,
+ for now.
 \end_layout
 
 \begin_layout Itemize
@@ -43314,7 +43402,10 @@ The model in matrix form is
 \begin_inset Formula $y=X\theta_{0}+\epsilon$
 \end_inset
 
-
+,
+ 
+\color blue
+with is linear in the parameters
 \end_layout
 
 \begin_layout Standard
@@ -43361,7 +43452,10 @@ simultaneous equations:
  Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sec:Reduced-form"
+reference "sec:Simultaneous-equations"
+plural "false"
+caps "false"
+noprefix "false"
 nolink "false"
 
 \end_inset
@@ -43557,7 +43651,7 @@ X^{\prime}Z\left(Z^{\prime}Z\right)^{-1}Z^{\prime}X\hat{\theta}_{IV}=X^{\prime}Z
 or
 \begin_inset Formula 
 \begin{equation}
-\hat{\theta}_{IV}=\left(X^{\prime}Z\left(Z^{\prime}Z\right)^{-1}Z^{\prime}X\right)^{-1}X^{\prime}Z\left(Z^{\prime}Z\right)^{-1}Z^{\prime}y\label{eq:GIV estimator}
+\hat{\theta}_{IV}=\left(X^{\prime}{\color{red}Z\left(Z^{\prime}Z\right)^{-1}Z^{\prime}}X\right)^{-1}X^{\prime}{\color{red}Z\left(Z^{\prime}Z\right)^{-1}Z^{\prime}}y\label{eq:GIV estimator}
 \end{equation}
 
 \end_inset
@@ -43581,19 +43675,32 @@ P_{Z}=Z(Z^{\prime}Z)^{-1}Z^{\prime}
 
 \end_inset
 
- Anything that is projected onto the space spanned by 
-\begin_inset Formula $Z$
-\end_inset
 
- will be uncorrelated with 
-\begin_inset Formula $\varepsilon,$
-\end_inset
+\end_layout
 
- by the definition of 
+\begin_layout Itemize
+The projection matrix finds the part of an object that is in the space spanned by 
 \begin_inset Formula $Z.$
 \end_inset
 
- Transforming the model with this projection matrix we get 
+ 
+\end_layout
+
+\begin_layout Itemize
+Anything in this space is uncorrelated with the 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+,
+ by the fact that the elements of 
+\begin_inset Formula $Z$
+\end_inset
+
+ are drawn from the information set.
+\end_layout
+
+\begin_layout Standard
+Transforming the model with this projection matrix we get 
 \begin_inset Formula 
 \[
 P_{Z}y=P_{Z}X\beta+P_{Z}\varepsilon
@@ -43621,16 +43728,17 @@ y^{*}=X^{*}\theta+\varepsilon^{*}
  since this is simply 
 \begin_inset Formula 
 \begin{eqnarray*}
-\mathcal{E}(X^{*\prime}\varepsilon^{*}) & = & \mathcal{E}(X^{\prime}P_{Z}^{\prime}P_{Z}\varepsilon)\\
- & = & \mathcal{E}(X^{\prime}P_{Z}\varepsilon)
+\mathcal{E}(X^{*\prime}\varepsilon^{*}) & = & E(X^{\prime}P_{Z}^{\prime}P_{Z}\varepsilon)\\
+ & = & E({\color{red}X^{\prime}P_{Z}}{\color{blue}{\color{blue}\varepsilon}})\\
+ & = & 0_{K\times1}
 \end{eqnarray*}
 
 \end_inset
 
- and 
+ because 
 \begin_inset Formula 
 \[
-P_{Z}X=Z(Z^{\prime}Z)^{-1}Z^{\prime}X
+P_{Z}X={\color{red}Z(Z^{\prime}Z)^{-1}Z^{\prime}X{\color{blue}\equiv X^{*}}}
 \]
 
 \end_inset
@@ -43648,15 +43756,24 @@ P_{Z}X=Z(Z^{\prime}Z)^{-1}Z^{\prime}X
 \end_inset
 
  so it must be uncorrelated with 
+\color blue
+
 \begin_inset Formula $\varepsilon$
 \end_inset
 
+
+\color inherit
 ,
  because we initially assumed that 
 \begin_inset Formula $E(Z_{t}\epsilon_{t})=0$
 \end_inset
 
 .
+ 
+\end_layout
+
+\begin_layout Itemize
+So,
  This implies that applying OLS to the model 
 \begin_inset Formula 
 \[
@@ -43666,8 +43783,7 @@ y^{*}=X^{*}\theta+\varepsilon^{*}
 \end_inset
 
  will lead to a consistent estimator,
- given a few more assumptions.
- 
+ given a few more assumptions (identification).
 \end_layout
 
 \begin_layout Exercise
@@ -43944,6 +44060,10 @@ The formula used to estimate the variance of
 \end_inset
 
 
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -44029,13 +44149,17 @@ When we have two sets of instruments,
 \begin_inset Formula $Z_{2}$
 \end_inset
 
- is at least as efficiently asymptotically as the estimator that used 
+ is at least as efficiently asymptotically as the estimator that uses 
 \begin_inset Formula $Z_{1}.$
 \end_inset
 
  More instruments leads to more asymptotically efficient estimation,
  in general.
- The same holds for GMM in general:
+ 
+\end_layout
+
+\begin_layout Itemize
+The same holds for GMM in general:
  adding moment conditions cannot cause the asymptotic variance to become larger.
 \end_layout
 
@@ -44056,7 +44180,8 @@ The penalty for indiscriminate use of instruments is that the small sample bias 
 \end_inset
 
 ,
- 
+ so the purged regressors after fitting them using the instruments will be identical to the original unpurged regressors,
+ when the number of instruments is equal to the sample size.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -44126,13 +44251,21 @@ nolink "false"
 \end_inset
 
  that the estimator is biased and inconsistent.
- What about using the GIV estimator?
+ 
+\end_layout
+
+\begin_layout Itemize
+What about using the GIV estimator?
  Consider using as instruments 
 \begin_inset Formula $Z=\left[1\,x_{t}\,x_{t-1}\,x_{t-2}\right]$
 \end_inset
 
 .
- The lags of 
+ 
+\end_layout
+
+\begin_layout Itemize
+The lags of 
 \begin_inset Formula $x_{t}$
 \end_inset
 
@@ -44145,7 +44278,11 @@ nolink "false"
 \end_inset
 
  is different from zero,
- and by assumption 
+ 
+\end_layout
+
+\begin_layout Itemize
+By assumption 
 \begin_inset Formula $x_{t}$
 \end_inset
 
@@ -44166,7 +44303,15 @@ nolink "false"
  these are legitimate instruments.
  As we have 4 instruments and 3 parameters,
  this is an overidentified situation.
- The Julia script  
+ 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The Julia script 
 \begin_inset ERT
 status open
 
@@ -44199,6 +44344,10 @@ literal "true"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Itemize
 If you compare these with the results for the OLS estimator,
  you will see that the bias of the GIV estimator is much less for estimation of 
 \begin_inset Formula $\rho$
@@ -44281,7 +44430,7 @@ GIV estimation results for
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\,$
+\begin_inset Newpage newpage
 \end_inset
 
 
@@ -44522,7 +44671,7 @@ Consider a Taylor expansion of
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-{\color{red}\bar{m}(\hat{\theta})}=\bar{m}_{n}(\theta_{0})+{\color{red}D_{n}^{\prime}(\theta^{*})}{\color{blue}\left(\hat{\theta}-\theta_{0}\right)}\label{TS expansion of moments}
+\bar{m}(\hat{\theta})=\bar{m}_{n}(\theta_{0})+D_{n}^{\prime}(\theta^{*}){\color{blue}\left(\hat{\theta}-\theta_{0}\right)}\label{TS expansion of moments}
 \end{equation}
 
 \end_inset
@@ -44594,7 +44743,7 @@ nolink "false"
  to get 
 \begin_inset Formula 
 \[
-\sqrt{n}{\color{red}\bar{m}_{n}(\hat{\theta})}=\sqrt{n}\bar{m}_{n}(\theta_{0})-\sqrt{n}{\color{red}D_{n}^{\prime}(\theta^{*})}{\color{purple}\left(D(\hat{\theta})\hat{\Omega}^{-1}D(\theta^{*})^{\prime}\right)^{-1}D(\hat{\theta})\hat{\Omega}^{-1}\bar{m}_{n}(\theta_{0}).}
+\sqrt{n}\bar{m}_{n}(\hat{\theta})=\sqrt{n}\bar{m}_{n}(\theta_{0})-\sqrt{n}D_{n}^{\prime}(\theta^{*}){\color{purple}\left(D(\hat{\theta})\hat{\Omega}^{-1}D(\theta^{*})^{\prime}\right)^{-1}D(\hat{\theta})\hat{\Omega}^{-1}\bar{m}_{n}(\theta_{0}).}
 \]
 
 \end_inset
@@ -44689,7 +44838,8 @@ Next,
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align}
-{\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})} & =\left({\color{red}I_{g}-\hat{\Omega}^{-1/2}D_{n}^{\prime}(\theta^{*})\left(D(\hat{\theta})\hat{\Omega}^{-1}D(\theta^{*})^{\prime}\right)^{-1}D(\hat{\theta})\hat{\Omega}^{-1/2}}\right)\left({\color{blue}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\theta_{0})}\right)\equiv PX\label{eq:JtestIntermediate}
+{\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})} & =\left({\color{red}I_{g}-\hat{\Omega}^{-1/2}D_{n}^{\prime}(\theta^{*})\left(D(\hat{\theta})\hat{\Omega}^{-1}D(\theta^{*})^{\prime}\right)^{-1}D(\hat{\theta})\hat{\Omega}^{-1/2}}\right)\left({\color{blue}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\theta_{0})}\right)\label{eq:JtestIntermediate}\\
+ & \equiv{\color{red}P}{\color{blue}X}
 \end{align}
 
 \end_inset
@@ -44891,7 +45041,7 @@ nolink "false"
  so we finally get
 \begin_inset Formula 
 \[
-\left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)^{\prime}\left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)=n\bar{m}_{n}(\hat{\theta})^{\prime}\hat{\Omega}^{-1}\bar{m}_{n}(\hat{\theta})\stackrel{d}{\rightarrow}\chi^{2}(g-K)
+\left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)^{\prime}\left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)=n{\color{blue}\bar{m}_{n}(\hat{\theta})^{\prime}\hat{\Omega}^{-1}\bar{m}_{n}(\hat{\theta})}\stackrel{d}{\rightarrow}\chi^{2}(g-K)
 \]
 
 \end_inset
@@ -45877,16 +46027,27 @@ Note:
  when the consistent but inefficient estimator is not identified for all the parameters of the model,
  so that we estimate only some of the parameters using the inefficient estimator,
  and the test does not include the others.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
-\begin_layout Itemize
-This simple formula only holds when the estimator that is being tested for consistency is 
+\begin_layout Standard
+The simple formula for the Hausman test only holds when the estimator that is being tested for consistency is 
 \emph on
 fully
 \emph default
  efficient under the null hypothesis.
- This means that it must be a ML estimator or a fully efficient estimator that has the same asymptotic distribution as the ML estimator.
- This is quite restrictive since modern estimators such as GMM,
+\end_layout
+
+\begin_layout Itemize
+This means that it must be a ML estimator or a fully efficient estimator that has the same asymptotic distribution as the ML estimator.
+ 
+\end_layout
+
+\begin_layout Itemize
+This is quite restrictive since modern estimators such as GMM,
  QML,
  or even OLS with heteroscedastic consistent standard errors are not in general fully efficient.
 \end_layout

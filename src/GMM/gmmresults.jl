@@ -45,10 +45,9 @@ function gmmresults(moments, θ, weight="", title="", names="", efficient=true)
     printstyled(message, color=:cyan)
     println()
     println("Observations: ", n)
-    println("Hansen-Sargan statistic: ", round(n*objvalue, digits=5))
-    if g > k
-        println("Hansen-Sargan p-value: ", round(1.0 - cdf(Chisq(g-k),n*objvalue), digits=5))
-    end    
+    println("Obj. fn. value ", round(objvalue, digits=5), "    Hansen-Sargan statistic: ", round(n*objvalue, digits=5))
+    g==k ? printstyled("Exactly identified: Obj. fun. value should be zero if global min found\n", color=:yellow) : nothing
+    g > k ? println("Hansen-Sargan p-value: ", round(1.0 - cdf(Chisq(g-k),n*objvalue), digits=5)) : nothing
     a =[θhat se t p]
     println("")
     PrintEstimationResults(a, names)

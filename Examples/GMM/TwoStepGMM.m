@@ -1,3 +1,4 @@
+%%
 NerloveData = importdata('NerloveData.m');
 n = size(NerloveData,1);
 y = log(NerloveData(:,2));
@@ -8,6 +9,7 @@ k = size(x,2);
 %% this block shows that start values can be important, even for this simple problem
 %% in the past, Matlab would not get the correct answer here, though Octave does. I'm
 %% not sure of the current behavior of Matlab
+%% Note April 2024: now Octave has copied Matlab's incorrect result! Bug for bug compatibility!
 W = eye(k);
 thetastart = zeros(k,1);
 options = optimset('TolX',1e-15,'TolFun',1e-12);
@@ -33,7 +35,7 @@ obj
 omega = ms'*ms/n;
 fprintf('estimated covariance of moments\n');
 omega
-W = inv(omega);  
+W = inv(omega);
 thetastart = x\y; % this give OLS coefficients
 [thetahat, obj] = fminunc(@(theta) moments(theta, y, x)'*W*moments(theta, y, x), thetastart);
 fprintf('GMM results, optimal weight matrix\n');

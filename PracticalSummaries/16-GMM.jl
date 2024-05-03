@@ -19,7 +19,7 @@ mleresults(model, β⁰);                               # but won't overflow
 ## GMM
 using Econometrics
 moments1 = β -> x.*(y - λ(β))
-gmmresults(moments1, β⁰);
+βhat, objv, V, D, W, convergence = gmmresults(moments1, β⁰);
 # note that the GMM estimator is identical to the ML estimator. You should
 # be able to prove that result analytically, by showing that the moment conditions
 # are the same as the ML score vector. Because this GMM estimator is
@@ -29,7 +29,7 @@ gmmresults(moments1, β⁰);
 ## Trying a different GMM estimator, based on E(y)=λ, so E(y/λ)=1.
 using Econometrics
 moments2 = β -> x.* (y./λ(β) .- 1.0) 
-gmmresults(moments2, β⁰);
+βhat, objv, V, D, W, convergence = gmmresults(moments2, β⁰);
 
 
 ## Try out overidentified GMM estimator, using both sets of moments
@@ -47,11 +47,6 @@ m = moments3(βhat) # the moment contributions, evaluated at estimate
 ## let's see how the Hansen-Sargan test can detect 
 # incorrect moments
 η = 0.01 # if this is different from zero, moments4, and, thus moments5, will not be valid
-moments4 = β -> x.* (y./λ(β) .- 1.0 .+ η)
-moments5 = β -> [moments1(β) moments4(β)]
-gmmresults(moments5, β⁰);
+moments4 = β -> moments3(β) .+ η
+βhat, objv, V, D, W, convergence = gmmresults(moments4, β⁰);
 
-## Yet another version, using conditional mean = conditional variance
-using Econometrics, ForwardDiff
-moments6 = β -> x.*((y - λ(β)) .^2.0 - λ(β))
-βhat, objv, V, D, W, convergence = gmmresults(moments6, β⁰);
