@@ -31,7 +31,7 @@ wages = wp + wg
 x = [profits lagprofits wages]
 x = [ones(n,1) x]
 # GMM estimation
-theta = x\y
+theta = x\y  # ols start values
 weight = 1.0
 names = ["Constant", "Profits", "Profits-1", "Wages"]
 moments = θ -> KleinMoments(θ, y, x, exogs)

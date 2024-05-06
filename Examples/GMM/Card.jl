@@ -55,7 +55,7 @@ F3 = (TestStatistics(y, w, R, r)[1])
 println()
 PrintDivider()
 println(@green "F test of instrument strength for the 3 endog variables")
-prettyprint([F1 F2 F3],["educ", "age", "agesq"])
+prettyprint([F1 F2 F3],["educ", "exper", "expsq"])
 println("according to the simple rule that F should be ≥ 10")
 println("there is concern that education is not well-instrumented")
 

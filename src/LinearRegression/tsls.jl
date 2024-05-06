@@ -12,11 +12,11 @@ function tsls(y, x, z; names="", vc="white", silent=false)
         names = 1:k
         names = names'
     end
-    xhat = z*(z\x)
+    xhat = z*(z\x)   # fitted value from first stage regression
     xx_inv = inv(xhat'x)
     b = xx_inv*xhat'y
     e = y - x*b
-    ess = (e'e)[1,1]
+    ess = dot(e,e)
     sigsq = ess/(n-k)
 
     # Ordinary or het. consistent variance estimate

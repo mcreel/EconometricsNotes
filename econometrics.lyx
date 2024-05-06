@@ -44436,60 +44436,6 @@ GIV estimation results for
 
 \end_layout
 
-\begin_layout Example
-The linear simultaneous equation model 
-\series bold
-Klein's model 1
-\series default
- (see Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "subsec:Example:-Klein's-Model"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-
-\end_inset
-
-) is estimated by GMM in the following code examples:
- 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
- 
-\backslash
-href{./Examples/Simeq/KleinGMM.jl}{Simeq/KleinGMM.jl}
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
- 
-\backslash
-href{./Examples/Simeq/KleinCUE.jl}{Simeq/KleinCUE.jl}
-\end_layout
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 2SLS
 \end_layout
@@ -44619,6 +44565,73 @@ nolink "false"
 \end_inset
 
  for an example.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+The linear simultaneous equation model 
+\series bold
+Klein's model 1
+\series default
+ (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Example:-Klein's-Model"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+
+\end_inset
+
+) is estimated by GMM in the following code examples:
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/Simeq/KleinGMM.jl}{Simeq/KleinGMM.jl}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/Simeq/KleinCUE.jl}{Simeq/KleinCUE.jl}
+\end_layout
+
+\end_inset
+
+.
+ A 2SLS version is at 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/Simeq/Klein2SLS.jl}{Simeq/Klein2SLS.jl}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -44956,6 +44969,14 @@ Thus,
 \end_inset
 
 ,
+ where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the rank of 
+\begin_inset Formula $P,$
+\end_inset
+
  by the Continuous Mapping Theorem
 \family default
 \series default
@@ -45044,6 +45065,10 @@ nolink "false"
 \left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)^{\prime}\left({\color{purple}\sqrt{n}\hat{\Omega}^{-1/2}\bar{m}_{n}(\hat{\theta})}\right)=n{\color{blue}\bar{m}_{n}(\hat{\theta})^{\prime}\hat{\Omega}^{-1}\bar{m}_{n}(\hat{\theta})}\stackrel{d}{\rightarrow}\chi^{2}(g-K)
 \]
 
+\end_inset
+
+because our particular idempotent matrix has rank 
+\begin_inset Formula $g-K.$
 \end_inset
 
  
@@ -45167,6 +45192,10 @@ minimum chi-square
 
  distribution.
  GMM minimizes it.
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -45902,7 +45931,11 @@ where the
 \end_inset
 
  has disappeared because we are using the small sample estimates of the covariances of the two estimators.
- This is the Hausman test statistic,
+ 
+\color blue
+This is the Hausman test statistic
+\color inherit
+,
  in its original form.
  The reason that this test has power under the alternative hypothesis is that in that case the 
 \begin_inset Quotes sld
@@ -46066,7 +46099,32 @@ Following up on this last point,
 ,
  where one is assumed to be consistent,
  but the other may not be.
- We assume for expositional simplicity that both 
+ 
+\end_layout
+
+\begin_layout Itemize
+For example,
+ one could be the GIV estimator,
+ with het.
+ and/or aut.
+ of unknown form,
+ and the other could be OLS with het and/or aut.
+ of unknown form.
+\end_layout
+
+\begin_layout Itemize
+With weak exogeneity,
+ the OLS versions will very likely be more efficient,
+ so we would like to use it,
+ if we can
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We assume for expositional simplicity that both 
 \begin_inset Formula $\hat{\theta}_{1}$
 \end_inset
 
