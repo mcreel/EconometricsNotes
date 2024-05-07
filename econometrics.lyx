@@ -46703,8 +46703,6 @@ Though GMM estimation has many applications,
  using Kalman filtering.
  Current methods are usually Bayesian,
  and involve sophisticated filtering methods to compute the likelihood function for nonlinear models with non-normal shocks.
- There is a lot of interesting stuff that is beyond the scope of this course.
- I have done some work using simulation-based estimation methods applied to such models.
  The methods explained in this section are intended to provide an example of GMM estimation.
  They are not the state of the art for estimation of such models.
 \begin_inset Newpage newpage
@@ -46759,11 +46757,11 @@ information set
 \begin_inset Formula $t,$
 \end_inset
 
- and includes the all realizations of all random variables that are known at time 
-\begin_inset Formula $t.$
+ and includes all realizations of all random variables index by 
+\begin_inset Formula $t$
 \end_inset
 
-
+ or earlier.
 \end_layout
 
 \begin_layout Itemize
@@ -46867,7 +46865,12 @@ which determines
 \begin_inset Formula $i_{t}$
 \end_inset
 
-.
+,
+ given 
+\begin_inset Formula $w_{t}.$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -46936,46 +46939,8 @@ u^{\prime}(c_{t})=\beta\mathcal{E}\left\{ \left(1+r_{t+1}\right)u^{\prime}(c_{t+
 
 \end_inset
 
- To see that the condition is necessary,
- suppose that the lhs < rhs.
- Then by reducing current consumption marginally would cause equation 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "umax"
-nolink "false"
-
-\end_inset
-
- to drop by 
-\begin_inset Formula $u^{\prime}(c_{t}),$
-\end_inset
-
- since there is no discounting of the current period.
- At the same time,
- the marginal reduction in consumption finances investment,
- which has gross return 
-\begin_inset Formula $\left(1+r_{t+1}\right),$
-\end_inset
-
- which could finance consumption in period 
-\begin_inset Formula $t+1.$
-\end_inset
-
- This increase in consumption would cause the objective function to increase by 
-\begin_inset Formula $\beta\mathcal{E}\left\{ \left(1+r_{t+1}\right)u^{\prime}(c_{t+1})|I_{t}\right\} .$
-\end_inset
-
- Therefore,
- unless the condition holds,
- the expected discounted utility function is not maximized.
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-To use this we need to choose the functional form of utility.
+To use this in an econometric model,
+ we need to choose the functional form of utility.
  A constant relative risk aversion (CRRA) form is 
 \begin_inset Formula 
 \[
@@ -46984,10 +46949,6 @@ u(c_{t})=\frac{c_{t}^{1-\gamma}-1}{1-\gamma}
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 where 
 \begin_inset Formula $\gamma$
 \end_inset
@@ -47160,7 +47121,7 @@ Note that at time
 
 \end_inset
 
- which can be consistently estimated by 
+ which can be consistently estimated by White's heteroscedastic consistent estimator:
 \begin_inset Formula 
 \[
 \hat{\Omega}=1/n\sum_{t=1}^{n}m_{t}(\hat{\theta})m_{t}(\hat{\theta})^{\prime}
@@ -47191,7 +47152,8 @@ s(\theta)=\bar{m}(\theta)^{\prime}\hat{\Omega}^{-1}\bar{m}(\theta).
 
 \end_inset
 
- This process can be iterated,
+ As usual,
+ this process can be iterated,
  e.g.,
  use the new estimate to re-estimate 
 \begin_inset Formula $\Omega,$
@@ -47202,6 +47164,8 @@ s(\theta)=\bar{m}(\theta)^{\prime}\hat{\Omega}^{-1}\bar{m}(\theta).
 \end_inset
 
  and repeat until the estimates don't change.
+ Or,
+ use the CUE version of GMM.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -47237,135 +47201,13 @@ Empirical papers that use this approach often have serious problems in obtaining
  Note that we are basing everything on a single partial first order condition.
  Probably this f.o.c.
  is simply not informative enough.
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Empirical-example:-a"
-
-\end_inset
-
-Empirical example of a portfolio model
-\end_layout
-
-\begin_layout Standard
-The Julia program 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-href{./Examples/GMM/portfolio.jl}{portfolio.jl}
-\end_layout
-
-\end_inset
-
- performs GMM estimation of a portfolio model of the sort presented in this section,
- using the data file 
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-href{./Examples/GMM/tauchen.data}{tauchen.data}
-\end_layout
-
-\end_inset
-
-.
- The columns of this data file are 
-\begin_inset Formula $c,$
-\end_inset
-
- 
-\begin_inset Formula $p,$
-\end_inset
-
- and 
-\begin_inset Formula $d$
-\end_inset
-
- in that order.
- There are 95 observations (source:
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Tauchen1986"
-literal "true"
-
-\end_inset
-
-).
- As instruments we use lags of 
-\begin_inset Formula $c$
-\end_inset
-
- and 
-\begin_inset Formula $r$
-\end_inset
-
-,
- as well as a constant.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
-For a single lag the estimation results are 
-\begin_inset CommandInset include
-LatexCommand verbatiminput
-filename "Examples/GMM/portfolio1.out"
-literal "true"
 
-\end_inset
-
-
-\begin_inset Newpage newpage
-\end_inset
-
-For two lags the estimation results are 
-\begin_inset CommandInset include
-LatexCommand verbatiminput
-filename "Examples/GMM/portfolio2.out"
-literal "true"
-
-\end_inset
-
-
-\begin_inset Newpage newpage
-\end_inset
-
-Pretty clearly,
- the results are sensitive to the choice of instruments.
- Also,
- if you examine the objective function values,
- it seems unlikely that the global minimum was found in all cases,
- probably multiple start values or global minimization are needed.
- Maybe there is some problem here:
- poor instruments,
- or possibly a conditional moment that is not very informative.
- Moment conditions formed from Euler conditions sometimes do not identify the parameter of a model.
- See 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "HansenHeatonYaron1996"
-literal "true"
-
-\end_inset
-
-.
- I believe that this is the case here,
- though I haven't checked it carefully.
 \end_layout
 
 \begin_layout Standard
@@ -47382,7 +47224,7 @@ href{./Examples/GMM/HallGMM.m}{HallGMM.m}
 
 \end_inset
 
- estimates a very similar model,
+ estimates a model of this sort,
  following Chapter 23 of the 
 \begin_inset CommandInset href
 LatexCommand href
@@ -47395,13 +47237,6 @@ literal "false"
 .
  I encourage you to verify that you can obtain the same results using Gretl and Octave.
  
-\end_layout
-
-\begin_layout Exercise
-Translate the HallGMM.m code to run on Julia.
-\end_layout
-
-\begin_layout Exercise
 \begin_inset Newpage newpage
 \end_inset
 
@@ -48376,41 +48211,6 @@ Verify the missing steps needed to show that
 
 \end_layout
 
-\begin_layout Enumerate
-For the portfolio example,
- experiment with the program using lags of 3 and 4 periods to define instruments
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Iterate the estimation of 
-\begin_inset Formula $\theta=(\beta,\gamma)$
-\end_inset
-
- and 
-\begin_inset Formula $\Omega$
-\end_inset
-
- to convergence.
-\end_layout
-
-\begin_layout Enumerate
-Comment on the results.
- Are the results sensitive to the set of instruments used?
- Look at 
-\begin_inset Formula $\hat{\Omega}$
-\end_inset
-
- as well as 
-\begin_inset Formula $\hat{\theta}.$
-\end_inset
-
- Are these good instruments?
- Are the instruments highly correlated with one another?
- Is there something analogous to collinearity going on here?
-\end_layout
-
-\end_deeper
 \begin_layout Enumerate
 Run the Julia script 
 \begin_inset ERT

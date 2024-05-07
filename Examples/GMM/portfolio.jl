@@ -49,9 +49,9 @@ d = data[:,3]
 r = (p + d) ./ lag(p,1) .- 1.0
 c = c ./ lag(c,1); # ensure stationarity
 
-## choose the instruments
-inst = [lag(c,1) r d p]
-maxlag = 2
+## choose the instruments: note - the code is off by one w.r.t. the notes
+inst = [lag(c,1) lag(r,1)]
+maxlag = 5
 inst = [inst lags(inst, maxlag)]
 inst = inst[maxlag+2:end,:]  # drop first two obs, due to two lags of c
 inst, junk, junk = stnorm(inst) # for numeric stability
@@ -64,7 +64,7 @@ moments = θ -> portfolio_moments(θ, data)
 weight = 1.0
 names = ["beta","gamma"]
 # initial consistent estimate
-θstart  = [0.95, 0.5]
+θstart  = [0.95, 2.]
 θhat, obj_value, D, ms, convergence = gmm(moments, θstart , weight)
 # second step with efficient weight matrix
 Ω  = cov(ms)
