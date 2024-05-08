@@ -8,9 +8,9 @@ x = [ones(n) rand(n)]
 λ = β -> exp.(x*β)
 y = rand.(Poisson.(λ(β⁰)))
 # data for problem set 3
-#x = hcat(ones(10), [-1,-1,1,0,-1,-1,1,1,1,2])
-#y = [0,0,0,1,1,5,8,16,20,30]
-#β⁰ = [1.3, 1.0]  # use decent start values for the problem set data
+# x = hcat(ones(10), [-1,-1,1,0,-1,-1,1,1,1,2])
+# y = [0,0,0,1,1,5,8,16,20,30]
+# β⁰ = [1.3, 1.0]  # use decent start values for the problem set data
 
 ## ML, for reference
 using Econometrics, SpecialFunctions
@@ -33,6 +33,16 @@ moments2 = β -> x.* (y./λ(β) .- 1.0)
 
 
 ## Try out overidentified GMM estimator, using both sets of moments
+
+## first two step
+using Econometrics, ForwardDiff
+moments3 = β -> [moments1(β) moments2(β)]
+W = eye(4)
+βhat, objv, V, D, W, convergence = gmmresults(moments3, β⁰, W, "first step", "", false);
+W = inv(cov(moments3(βhat)))
+βhat, objv, V, D, W, convergence = gmmresults(moments3, β⁰, W, "second step efficient");
+
+## now CUE for the overidentified version
 using Econometrics, ForwardDiff
 moments3 = β -> [moments1(β) moments2(β)]
 βhat, objv, V, D, W, convergence = gmmresults(moments3, β⁰);
@@ -46,7 +56,7 @@ m = moments3(βhat) # the moment contributions, evaluated at estimate
 
 ## let's see how the Hansen-Sargan test can detect 
 # incorrect moments
-η = 0.01 # if this is different from zero, moments4, and, thus moments5, will not be valid
-moments4 = β -> moments3(β) .+ η
+η = 0.02 # if this is different from zero, moments4 will not be valid
+moments4 = β -> [moments1(β) .+ η moments2(β)]
 βhat, objv, V, D, W, convergence = gmmresults(moments4, β⁰);
 

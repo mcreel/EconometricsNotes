@@ -29,7 +29,8 @@ function gmmresults(moments, θ, weight="", title="", names="", efficient=true)
     end
     k,g = size(D)
     # estimate variance
-    efficient ? V = inv(D*weight*D')/n : V = V*D*weight*NeweyWest(ms)*weight*D'*V/n
+    V = inv(D*weight*D')/n
+    !efficient ? V = n*V*D*weight*NeweyWest(ms)*weight*D'*V : nothing
     if names==""
         names = 1:k
         names = names'
@@ -45,9 +46,13 @@ function gmmresults(moments, θ, weight="", title="", names="", efficient=true)
     printstyled(message, color=:cyan)
     println()
     println("Observations: ", n)
-    println("Obj. fn. value ", round(objvalue, digits=5), "    Hansen-Sargan statistic: ", round(n*objvalue, digits=5))
+    println("Obj. fn. value ", round(objvalue, digits=5))
     g==k ? printstyled("Exactly identified: Obj. fun. value should be zero if global min found\n", color=:yellow) : nothing
-    g > k ? println("Hansen-Sargan p-value: ", round(1.0 - cdf(Chisq(g-k),n*objvalue), digits=5)) : nothing
+    if g>k && efficient
+        println("Hansen-Sargan statistic: ", round(n*objvalue, digits=5), "     Hansen-Sargan p-value: ", round(1.0 - cdf(Chisq(g-k),n*objvalue), digits=5))
+    end
+    efficient && !CUE ? printstyled("using efficient weight matrix\n", color=:green) : nothing
+    !efficient && !CUE ? printstyled("using inefficient weight matrix\n", color=:red) : nothing
     a =[θhat se t p]
     println("")
     PrintEstimationResults(a, names)

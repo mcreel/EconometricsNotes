@@ -38343,6 +38343,13 @@ using c and n:
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "ML of DSGE"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -46786,7 +46793,7 @@ Suppose the consumer can invest in a risky asset.
  A dollar invested in the asset yields a gross return 
 \begin_inset Formula 
 \[
-(1+r_{t+1})=\frac{p_{t+1}+d_{t+1}}{p_{t}}
+r_{t+1}=\frac{p_{t+1}-p_{t}+d_{t+1}}{p_{t}}
 \]
 
 \end_inset
@@ -47583,10 +47590,39 @@ name "DSGE GMM results"
 
 \begin_inset Graphics
 	filename Examples/DSGE/GMM/gmm.png
+	width 15cm
 
 \end_inset
 
  
+\end_layout
+
+\begin_layout Standard
+For comparision,
+ the ML estimates,
+ using 
+\begin_inset Formula $c$
+\end_inset
+
+ and 
+\begin_inset Formula $n$
+\end_inset
+
+ as the variables for estimation are
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Examples/DSGE/ML/cn.png
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -47611,8 +47647,13 @@ the point estimates for
 \begin_inset Formula $nss$
 \end_inset
 
- are good.
- The two rhos and two sigmas seem to be confused (recall that the true parameter values are in Table 
+ are good:
+ the standard deviations are lower than those of the ML estimator,
+ and the 95% confidence intervals contain the true values.
+\end_layout
+
+\begin_layout Itemize
+The two rhos and two sigmas seem to be confused (recall that the true parameter values are in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:True-parameters-and"
@@ -49697,7 +49738,7 @@ We can get the
 \emph on
 marginal likelihood 
 \emph default
-by integrating out the parameter,
+of the data by integrating out the parameter,
  integrating over its support 
 \begin_inset Formula $\Theta$
 \end_inset
@@ -51040,7 +51081,7 @@ the newer Hamiltonian Monte Carlo method has the advantage that one does not nee
 look at 
 \begin_inset CommandInset href
 LatexCommand href
-name "Geoff Gordon's mh.h"
+name "Geoff Gordon's mh.m"
 target "http://www.cs.cmu.edu/~ggordon/MCMC/"
 literal "false"
 
