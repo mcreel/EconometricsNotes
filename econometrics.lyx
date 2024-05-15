@@ -50333,8 +50333,19 @@ the penalty function
 
 \emph on
 then the class of estimators discussed by CH reduces to the ordinary Bayesian posterior mean.
-\emph default
+\end_layout
 
+\begin_layout Itemize
+Their paper focuses on letting 
+\begin_inset Formula $L_{n}(\theta)$
+\end_inset
+
+ be something else,
+ for example the GMM criterion (two-step or CUE),
+ which opens the door to using Bayesian methods to compute GMM (or other) estimators.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -50344,7 +50355,7 @@ then the class of estimators discussed by CH reduces to the ordinary Bayesian po
 \begin_layout Itemize
 As such,
  their Theorem 2,
- tells us that the Bayesian posterior mean is consistent and asymptotically normally distributed.
+ tells us that the ordinary Bayesian posterior mean is consistent and asymptotically normally distributed.
 \end_layout
 
 \begin_layout Itemize
@@ -50626,6 +50637,7 @@ sequential Monte Carlo (SMC,
 
 \begin_layout Itemize
 Hamiltonian Monte Carlo (HMC).
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -50701,7 +50713,11 @@ Let
 \begin_inset Formula $g(\theta^{*};\theta^{s})$
 \end_inset
 
- be a proposal density,
+ be a 
+\emph on
+proposal density
+\emph default
+,
  which describes the density of a trial value 
 \begin_inset Formula $\theta^{*}$
 \end_inset
@@ -50831,7 +50847,8 @@ because the marginal likelihood
 \begin_inset Formula $f(y)$
 \end_inset
 
- is the same in both cases.
+ is the same in both cases,
+ and cancels out.
  
 \end_layout
 
@@ -52025,9 +52042,8 @@ Simulated maximum likelihood (SML)
 \end_layout
 
 \begin_layout Standard
-For simplicity,
- consider cross-sectional data.
- An ML
+As before,
+ an ML
 \begin_inset ERT
 status collapsed
 
@@ -52055,7 +52071,11 @@ estimator solves
 \end_inset
 
  observation.
- When 
+ 
+\end_layout
+
+\begin_layout Itemize
+When 
 \begin_inset Formula $f(y_{t}|X_{t},\theta)$
 \end_inset
 
@@ -52065,7 +52085,18 @@ estimator solves
 \end_inset
 
  is an infeasible estimator.
- However,
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+However,
  it may be possible to define a random function 
 \begin_inset Formula $p(\nu,y_{t}|X_{t},\theta)$
 \end_inset
@@ -52082,12 +52113,15 @@ estimator solves
 \begin_inset Formula $\nu$
 \end_inset
 
- is known.
- If this is the case,
+ is known and from which we can simulate (make random draws).
+\end_layout
+
+\begin_layout Itemize
+If this is the case,
  the simulator 
 \begin_inset Formula 
 \[
-\tilde{f}\left(y_{t}|X_{t},\theta\right)=\frac{1}{H}\sum_{s=1}^{H}p(\nu_{ts},y_{t}|X_{t},\theta)
+\tilde{f}\left(y_{t}|X_{t},\theta\right)=\frac{1}{H}\sum_{h=1}^{H}p(\nu_{th},y_{t}|X_{t},\theta)
 \]
 
 \end_inset
@@ -52108,8 +52142,9 @@ The SML simply substitutes
 \begin_inset Formula $f(y_{t}|X_{t},\theta)$
 \end_inset
 
- in the log-likelihood function,
- that is 
+ in the log-likelihood function.
+ That is,
+ 
 \begin_inset Formula 
 \[
 \hat{\theta}_{SML}=\arg\max s_{n}(\theta)=\frac{1}{n}\sum_{i=1}^{n}\ln\tilde{f}\left(y_{t}|X_{t},\theta\right)
@@ -52138,7 +52173,8 @@ A simple example of computing
 \end_layout
 
 \begin_layout Standard
-Suppose the data are a set of independent outcomes of Bernoulli trials,
+To see how this might be done,
+ suppose the data are a set of independent outcomes of Bernoulli trials,
  so that there is no regressor,
  and the true density is 
 \begin_inset Formula 
@@ -52149,11 +52185,11 @@ f(y_{t}|\theta)=\text{\ensuremath{\theta}}^{y_{t}}(1-\text{\ensuremath{\theta}})
 \end_inset
 
 Suppose we define 
-\begin_inset Formula $\nu=(\nu_{1},\nu_{2},...\nu_{S})$
+\begin_inset Formula $\nu=(\nu_{1},\nu_{2},...\nu_{H})$
 \end_inset
 
  as 
-\begin_inset Formula $S$
+\begin_inset Formula $H$
 \end_inset
 
  i.i.d.
@@ -52165,7 +52201,7 @@ Suppose we define
  and
 \begin_inset Formula 
 \[
-\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)=\frac{1}{S}\sum_{s}1(\nu_{s}<\theta)
+\tilde{\text{\ensuremath{\theta}}}(\nu,\theta)=\frac{1}{H}\sum_{h=1}^{H}1(\nu_{h}<\theta)
 \]
 
 \end_inset
@@ -52186,7 +52222,7 @@ So,
 \end_inset
 
  is the average of the outcomes of 
-\begin_inset Formula $S$
+\begin_inset Formula $H$
 \end_inset
 
  Bernoulli trials,
@@ -52262,6 +52298,11 @@ this example is obviously very simple,
  and it is not needed in this case,
  where ordinary ML is perfectly feasible.
  It is just an example that shows that it may be possible to find a simulator with the required property.
+\end_layout
+
+\begin_layout Itemize
+McFadden proposed to compute probabilities for the multinomial probit model in this way.
+ That is a case not too different from the simple example above.
 \end_layout
 
 \begin_layout Standard
@@ -52413,7 +52454,10 @@ A formulation of the GMM estimator which we have studied is based upon the momen
 \end_inset
 
  are instruments drawn from the information set.
- Consider 
+\end_layout
+
+\begin_layout Standard
+Consider 
 \begin_inset Formula 
 \[
 \epsilon_{t}(\theta)=K(y_{t},x_{t})-k(x_{t},\theta)
@@ -52435,7 +52479,10 @@ where
 \end_inset
 
 .
- Then,
+\end_layout
+
+\begin_layout Itemize
+Then,
  at the true parameter 
 \begin_inset Formula $\theta_{0}$
 \end_inset
@@ -52445,7 +52492,11 @@ where
 \begin_inset Formula $E_{\theta_{0}}K(y_{t},x_{t}|I_{t})=k(x_{t},\theta_{0}).$
 \end_inset
 
- From this,
+ 
+\end_layout
+
+\begin_layout Itemize
+From this,
  we could base GMM estimation on 
 \begin_inset Formula $\text{\epsilon_{t}(\theta)},$
 \end_inset
@@ -52455,6 +52506,10 @@ where
 \end_inset
 
 .
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -52651,13 +52706,13 @@ literal "true"
  
 \begin_inset Formula 
 \begin{equation}
-\sqrt{n}\left(\hat{\theta}_{MSM}-\theta_{0}\right)\stackrel{d}{\rightarrow}N\left[0,\left(1+\frac{1}{H}\right)\left(D_{\infty}\Omega^{-1}D_{\infty}^{\prime}\right)^{-1}\right]
+\sqrt{n}\left(\hat{\theta}_{MSM}-\theta_{0}\right)\stackrel{d}{\rightarrow}N\left[0,\left(1+\frac{1}{H}\right)\left(D_{\infty}\Omega_{\infty}^{-1}D_{\infty}^{\prime}\right)^{-1}\right]
 \end{equation}
 
 \end_inset
 
 where 
-\begin_inset Formula $\left(D_{\infty}\Omega^{-1}D_{\infty}^{\prime}\right)^{-1}$
+\begin_inset Formula $\left(D_{\infty}\Omega_{\infty}^{-1}D_{\infty}^{\prime}\right)^{-1}$
 \end_inset
 
  is the asymptotic variance of the infeasible GMM estimator.
@@ -52733,7 +52788,7 @@ literal "false"
 ) where we set 
 \begin_inset Formula 
 \[
-\bar{m}_{n}(\theta)=\text{\ensuremath{\hat{\phi}}-\ensuremath{\frac{1}{S}\sum\tilde{\phi^{s}}(\theta)}}
+\bar{m}_{n}(\theta)=\text{\ensuremath{\hat{\phi}}-\ensuremath{\frac{1}{H}\sum_{h=1}^{H}\tilde{\phi^{h}}(\theta)}}
 \]
 
 \end_inset
@@ -52794,11 +52849,16 @@ literal "false"
 
 \begin_layout Itemize
 The 
-\begin_inset Formula $\tilde{\phi^{s}}(\theta)$
+\begin_inset Formula $\tilde{\phi^{h}}(\theta)$
 \end_inset
 
  are the same extremum estimator (statistics),
- applied to simulated data generated from the model.
+ computed using simulated data that is generated from the model,
+ at 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
  
 \end_layout
 
@@ -52814,7 +52874,7 @@ The logic is that
  grows large) to a pseudo-true value,
  as it is an extremum estimator,
  and 
-\begin_inset Formula $\tilde{\phi^{s}}(\theta)$
+\begin_inset Formula $\tilde{\phi^{h}}(\theta)$
 \end_inset
 
  will converge to another pseudo-true value,
@@ -52863,7 +52923,7 @@ fit well
 \end_inset
 
 :
- it should pick up the relevant features of the data.
+ it should pick up the relevant features of the data that are informative about the parameters.
 \end_layout
 
 \begin_layout Itemize
@@ -52946,17 +53006,22 @@ When a function of interest is approximated with simulations,
 \end_inset
 
 ,
- we need to recognize that if we repeat the simulation process,
+ we need to recognize that,
+ if we repeat the simulation process,
  drawing 
 \begin_inset Formula $H$
 \end_inset
 
  new samples,
+
+\color blue
  the value of 
 \begin_inset Formula $\frac{1}{H}\sum_{h=1}^{H}k(\widetilde{y}_{t}^{h},x_{t})$
 \end_inset
 
- will change,
+ will change
+\color inherit
+,
  even if 
 \begin_inset Formula $\theta$
 \end_inset
@@ -52964,7 +53029,13 @@ When a function of interest is approximated with simulations,
  is held constant,
  unless special care is taken.
  When the random elements of the simulation process are not held fixed for the simulations,
- this function is everywhere discontinuous.
+ 
+\color blue
+this function is everywhere discontinuous in 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
  
 \end_layout
 
@@ -53023,7 +53094,11 @@ In other cases,
  even if random draws of latent variables are held fixed.
  In these cases,
  extremum estimators have been devised that rely on forms of smoothing of the functions.
- However,
+ 
+\end_layout
+
+\begin_layout Itemize
+In all of these cases,
  it is quite easy to move to a Bayesian perspective,
  where we don't need to optimize,
  and this will also be easier to program,
@@ -53265,6 +53340,11 @@ If you compare the MSM and Bayesian MSM results,
  
 \end_layout
 
+\begin_layout Itemize
+So,
+ this seems to be working well....
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -53355,8 +53435,12 @@ MCMC estimation using simulated moments and limited information quasi-likelihood
 \begin_inset Newpage newpage
 \end_inset
 
+
+\color blue
 Unfortunately,
- inferences using overidentified GMM-type estimators are often not reliable in finite samples (
+ inferences using overidentified GMM-type estimators are often not reliable in finite samples
+\color inherit
+ (
 \begin_inset CommandInset citation
 LatexCommand citet
 key "DonaldImbensNewey2009"
@@ -53383,7 +53467,11 @@ literal "false"
 \end_inset
 
 ).
- The script 
+ 
+\end_layout
+
+\begin_layout Itemize
+The script 
 \begin_inset ERT
 status open
 
@@ -53402,7 +53490,11 @@ _MonteCarlo.jl}
 
  runs 100 replications of estimation of the same model and computes confidence intervals using both asymptotic theory for MSM estimators,
  and using quantiles of the MCMC chain.
- Confidence interval coverage,
+ 
+\end_layout
+
+\begin_layout Itemize
+Confidence interval coverage,
  which is the proportion of times the true parameters are inside the computed confidence intervals,
  is reported in Figure 
 \begin_inset CommandInset ref
@@ -53416,12 +53508,20 @@ nolink "false"
 \end_inset
 
 .
- In all cases,
+ 
+\end_layout
+
+\begin_layout Itemize
+In all cases,
  the true parameters are over-rejected,
  which is to say,
  the confidence intervals are tighter than they should be,
  and Type-I error will occur more often than it should.
- This applies to both the extremum and Baysesian versions.
+ 
+\end_layout
+
+\begin_layout Itemize
+This applies to both the extremum and Baysesian versions.
  The Bayesian version could perhaps be improved somewhat by more careful tuning of the MCMC algorithm (see below) but the extremum version does not use tuning,
  so the results are not dependent on this sort of qualification.
 \end_layout
@@ -53489,7 +53589,8 @@ Simulated Neural Moments
 
 \begin_layout Standard
 A solution to this problem is to reduce the dimension of the statistics by passing them through a trained neural net.
- 
+ The following may not be a general solution,
+ but it has worked well in all cases I have tried it.
 \end_layout
 
 \begin_layout Itemize
@@ -53778,10 +53879,17 @@ the 95% confidence intervals always contain the true parameter values
 Full Sample Neural Moments
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 The simulated neural moments approach requires specifying a vector of summary statistics.
- The efficiency of the final estimator will depend on the choice of statistics.
- An alternative approach,
+ 
+\end_layout
+
+\begin_layout Itemize
+The efficiency of the final estimator will depend on the choice of statistics.
+\end_layout
+
+\begin_layout Itemize
+An alternative approach,
  explored in 
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -53792,13 +53900,26 @@ literal "false"
 
 ,
  constructs the neural net using the full sample data directly as the input.
- To capture the information in the sequence of observation in the sample,
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To capture the information in the sequence of observation in the sample,
  a more sophisticated net is required.
  The paper proposes temporal convolutional nets (TCNs) for this purpose.
- This approach has been found to have lower RMSE than the maximum likelihood estimator,
+ 
+\end_layout
+
+\begin_layout Itemize
+This approach has been found to have lower RMSE than the maximum likelihood estimator,
  for several small test models,
  and to have lower RMSE that a neural moment estimator that uses summary statistics.
- This paper is certainly not the last word on the topic,
+ 
+\end_layout
+
+\begin_layout Itemize
+This paper is certainly not the last word on the topic,
  but it does show that neural nets have much promise for improving the efficiency of simulated method of moments type estimators.
 \begin_inset Newpage newpage
 \end_inset
@@ -53806,6 +53927,7 @@ literal "false"
 
 \end_layout
 
+\end_deeper
 \begin_layout Standard
 Monte Carlo results for 1000 replications of the TCN neural net estimator,
  for the simple DSGE model are

@@ -28,10 +28,29 @@ model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDra
 
 ## see how the NN estimator works with some random parameter draws
 S = 100
+errs = zeros(S,7)
+Threads.@threads for  i = 1:S
+    # generate some date and define the neural moments using the data
+    θtrue = PriorDraw()
+    ok = false
+    while !ok
+        data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
+        ok = GoodData(auxstat(data))
+        if ok
+            θnn =  NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
+            errs[i,:] = θnn - θtrue
+            pretty_table([θtrue θnn], header = ["θtrue", "θnn"])
+        else
+            println("bad draw, repeating")
+        end    
+    end    
+end
+
+## see how the NN estimator works at the "true parameters" for the DSGE example
+S = 100
 errs = zeros(S, size(lb,1))
 Threads.@threads for  i = 1:S
     # generate some date and define the neural moments using the data
-    #θtrue = PriorDraw()
     θtrue = TrueParameters()
     ok = false
     while !ok
@@ -39,22 +58,22 @@ Threads.@threads for  i = 1:S
         ok = GoodData(auxstat(data))
         if ok
             θnn =  NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
-            errs[i,:] = θnn - θtrue 
-            pretty_table([θtrue θnn], header = ["θtrue", "θnn"])
-        end
+            errs[i,:] = θnn - θtrue
+        else
+            println("bad draw, repeating")
+        end    
     end    
 end
 b = mean(errs, dims=1)[:]
 s = std(errs, dims=1)[:]
 r = sqrt.(b.^2 + s.^2)[:]
-m = b + TrueParameters()
 printstyled("Monte Carlo results, $(S) draws", color=:green)
-pretty_table(round.([TrueParameters() m b s r], digits=4), header = (["true", "mean", "bias", "sd", "rmse"]))
+pretty_table(round.([TrueParameters() b r], digits=4), header = (["True", "Bias",  "RMSE"]))
 
 
-## Now, let's move on to Bayesian MSM
+## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one
 data = readdlm("dsgedata.txt")
-θtrue = TrueParameters() # the parameters of the example data
+#θtrue = TrueParameters() # the parameters of the example data
 #data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
 
 
@@ -76,7 +95,7 @@ end
 
 ## get the NN estimate from the data, using the trained net
 θnn = NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
-@show θnn
+pretty_table(round.([TrueParameters() θnn], digits=4), header = (["True", "θnn"]))
 
 ## settings for MCMC
 S = 50
@@ -85,7 +104,7 @@ tuninglength = 500
 finallength = 1000
 burnin = 100
 verbosity = 100 # show results every X draws
-tuning = 1.0
+tuning = 0.75 # pre-checked to work ok
 
 ## define the proposal and the log-likelihood
 junk, Σp = mΣ(θnn, covreps, model, nnmodel, nninfo)
@@ -103,8 +122,7 @@ lnL = θ -> snmobj(θ, θnn, S, model, nnmodel, nninfo)
 chain = SimulatedNeuralMoments.mcmc(θnn, tuninglength, lnL, model, nnmodel, nninfo, proposal, burnin, verbosity)
 acceptance = mean(chain[:,end])
 start = 0.
-
-## update proposal until acceptance rate is good
+# update proposal until acceptance rate is good
 while acceptance < 0.2 || acceptance > 0.3
     global tuning, chain, acceptance, start
     acceptance < 0.2 ? tuning *= 0.75 : nothing

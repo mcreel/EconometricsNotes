@@ -1,4 +1,5 @@
 ##
+cd(@__DIR__)
 using Econometrics, LinearAlgebra, Statistics, DelimitedFiles, SolveDSGE, MCMCChains, Plots, Distributions
 include("DSGEmoments.jl")
 include("DSGEmodel.jl") # defines prior and log-likelihood
@@ -63,12 +64,12 @@ chain = main()
 ## visualize results
 p = npdensity(chain[:,2]) # example of posterior plot
 display(p)
-savefig("gamma.svg")
+#savefig("gamma.svg")
 
 ##
 chn = Chains(chain[:,1:7], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 display(chn)
 display(plot(chn))
-savefig("allparams.svg")
+#savefig("allparams.svg")
 
 

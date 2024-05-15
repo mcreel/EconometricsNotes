@@ -23,7 +23,7 @@ function DSGEmoments(θ, data)
         u = (η[2:end]-η[1:end-1]*ρ_η)/σ_η
         e1 = η[1:end-1].*u
         e2 = u.^2.0 .- 1.0 
-        pref_shock = u
+        pref_shock = copy(u)
         # now the Euler eqn
         e3 = 100.0*((1.0 .+ r .- δ).*β.*(c.^(-γ)) .- lag(c,1).^(-γ))[2:end]
         # recover K from MPK/MPL
@@ -33,7 +33,7 @@ function DSGEmoments(θ, data)
         u = (z[2:end]-z[1:end-1]*ρ_z)/σ_z
         e4 = z[1:end-1].*u
         e5 = u.^2.0 .- 1.0
-        tech_shock = u
+        tech_shock = copy(u)
         # make moment conditions
         data, junk, junk = stnorm(log.(data)[1:end-1,:])
         errors = [100.0*e1 e2 e3 10.0*e4 e5 e3.*data pref_shock.*data tech_shock.*data]

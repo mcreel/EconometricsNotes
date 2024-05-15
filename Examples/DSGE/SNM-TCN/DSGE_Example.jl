@@ -1,14 +1,13 @@
-# This does raw TCN neural net estimation for the DSGE example,
-# doing 1000 Monte Carlo replications
-#
-# In the future, it would be nice to show how to do Bayesian MSM
-using PrettyTables, Pkg
+## This does TCN neural net estimation for the DSGE example
+using PrettyTables, Pkg, DelimitedFiles, Distributions, LinearAlgebra
 cd(@__DIR__)
 Pkg.activate(".")
 # defines the net and the DSGE model, and needed functions
 include("Setup.jl")
- 
+
 function main()
+
+## Monte Carlo to see how the raw TCN estimator performs
 reps = 1000
 net = load_trained()
 Flux.testmode!(net)
@@ -22,33 +21,107 @@ b = mean(e, dims=2)
 r = sqrt.(mean(e.^2, dims=2))
 printstyled("Monte Carlo TCN neural net results for the DSGE model, $(reps) replications\n", color=:green)
 pretty_table(round.([TrueParameters() m b s r],digits=4), header=["True", "mean", "bias", "st. dev.", "rmse"])
-return nothing
-#=
-# set up proposal
+
+
+## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one
+# load the data
+data = readdlm("dsgedata.txt")
+# transform the data the same way as was used to train net
+data .-= [0.84, 0.69, 0.33, 0.05, 1.72]'
+data ./= [0.51, 0.44, 0.36, 0.018, 0.34]'
+X = zeros(Float32, 160, 1, 5)
+X[:, 1, :] = Float32.(data)
+
+## This is the raw TCN estimate using the official data set
+θnn = Float64.(UntransformParameters(net(tabular2conv(permutedims(Float32.(X), (3, 2, 1))))))[:]
+
+#################### Define functions for MCMC ###############################
+
+# compute mean and cov of moments, for obj fn and proposal
+function simmomentscov(θ::Vector{Float64}, S::Int64)
+m = Float64.(UntransformParameters(net(MakeData(θ, covreps, CKmodel)))')
+mean(m, dims=1)[:], cov(m)
+end
+
+# CUE objective, written to MAXIMIZE
+@inbounds function bmsmobjective(θ::Vector{Float64}, θnn::Vector{Float64}, S::Int64)  
+    # Make sure the trial parameter value is in the support
+    InSupport(θ) || return -Inf
+    # Compute simulated moments and covariance
+    θbar, Σ = simmomentscov(θ, S)
+    n = 160 # sample size
+    Σ *= n * (1+1/S) # 1 for θhat, 1/S for θbar
+    isposdef(Σ) || return -Inf
+    err = sqrt(n)*(θnn-θbar) 
+    W = inv(Σ)
+    -0.5*dot(err, W, err)
+end
+
+# proposal: MVN random walk
+@inbounds function proposal(current::Vector{Float64}, δ::Float64, Σ::Array{Float64})
+    rand(MvNormal(current, δ*Σ))
+end
+
+@views function mcmc(
+    θ::Vector{Float64}; # TODO: prior? not needed at present, as priors are uniform
+    Lₙ::Function, proposal::Function, burnin::Int=100, N::Int=1_000,
+    verbosity::Int=10
+)
+    Lₙθ = Lₙ(θ) # Objective at data moments value
+    naccept = 0 # Number of acceptance / rejections
+    accept = false
+    acceptance_rate = 1f0
+    chain = zeros(N, size(θ, 1) + 2)
+    for i ∈ 1:burnin+N
+        θᵗ = proposal(θ) # new trial value
+        Lₙθᵗ = Lₙ(θᵗ) # Objective at trial value
+        # Accept / reject trial value
+        accept = rand() < exp(Lₙθᵗ - Lₙθ)
+        if accept
+            # Replace values
+            θ = θᵗ
+            Lₙθ = Lₙθᵗ
+            # Increment number of accepted values
+            naccept += 1
+        end
+        # Add to chain if burnin is passed
+        # @info "current log-L" Lₙθ
+        if i > burnin
+            chain[i-burnin,:] = vcat(θ, accept, Lₙθ)
+        end
+        # Report
+        if verbosity > 0 && mod(i, verbosity) == 0
+            acceptance_rate = naccept / verbosity
+            @info "Current parameters (iteration i=$i)" round.(θ, digits=3)' acceptance_rate
+            naccept = 0
+        end
+    end
+    return chain
+end
+
+#################### End Define functions for MCMC ###############################
+
+
+## set up proposal and chain
+
+# proposal
 covreps = 1000
-_,Σₚ = simmomentscov(net, dgp, covreps, θnn)
+_,Σₚ = simmomentscov(θnn, covreps)
 δ = 1.0 # tuning
 
-# do MCMC
-S = 40 # simulations to compute moments
-# initial short chain
-chain = mcmc(θnn, θnn, δ, Σₚ, S, net, dgp; burnin=0, chainlength=200)
-accept = mean(chain[:,end-1])
-# loop to get good tuning
-while accept < 0.2 || accept > 0.3
-    accept < 0.2 ? δ *= 0.75 : nothing
-    accept > 0.3 ? δ *= 1.5 : nothing
-    chain = mcmc(θnn, θnn, δ, Σₚ, S, net, dgp; burnin=0, chainlength=200)
-    accept = mean(chain[:,end-1])
-end
-# final long chain
-chain = mcmc(θnn, θnn, δ, Σₚ, S, net, dgp; burnin=0, chainlength=2000)
+# define objective and proposal
+S = 20  # number of simulations for moments
+obj = θ -> bmsmobjective(θ, θnn, S)
+prop = θ -> proposal(θ, δ, Σₚ)
+
+## run the chain
+chain = mcmc(θnn, Lₙ=obj, proposal=prop, N=500)
 # report results
-chn = Chains(chain[:,1:end-2], ["θ₁", "θ₂"])
+chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 plot(chn)
 savefig("chain.png")
-pretty_table([θtrue[:] Float64.(θnn[:]) mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θpos_mean"]))
 display(chn)
-=#
+pretty_table([θtrue θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θmcmc"]))
+
 end
-main();
+main()

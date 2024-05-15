@@ -61,7 +61,7 @@ function posterior(y, θ)
 end
 
 function main()
-    n = 50   # sample size
+    n = 100   # sample size
     θ = 3.0 # true θ
     y = rand(Exponential(θ), n) # sample from exponential(θ)
     # make plots
