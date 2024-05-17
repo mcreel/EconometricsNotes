@@ -141,6 +141,6 @@ chain = SimulatedNeuralMoments.mcmc(start, finallength, lnL, model, nnmodel, nni
 chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 plot(chn)
 #savefig("chain.png") # saved one used 5000 draws, current settings are fewer
-pretty_table([θtrue θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θmcmc"]))
+pretty_table([TrueParameters() θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θmcmc"]))
 display(chn)
 

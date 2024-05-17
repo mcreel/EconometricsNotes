@@ -53875,6 +53875,32 @@ the 95% confidence intervals always contain the true parameter values
 
 \end_layout
 
+\begin_layout Standard
+The chain follows.
+ It seems to mix reasonably well,
+ but in practice,
+ one would like a longer chain to reduce the variance of the posterior,
+ especially in the tails,
+ in order to get reliable confidence intervals.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SimulatedNeuralMoments/chain.png
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Full Sample Neural Moments
 \end_layout
@@ -53921,30 +53947,48 @@ This approach has been found to have lower RMSE than the maximum likelihood esti
 \begin_layout Itemize
 This paper is certainly not the last word on the topic,
  but it does show that neural nets have much promise for improving the efficiency of simulated method of moments type estimators.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+software to train a net,
+ and to do estimation is at 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/DSGE/SNM-TCN/Estimate.jl}{Estimate.jl}
+\end_layout
+
+\end_inset
+
+ and associated files.
 \begin_inset Newpage newpage
 \end_inset
 
 
 \end_layout
 
-\end_deeper
 \begin_layout Standard
 Monte Carlo results for 1000 replications of the TCN neural net estimator,
- for the simple DSGE model are
+ for the simple DSGE model are below.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Graphics
 	filename Examples/DSGE/SNM-TCN/montecarlo.png
-	width 20cm
+	width 15cm
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Itemize
-if you compare these with the SNM neural moments that are based on a summary statistic (
+\begin_layout Standard
+Below are the results using the SNM neural net that takes a summary statistic as the input (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "SNM for DSGE results"
@@ -53956,7 +54000,25 @@ nolink "false"
 \end_inset
 
 ),
- you will see that these are considerably better for 
+ for comparison.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
+	width 15cm
+	special height=15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+the TCN results are better overall,
+ both in terms of bias and rmse,
+ and are considerably better for 
 \begin_inset Formula $\gamma$
 \end_inset
 
@@ -53965,16 +54027,62 @@ nolink "false"
 
 \begin_layout Itemize
 This shows that there may be information lost when using summary statistics,
- and that we can do better with a well-chosen neural net.
+ and that we can do better with a well-chosen neural net that uses the full sample information.
+ However,
+ more evidence would be needed to confirm these results.
 \end_layout
 
 \begin_layout Itemize
+95% confidence intervals are tight,
+ and contain the true parameter values,
+ for all parameters.
+\begin_inset Newpage newpage
+\end_inset
 
-\size footnotesize
-Note:
- Still need to add Bayesian MSM,
- using the neural net fit as the moments for MSM.
-\size default
+
+\end_layout
+
+\begin_layout Standard
+Results for CUE-GMM using the TCN fit as the simulated moments are
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SNM-TCN/Results.png
+	width 20cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The point estimates are very close to the true values,
+ and the standard deviations are small,
+ and are,
+ in general,
+ better than what we have seen with other estimators.
+ 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The chains follow.
+ They look pretty good.
+ It would be better to use longer chains,
+ to smooth out the bumps in the marginal densities.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SNM-TCN/chain.png
+	width 20cm
+
+\end_inset
+
 
 \begin_inset Newpage newpage
 \end_inset
