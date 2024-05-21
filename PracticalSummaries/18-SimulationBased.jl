@@ -45,7 +45,7 @@ end
 ## Define the MSM criterion 
 # IMPORTANT: try running this with chatter, and without.
 S = 100 # number of simulation replications
-controlchatter = true
+controlchatter = false
 m = θ -> k(x,y) - mean(simulated_moments(θ, x, S, controlchatter)) 
  # sums of squares of moments: corresponds to GMM with identity weight
 function obj(θ)
@@ -72,7 +72,7 @@ using Econometrics
 fminunc(obj, ones(2))
 println(@green "You should find that MSM works, when chatter is controlled")
 println(@yellow "(Remember that the true parameters are $θ₀)")
-# note that theta hat is same as start values, it didn't work
+# note that, with chatter, the estimates change every time, even though the sample does not.
 
 ## Now, let's do Bayesian MSM, as suggested by
 #  Chernozhukov and Hong (2003)

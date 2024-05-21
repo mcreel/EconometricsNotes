@@ -53974,21 +53974,9 @@ href{./Examples/DSGE/SNM-TCN/Estimate.jl}{Estimate.jl}
 
 \begin_layout Standard
 Monte Carlo results for 1000 replications of the TCN neural net estimator,
- for the simple DSGE model are below.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename Examples/DSGE/SNM-TCN/montecarlo.png
-	width 15cm
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Below are the results using the SNM neural net that takes a summary statistic as the input (
+ for the simple DSGE model are below,
+ on the L.
+ Results for the SNM feed forward neural net that takes a summary statistic as the input (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "SNM for DSGE results"
@@ -53999,15 +53987,25 @@ nolink "false"
 
 \end_inset
 
-),
+) are on the R,
  for comparison.
 \begin_inset Newline newline
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SNM-TCN/montecarlo.png
+	width 12cm
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
-	width 15cm
+	width 12cm
 	special height=15cm
 
 \end_inset
@@ -54029,7 +54027,7 @@ the TCN results are better overall,
 This shows that there may be information lost when using summary statistics,
  and that we can do better with a well-chosen neural net that uses the full sample information.
  However,
- more evidence would be needed to confirm these results.
+ more evidence would be needed to confirm these results (there is some in the above-cited paper).
 \end_layout
 
 \begin_layout Itemize
@@ -54058,11 +54056,21 @@ Results for CUE-GMM using the TCN fit as the simulated moments are
 
 \begin_layout Itemize
 The point estimates are very close to the true values,
- and the standard deviations are small,
- and are,
- in general,
- better than what we have seen with other estimators.
- 
+ and the standard deviations are small
+\end_layout
+
+\begin_layout Itemize
+the 95% CIs contain the true parameters,
+ in all cases.
+\end_layout
+
+\begin_layout Itemize
+in general,
+ the results are better than what we have seen with other estimators.
+ However,
+ the comparison is for only one sample.
+ We would need to do a more careful Monte Carlo to draw stronger conclusions.
+ The problem with that is that some of the estimators are tedious and time consuming to compute.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -54134,7 +54142,7 @@ status open
 
 
 \backslash
-href{./PracticalSummaries/22-SimulationBased.jl}{here}
+href{./PracticalSummaries/18-SimulationBased.jl}{here}
 \end_layout
 
 \end_inset
