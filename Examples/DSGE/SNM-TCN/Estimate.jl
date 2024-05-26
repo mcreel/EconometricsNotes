@@ -5,10 +5,8 @@ Pkg.activate(".")
 # defines the net and the DSGE model, and needed functions
 include("Setup.jl")
 
-function main()
-
 ## Monte Carlo to see how the raw TCN estimator performs
-reps = 1000
+reps = 100
 net = load_trained()
 Flux.testmode!(net)
 θtrue = TrueParameters()
@@ -23,7 +21,7 @@ printstyled("Monte Carlo TCN neural net results for the DSGE model, $(reps) repl
 pretty_table(round.([TrueParameters() m b s r],digits=4), header=["True", "mean", "bias", "st. dev.", "rmse"])
 
 
-## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one
+## Now, let's move on to Bayesian MSM using the typical data set
 # load the data
 data = readdlm("dsgedata.txt")
 # transform the data the same way as was used to train net
@@ -122,6 +120,3 @@ plot(chn)
 savefig("chain.png")
 display(chn)
 pretty_table([TrueParameters() θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θmcmc"]))
-
-end
-main()

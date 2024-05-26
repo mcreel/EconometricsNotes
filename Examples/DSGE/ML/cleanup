@@ -1,7 +1,3 @@
 #!/bin/bash
-mv CKml.mod temp
-rm -R -f +CKml
-rm -R -f CK*
-rm *.mat
-rm *.dat
-mv temp CKml.mod
+rm -R -f CKml
+rm CKml.log

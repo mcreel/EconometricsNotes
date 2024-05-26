@@ -10,18 +10,15 @@ Start julia as "julia --proj -t auto" to use threads
 =#
 using Pkg
 cd(@__DIR__)
-#Pkg.activate(".")
-using Econometrics, SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
+Pkg.activate("../../..")
+using SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
 using Distributions, StatsPlots, DelimitedFiles, PrettyTables
 using BSON:@save
 using BSON:@load
-
-
-## get the things to define the structure for the model
+# get the things to define the structure for the model
 include("CKlib.jl") # contains the functions for the DSGE model
 @load "neuralmodel.bson" nnmodel nninfo # use this to load a trained net
-
-## fill in the structure that defines the model
+# fill in the structure that defines the model
 n = 160
 lb, ub = PriorSupport()
 model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDraw, auxstat)
@@ -29,7 +26,7 @@ model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDra
 ## see how the NN estimator works with some random parameter draws
 S = 100
 errs = zeros(S,7)
-Threads.@threads for  i = 1:S
+Threads.@threads for i = 1:S
     # generate some date and define the neural moments using the data
     θtrue = PriorDraw()
     ok = false
@@ -77,21 +74,6 @@ data = readdlm("dsgedata.txt")
 #data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
 
 
-#=
-# UNCOMMENT this block to see training of the net, using a small sample
-## train the net, and save it and the transformation info
-TrainTestSize = 50000
-Epochs = 1000
-nnmodel, nninfo, params, stats, transf_stats = MakeNeuralMoments(model, TrainTestSize=TrainTestSize, Epochs=Epochs)
-# examine the transformed stats to ensure that outliers
-# have been controlled. We want to see some distance between the whiskers.
-@info "checking the transformed statistics for outliers"
-for i = 1:size(transf_stats,2)
-    boxplot(transf_stats[:,i],title="statistic $i")
-    savefig("stat$i.png")
-end
-@save "neuralmodel.bson" nnmodel nninfo
-=#
 
 ## get the NN estimate from the data, using the trained net
 θnn = NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]

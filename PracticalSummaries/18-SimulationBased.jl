@@ -12,6 +12,10 @@
 
 
 ########################### MSM Example ###############################
+cd(@__DIR__)
+using Pkg
+Pkg.activate("../")
+
 using Term
 println(@yellow "Start of MSM example")
 #  MSM exampl. We generate data that follows a Gaussian
@@ -30,7 +34,8 @@ x = randn(n,2)
 θ₀ = [1.,1.] # true params
 y = rand.(Normal.(μ(x,θ₀),1.0))
 
-## the statistics, averaged over observations
+## the statistics, averaged over observations: these are just off the top of the head,
+# they may not be very good
 function k(x,y)
     vec(mean([y x.*y x.*(y.^2.0) (x.^2.0).*y], dims=1))
 end
@@ -88,14 +93,13 @@ k_data = k(x,y) # stats from the real data
     Σ = cov(ks)  # estimated covariance of statistic
     k_data ~ MvNormal(kbar, Σ) # this corresponds to CUE GMM, but adding the determinant from the MVN 
 end
-
-## do MCMC sampling
+# do MCMC sampling
 # look at acceptance rate, below, and adjust
 # the tuning to make acceptance around 0.25
-S = 500 # make this as large as possible, given computation time, when doing real research
+S = 50 # make this as large as possible, given computation time, when doing real research
 tuning = 0.05
-length = 10000
-burnin = 1000
+length = 2000
+burnin = 200
 chain = sample(MSM(k_data, S, x),
     MH(:θ => AdvancedMH.RandomWalkProposal(MvNormal(zeros(2), tuning*eye(2)))),
     length; init_params=zeros(2), discard_initial=burnin)
@@ -176,14 +180,13 @@ using Turing, AdvancedMH
         y[i] ~ Bernoulli(p[i])
     end
 end
-
-## do MCMC sampling
+# do MCMC sampling
 # look at acceptance rate, below, and adjust
 # the tuning to make acceptance around 0.25
 S = 200 # make this as large as possible, given computation time, when doing real research
 tuning = 0.1
-length = 10000
-burnin = 1000
+length = 2000
+burnin = 200
 chain = sample(SML(y, x, S),
     MH(:θ => AdvancedMH.RandomWalkProposal(MvNormal(zeros(2), tuning*eye(2)))),
     length; discard_initial=burnin)

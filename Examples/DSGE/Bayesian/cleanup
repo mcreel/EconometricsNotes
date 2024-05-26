@@ -1,7 +1,5 @@
 #!/bin/bash
-mv CKmcmc.mod temp
-rm -R -f +CKmcmc
-rm -R -f CK*
-rm *.mat
-rm *.dat
-mv temp CKmcmc.mod
+rm -R -f CKmcmc_cn
+rm -R -f CKmcmc_yw
+rm *.log
+

@@ -24585,8 +24585,8 @@ Gradient based optimization methods are much more likely to be successful and gi
 \begin_inset Formula 
 \begin{align*}
 s_{n}(\theta)= & \frac{1}{n}\sum_{t}\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)^{2}\\
-D_{\alpha}s_{n}(\cdot)= & \frac{1}{n}\sum_{t}{\color{teal}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}}x_{t}\\
-D_{\beta}s_{n}(\cdot)= & \frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})z_{t}
+D_{\alpha}s_{n}(\cdot)= & \frac{-1}{n}\sum_{t}{\color{teal}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}}x_{t}\\
+D_{\beta}s_{n}(\cdot)= & \frac{-1}{n}\sum_{t}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})z_{t}
 \end{align*}
 
 \end_inset
@@ -24623,8 +24623,8 @@ suppose that
 then 
 \begin_inset Formula 
 \begin{align*}
-D_{\alpha^{*}}s_{n}(\cdot) & =\frac{1}{n}\sum_{t}2\left(y_{t}-h(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})\right)g(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})x_{t}^{*}\\
- & =\frac{1}{n}\sum_{t}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}{\color{red}x_{t}^{*}}
+D_{\alpha^{*}}s_{n}(\cdot) & =\frac{-1}{n}\sum_{t}2\left(y_{t}-h(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})\right)g(\alpha^{*}x_{t}^{*}+\beta^{*}z_{t}^{*})x_{t}^{*}\\
+ & =\frac{-1}{n}\sum_{t}{\color{blue}2\left(y_{t}-h(\alpha x_{t}+\beta z_{t})\right)g(\alpha x_{t}+\beta z_{t})}{\color{red}x_{t}^{*}}
 \end{align*}
 
 \end_inset
@@ -38276,12 +38276,6 @@ ML estimation of the DSGE model
 \end_layout
 
 \begin_layout Standard
-Note:
- this section will not be converted to the Julia language at the present time,
- as there is presently no Julia language full equivalent of Dynare.
-\end_layout
-
-\begin_layout Standard
 Chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -38304,7 +38298,7 @@ href{./Examples/DSGE/ML/CKml.mod}{CKml.mod}
 
 \end_inset
 
- allows you to explore maximum likelihood estimation of the model using Kalman or particle filtering,
+ allows you to explore maximum likelihood estimation of the model using Kalman filtering,
  using the 
 \begin_inset CommandInset href
 LatexCommand href
@@ -38314,14 +38308,36 @@ literal "false"
 
 \end_inset
 
- package.
+ Julia package.
  To run it,
- start Octave/Matlab,
- and then enter 
+ go to the 
 \family typewriter
-dynare CKml.mod
+\color blue
+./Examples/DSGE/ML
 \family default
-.
+\color inherit
+ directory,
+ start Julia with 
+\family typewriter
+\color blue
+julia –-proj
+\family default
+\color inherit
+ and enter 
+\family typewriter
+\color blue
+context = @dynare CKml.mod;
+
+\family default
+\color inherit
+ (including the semicolon).
+ Note that Dynare is doing ML by first linearizing the model,
+ then using Kalman filtering to compute the likelihood,
+ then doing quasi-ML.
+ Presumably,
+ some information is lost in the linearization,
+ depending on how nonlinear is the original model,
+ so this is not actually ML.
  Some output that can be obtained is:
 \begin_inset Newpage newpage
 \end_inset
@@ -51319,23 +51335,43 @@ status open
 
  
 \backslash
-href{./Examples/DSGE/Bayesian/CKmcmc.mod}{EstimateCGHK
+href{./Examples/DSGE/Bayesian/CKmcmc
 \backslash
-_Bayes.m} 
+_cn.mod}{CKmcmc
+\backslash
+_cn.mod} 
 \end_layout
 
 \end_inset
 
- is a script which estimates the same model,
- using Bayesian methods,
- with MCMC or particle filtering.
- Adjust the .mod file mentioned in the script to change options.
- Run it in Octave/Dynare using 
+ allows estimation of the same model using Bayesian methods,
+ with Metropolis-Hastings MCMC.
+ To run it,
+ go to the 
 \family typewriter
-dynare CKmcmc.mod.
- 
+\color blue
+./Examples/DSGE/Bayesian
 \family default
-We can obtain the results in Figure 
+\color inherit
+ directory,
+ start Julia with 
+\family typewriter
+\color blue
+julia –-proj
+\family default
+\color inherit
+ and enter 
+\family typewriter
+\color blue
+context = @dynare CKmcmc_cn.mod;
+
+\family default
+\color inherit
+ (including the semicolon).
+\end_layout
+
+\begin_layout Standard
+We can obtain results like
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:MCMC-results-for"
@@ -51356,7 +51392,7 @@ Estimation of the parameters can be good,
  when order=1 (linearized,
  which allows for Kalman filtering),
  The first panel uses the variables c and n,
- and the second uses y and w.
+ and the second uses y and w (using the other .mod file.
  Note that the results for the parameter 
 \begin_inset Formula $\gamma$
 \end_inset
