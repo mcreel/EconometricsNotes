@@ -1,1 +1,0 @@
-../GenData/dsgedata.txt

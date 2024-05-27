@@ -1,7 +1,7 @@
 # this computes the GMM estimator by SA minimization, for
 # one of the 1000 data sets. Can be parallelized using
 # threads.
-using Econometrics, SolveDSGE, DelimitedFiles, Statistics, LinearAlgebra, ForwardDiff
+using Econometrics, SolveDSGE, CSV, Statistics, LinearAlgebra, ForwardDiff
 cd(@__DIR__)
 include("DSGEmoments.jl")  # computes errors
 include("CKlib.jl")
@@ -11,7 +11,7 @@ global const dsge = retrieve_processed_model("../GenData/CK_processed.txt")
 function main(defaultdata = true)
 cd(@__DIR__)
 # call program as main() for the default data, as main(false) for new random data
-defaultdata ? data = readdlm("dsgedata.txt") : data = dgp(TrueParameters(), dsge, 1, rand(1:Int64(1e10)))[1]
+defaultdata ? data = CSV.File("dsgedata.csv") |> CSV.Tables.matrix : data = dgp(TrueParameters(), dsge, 1, rand(1:Int64(1e10)))[1]
 
 # define CUE GMM criterion
 include("parameters.jl") # load true parameter values

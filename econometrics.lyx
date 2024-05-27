@@ -51388,11 +51388,9 @@ Some conclusions we can draw:
 \end_layout
 
 \begin_layout Itemize
-Estimation of the parameters can be good,
- when order=1 (linearized,
- which allows for Kalman filtering),
+Estimation of the parameters can be good.
  The first panel uses the variables c and n,
- and the second uses y and w (using the other .mod file.
+ and the second uses y and w (using the other .mod file).
  Note that the results for the parameter 
 \begin_inset Formula $\gamma$
 \end_inset
@@ -51414,49 +51412,31 @@ The first panel gives results that are substantially similar to those obtained i
 \end_layout
 
 \begin_layout Itemize
-One still has the stochastic singularity problem,
- and the results that are obtained will depend on which variables are selected for estimation.
+The second panel uses y and w as the observed variables,
+ and the results are not as good,
+ especially for 
+\begin_inset Formula $\gamma.$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-The GMM results (see 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "DSGE GMM results"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
+Due to the stochastic singularity problem,
+ the results that are obtained depend on which variables are selected for estimation.
+\end_layout
 
-\end_inset
+\begin_layout Itemize
+Both versions seem to have trouble identifying the shocks from one another,
+ similarly to what we saw with GMM.
+\end_layout
 
-) are substantially closer to the true parameter values,
- for the parameters 
-\begin_inset Formula $\gamma$
-\end_inset
-
- and 
-\begin_inset Formula $\text{\ensuremath{\rho_{2}}}$
-\end_inset
-
-,
- but the estimated standard error for 
-\begin_inset Formula $\rho_{2}$
-\end_inset
-
- is larger than what we get from ML and MCMC.
- GMM does use all of the observable variables:
- c,
- n,
- y,
- r,
- w.
- Perhaps the use of all variables improves the results in some ways.
- Remember,
- all of this is for just one sample,
- so we don't want to take any firm conclusions,
- it's just an observation.
- It would not be hard to perform a Monte Carlo study to see what we can actually say about the performance of the various methods....
+\begin_layout Itemize
+For more conclusive results,
+ we would need to do Monte Carlo,
+ with repeated samples.
+ What we see here is just an example of estimation,
+ more clear interpretation would require more investigation.
 \end_layout
 
 \begin_layout Standard
@@ -51477,8 +51457,7 @@ name "fig:MCMC-results-for"
 
 \end_inset
 
-MCMC results for simple DSGE example model (two different runs using different observed variables),
- plus the GMM results for comparison
+MCMC results for simple DSGE example model (two different runs using different observed variables)
 \end_layout
 
 \end_inset
@@ -51520,19 +51499,6 @@ MCMC,
 
 \end_layout
 
-\begin_layout Plain Layout
-GMM
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Examples/DSGE/GMM/gmm.png
-
-\end_inset
-
-
-\end_layout
-
 \end_inset
 
 
@@ -51548,7 +51514,7 @@ nolink "false"
 \end_inset
 
  plots the priors and posteriors,
- when C and N are used.
+ when c and n are used.
  Note that the posterior is substantially different than the prior:
  we learn a lot from the sample.
  That's why MCMC and ML are substantially similar.
@@ -51587,20 +51553,6 @@ CGHK model,
 
 
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-For tips on using Dynare for MCMC estimation,
- see 
-\begin_inset CommandInset href
-LatexCommand href
-name "these notes by Wouter den Haan."
-target "http://www.wouterdenhaan.com/numerical/slidesdynareestimation.pdf"
-literal "false"
 
 \end_inset
 

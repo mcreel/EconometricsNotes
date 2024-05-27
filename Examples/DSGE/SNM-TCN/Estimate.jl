@@ -1,5 +1,5 @@
 ## This does TCN neural net estimation for the DSGE example
-using PrettyTables, Pkg, DelimitedFiles, Distributions, LinearAlgebra, MCMCChains, StatsPlots
+using PrettyTables, Pkg, CSV, Distributions, LinearAlgebra, MCMCChains, StatsPlots
 cd(@__DIR__)
 Pkg.activate(".")
 # defines the net and the DSGE model, and needed functions
@@ -23,7 +23,7 @@ pretty_table(round.([TrueParameters() m b s r],digits=4), header=["True", "mean"
 
 ## Now, let's move on to Bayesian MSM using the typical data set
 # load the data
-data = readdlm("dsgedata.txt")
+data = CSV.File("dsgedata.csv") |> CSV.Tables.matrix
 # transform the data the same way as was used to train net
 data .-= [0.84, 0.69, 0.33, 0.05, 1.72]'
 data ./= [0.51, 0.44, 0.36, 0.018, 0.34]'

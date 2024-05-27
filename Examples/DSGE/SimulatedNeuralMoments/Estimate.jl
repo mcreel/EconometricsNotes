@@ -12,7 +12,7 @@ using Pkg
 cd(@__DIR__)
 Pkg.activate("../../..")
 using SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
-using Distributions, StatsPlots, DelimitedFiles, PrettyTables
+using Distributions, StatsPlots, CSV, PrettyTables
 using BSON:@save
 using BSON:@load
 # get the things to define the structure for the model
@@ -69,7 +69,7 @@ pretty_table(round.([TrueParameters() b r], digits=4), header = (["True", "Bias"
 
 
 ## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one
-data = readdlm("dsgedata.txt")
+data = CSV.File("dsgedata.csv") |> CSV.Tables.matrix 
 #θtrue = TrueParameters() # the parameters of the example data
 #data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
 

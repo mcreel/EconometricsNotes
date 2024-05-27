@@ -1,13 +1,13 @@
 ##
 cd(@__DIR__)
-using Econometrics, LinearAlgebra, Statistics, DelimitedFiles, SolveDSGE, MCMCChains, Plots, Distributions
+using Econometrics, LinearAlgebra, Statistics, CSV, SolveDSGE, MCMCChains, Plots, Distributions
 include("DSGEmoments.jl")
 include("DSGEmodel.jl") # defines prior and log-likelihood
 include("CKlib.jl")
 
 function main()
     cd(@__DIR__)
-    data = readdlm("dsgedata.txt")
+    data = CSV.File("dsgedata.csv") |> CSV.Tables.matrix
     lb, ub = PriorSupport()
     θtrue = TrueParameters()
     # start values from GMM

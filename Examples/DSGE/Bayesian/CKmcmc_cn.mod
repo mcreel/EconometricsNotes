@@ -56,11 +56,6 @@ z1 = 0;
 z2 = 0;
 end;
 
-steady;
-
-stoch_simul(order=1);
-
-
 estimated_params;
 // start values for the optimization 
 // the numbers after the comment are the true 
@@ -77,6 +72,6 @@ end;
 varobs c n;  // experiment choosing one or two from y c n r w
 
 // Does a single fairly short chain 
-estimation(order=1, datafile='dsgedata.csv', mh_replic=20000, mh_jscale=2.) ;
+estimation(order=1, datafile='dsgedata.csv', mh_replic=20000, mh_nblocks=4, mh_jscale=2.) ;
 
 
