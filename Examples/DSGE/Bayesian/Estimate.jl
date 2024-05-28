@@ -1,6 +1,6 @@
-using Dynare
+using Dynare, Serialization, Statistics
 
 context = @dynare "CKmcmc_cn.mod"
 
-results = context.results.model_results[1]
-results.estimation.posterior_mode
+chain = deserialize("CKmcmc_cn/output/mcmc_chain_1.jls")
+mean(chain.value[:,1:end-1],dims=1)

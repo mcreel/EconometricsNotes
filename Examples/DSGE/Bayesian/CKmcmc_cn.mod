@@ -61,12 +61,12 @@ estimated_params;
 // the numbers after the comment are the true 
 // values used to generate the data.
 betta   ,   0.99    ,   uniform_pdf     ,   0.9724  ,   0.01299;    // 0.99
-gam     ,   2.0     ,   uniform_pdf     ,   2.5     ,   1.4434;       // 2.0
-rho1    ,   0.9     ,   uniform_pdf     ,   0.4975  ,   0.28723;      // 0.9
-sigma1  ,   0.02    ,   uniform_pdf     ,   0.05    ,   0.02887;   // 0.02
-rho2    ,   0.7     ,   uniform_pdf     ,   0.4975  ,   0.28723;       // 0.7
-sigma2  ,   0.01    ,   uniform_pdf     ,   0.05    ,   0.02887;   // 0.01
-nss     ,   .3333   ,   uniform_pdf     ,   0.3125  ,    0.03608;      // 1/3
+gam     ,   2.0     ,   uniform_pdf     ,   2.5     ,   1.4434;     // 2.0
+rho1    ,   0.9     ,   uniform_pdf     ,   0.4975  ,   0.28723;    // 0.9
+sigma1  ,   0.02    ,   uniform_pdf     ,   0.05    ,   0.02887;    // 0.02
+rho2    ,   0.7     ,   uniform_pdf     ,   0.4975  ,   0.28723;    // 0.7
+sigma2  ,   0.01    ,   uniform_pdf     ,   0.05    ,   0.02887;    // 0.01
+nss     ,   .3333   ,   uniform_pdf     ,   0.3125  ,    0.03608;   // 1/3
 end;
 
 varobs c n;  // experiment choosing one or two from y c n r w

@@ -1,9 +1,9 @@
 Dynare version: 0.9.12
-2024-05-27T11:03:33.318: Starting @dynare CKmcmc_cn.mod
+2024-05-28T16:47:47.862: Starting @dynare CKmcmc_cn.mod
 ["CKmcmc_cn.mod", "language=julia", "json=compute"]
 Dynare preprocessor version: 6.4.0+0
-2024-05-27T11:03:33.369: End of preprocessing
-2024-05-27T11:03:33.427: Start parse_statements!
+2024-05-28T16:47:47.881: End of preprocessing
+2024-05-28T16:47:47.893: Start parse_statements!
  * Status: success
 
  * Candidate solution
@@ -20,7 +20,7 @@ Dynare preprocessor version: 6.4.0+0
     |g(x)|                 = 3.48e-01 ≰ 1.0e-08
 
  * Work counters
-    Seconds run:   0  (vs limit Inf)
+    Seconds run:   1  (vs limit Inf)
     Iterations:    16
     f(x) calls:    54
     ∇f(x) calls:   54
@@ -51,25 +51,25 @@ Summary Statistics
   parameters      mean       std      mcse   ess_bulk   ess_tail      rhat   ess_per_sec
       Symbol   Float64   Float64   Float64    Float64    Float64   Float64       Missing
 
-       betta    0.9922    0.0001    0.0000    43.0958    52.6142    1.1303       missing
-         gam    1.9438    0.1844    0.0127   212.9630   531.2424    1.0051       missing
-        rho1    0.9134    0.0121    0.0012   106.6110   189.5468    1.0012       missing
-      sigma1    0.0087    0.0002    0.0000    47.5387    60.8079    1.0289       missing
-        rho2    0.6930    0.0308    0.0028   121.1247   172.7737    1.0456       missing
-      sigma2    0.0192    0.0006    0.0001    42.2265    53.5604    1.5697       missing
-         nss    0.3319    0.0010    0.0001    44.1977    60.1431    1.0207       missing
+       betta    0.9922    0.0001    0.0000    44.6825    56.5386    1.0466       missing
+         gam    1.9466    0.2029    0.0158   173.3302   292.3629    1.0016       missing
+        rho1    0.9091    0.0134    0.0014    97.9285   175.2502    1.0203       missing
+      sigma1    0.0089    0.0002    0.0000    47.0285    68.0153    1.1457       missing
+        rho2    0.6934    0.0318    0.0028   133.9886   285.0122    1.0437       missing
+      sigma2    0.0200    0.0006    0.0001    43.0284    50.2144    1.2908       missing
+         nss    0.3318    0.0012    0.0002    42.0194    63.0115    1.8615       missing
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5%
       Symbol   Float64   Float64   Float64   Float64   Float64
 
-       betta    0.9919    0.9922    0.9923    0.9923    0.9925
-         gam    1.6043    1.8146    1.9333    2.0667    2.3280
-        rho1    0.8911    0.9049    0.9136    0.9217    0.9362
-      sigma1    0.0081    0.0085    0.0087    0.0089    0.0090
-        rho2    0.6302    0.6726    0.6946    0.7136    0.7519
-      sigma2    0.0179    0.0188    0.0191    0.0196    0.0203
-         nss    0.3299    0.3313    0.3320    0.3326    0.3337
+       betta    0.9920    0.9921    0.9922    0.9922    0.9924
+         gam    1.5987    1.8065    1.9297    2.0679    2.3925
+        rho1    0.8820    0.9003    0.9091    0.9180    0.9363
+      sigma1    0.0085    0.0088    0.0090    0.0091    0.0093
+        rho2    0.6297    0.6723    0.6947    0.7152    0.7545
+      sigma2    0.0192    0.0196    0.0199    0.0204    0.0213
+         nss    0.3296    0.3309    0.3319    0.3329    0.3339
 
-2024-05-27T11:04:18.646: End parse_statements!
-2024-05-27T11:04:18.646: End parser
+2024-05-28T16:48:15.210: End parse_statements!
+2024-05-28T16:48:15.210: End parser
