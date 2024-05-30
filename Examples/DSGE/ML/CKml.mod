@@ -58,20 +58,17 @@ end;
 
 steady;
 
-stoch_simul(order=1);
-
-
 estimated_params;
 // start values for the optimization 
 // the numbers after the comment are the true 
 // values used to generate the data.
-betta   ,   0.99   ; // ,   0.95  , 0.995 ;     // 0.99
-gam     ,   2.0    ; // ,   0.    , 5.0   ;     // 2.0
-rho1    ,   0.9    ; // ,   0.    , 0.995 ;     // 0.9
-sigma1  ,   0.02   ; // ,   0.    , 0.1   ;     // 0.02
-rho2    ,   0.7    ; // ,   0.    , 0.995 ;     // 0.7
-sigma2  ,   0.01   ; // ,   0.    , 0.1   ;     // 0.01
-nss     ,   .3333  ; // ,   6/24  , 9/24  ;     // 1/3
+betta   ,   0.99    ,   0.95  , 0.995 ;     // 0.99
+gam     ,   2.0     ,   0.    , 5.0   ;     // 2.0
+rho1    ,   0.9     ,   0.    , 0.995 ;     // 0.9
+sigma1  ,   0.02    ,   0.    , 0.1   ;     // 0.02
+rho2    ,   0.7     ,   0.    , 0.995 ;     // 0.7
+sigma2  ,   0.01    ,   0.    , 0.1   ;     // 0.01
+nss     ,   .3333   ,   6/24  , 9/24  ;     // 1/3
 end;
 
 varobs c n;  // experiment choosing one or two from y c n r w

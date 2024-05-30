@@ -12,7 +12,7 @@ using Pkg
 cd(@__DIR__)
 Pkg.activate("../../..")
 using SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
-using Distributions, StatsPlots, CSV, PrettyTables
+using Distributions, StatsPlots, CSV, PrettyTables, DataFrames
 using BSON:@save
 using BSON:@load
 # get the things to define the structure for the model
@@ -44,28 +44,24 @@ Threads.@threads for i = 1:S
 end
 
 ## see how the NN estimator works at the "true parameters" for the DSGE example
-S = 100
+# using the common Monte Carlo data sets
+S = 1000
 errs = zeros(S, size(lb,1))
+θtrue = TrueParameters()
 Threads.@threads for  i = 1:S
     # generate some date and define the neural moments using the data
-    θtrue = TrueParameters()
-    ok = false
-    while !ok
-        data = dgp(θtrue, dsge, 1, rand(1:Int64(1e10)))[1]
-        ok = GoodData(auxstat(data))
-        if ok
-            θnn =  NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
-            errs[i,:] = θnn - θtrue
-        else
-            println("bad draw, repeating")
-        end    
-    end    
+    data = Matrix(CSV.read("../GenData/MCdata/mcdata-design-$i.csv", DataFrame))
+    θnn =  NeuralMoments(auxstat(data), model, nnmodel, nninfo)[:]
+    errs[i,:] = θnn - θtrue
 end
 b = mean(errs, dims=1)[:]
+m = b .+ θtrue
 s = std(errs, dims=1)[:]
 r = sqrt.(b.^2 + s.^2)[:]
-printstyled("Monte Carlo results, $(S) draws", color=:green)
-pretty_table(round.([TrueParameters() b r], digits=4), header = (["True", "Bias",  "RMSE"]))
+names = ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"] 
+printstyled("Monte Carlo SNM neural net results for the DSGE model, $(reps) reps\n", color=:green)
+pretty_table([names round.([TrueParameters() m b s r],digits=4)],
+ header=["parameter", "True", "mean", "bias", "st. dev.", "rmse"])
 
 
 ## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one

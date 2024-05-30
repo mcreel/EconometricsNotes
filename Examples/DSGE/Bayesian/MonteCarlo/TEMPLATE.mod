@@ -20,15 +20,15 @@ nss =1/3;
 model;
   MUC = (c)^(-gam);
   MUL = psi*exp(z2);
-  r = alppha * exp(z1) * (k(-1))^(alppha-1) * n^(1-alppha);
-  w = (1-alppha)*exp(z1)* (k(-1))^alppha * n^(-alppha);
+  r = alppha * exp(z1) * k^(alppha-1) * n^(1-alppha);
+  w = (1-alppha)*exp(z1)* k^alppha * n^(-alppha);
   MUC = betta*MUC(+1) * (1 + r(+1) - delta);
   MUL/MUC = w;
   z1 = rho1*z1(-1) + sigma1*e1;
   z2 = rho2*z2(-1) + sigma2*e2;
-  y = exp(z1) * ((k(-1))^alppha) * (n^(1-alppha));
+  y = exp(z1) * (k^alppha) * (n^(1-alppha));
   invest = y - c;
-  k = invest + (1-delta)*k(-1);
+  k = invest(-1) + (1-delta)*k(-1);
 end;
 
 shocks;
@@ -72,6 +72,6 @@ end;
 varobs c n;  // experiment choosing one or two from y c n r w
 
 // Does a single fairly short chain 
-estimation(order=1, datafile='../../GenData/MCdata/mcdata-design-REPLACE.csv', mh_replic=2000, mh_jscale=2.) ;
+estimation(order=1, datafile='../../GenData/MCdata/mcdata-design-REPLACE.csv', mh_replic=5000, mh_jscale=2.) ;
 
 

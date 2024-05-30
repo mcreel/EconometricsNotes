@@ -11,13 +11,13 @@ function GenData(silent=false)
 
 #this block reads and processes the file, leave it be
 data = dgp(TrueParameters(), dsge, 1)[1]
-df = DataFrame(data, ["output", "cons", "hours","r","w"])
+df = DataFrame(data, ["y", "c", "n","r","w"])
 if !silent
     display(plot(data, legend=:outertopright, label=["output" "cons" "hours" "r" "w"]))
     savefig("dsgedata.svg")
     display(df)
 end    
-#writedlm("dsgedata.txt", data)
+CSV.write("dsgedata.csv", df)
 return true
 end
 

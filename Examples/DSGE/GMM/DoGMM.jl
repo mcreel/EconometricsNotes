@@ -1,6 +1,5 @@
-# this computes the GMM estimator by SA minimization, for
-# one of the 1000 data sets. Can be parallelized using
-# threads.
+## this computes the GMM estimator by SA minimization, using
+# the default typical data set (or generating new data)
 using Econometrics, SolveDSGE, CSV, Statistics, LinearAlgebra, ForwardDiff
 cd(@__DIR__)
 include("DSGEmoments.jl")  # computes errors

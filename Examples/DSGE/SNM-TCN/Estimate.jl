@@ -1,24 +1,37 @@
 ## This does TCN neural net estimation for the DSGE example
-using PrettyTables, Pkg, CSV, Distributions, LinearAlgebra, MCMCChains, StatsPlots
+using PrettyTables, Pkg, CSV, Distributions, LinearAlgebra, MCMCChains, StatsPlots, DataFrames
 cd(@__DIR__)
 Pkg.activate(".")
 # defines the net and the DSGE model, and needed functions
 include("Setup.jl")
 
-## Monte Carlo to see how the raw TCN estimator performs
-reps = 100
+## Monte Carlo to see how the raw TCN estimator performs at the "true parameters" for the DSGE example
+# using the common Monte Carlo data sets
+reps = 1000
+θtrue = TrueParameters()
+θnns = zeros(reps, size(θtrue,1))
 net = load_trained()
 Flux.testmode!(net)
-θtrue = TrueParameters()
-@time data = MakeData(θtrue, reps, CKmodel)
-@time θnn = Float64.(UntransformParameters(net(data)))
-m = mean(θnn, dims=2)
-e = θnn .- TrueParameters()
-s = std(e, dims=2)
-b = mean(e, dims=2)
-r = sqrt.(mean(e.^2, dims=2))
-printstyled("Monte Carlo TCN neural net results for the DSGE model, $(reps) replications\n", color=:green)
-pretty_table(round.([TrueParameters() m b s r],digits=4), header=["True", "mean", "bias", "st. dev.", "rmse"])
+Threads.@threads for  r = 1:reps
+    # load and transform the data
+    data = Matrix(CSV.read("../GenData/MCdata/mcdata-design-$r.csv", DataFrame))
+    data .-= [0.84, 0.69, 0.33, 0.05, 1.72]'
+    data ./= [0.51, 0.44, 0.36, 0.018, 0.34]'
+    X = zeros(Float32, 160, 1, 5)
+    X[:, 1, :] = Float32.(data)
+    # DSM fit
+    θnn = Float64.(UntransformParameters(net(tabular2conv(permutedims(X, (3, 2, 1))))))[:]
+    θnns[r,:] = θnn
+end
+m = mean(θnns, dims=1)
+e = θnns .- θtrue'
+s = std(e, dims=1)
+b = mean(e, dims=1)
+r = sqrt.(mean(e.^2, dims=1))
+names = ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"] 
+printstyled("Monte Carlo TCN neural net results for the DSGE model, $(reps) reps\n", color=:green)
+pretty_table([names round.([TrueParameters() m' b' s' r'],digits=4)],
+ header=["parameter", "True", "mean", "bias", "st. dev.", "rmse"])
 
 
 ## Now, let's move on to Bayesian MSM using the typical data set
@@ -31,7 +44,7 @@ X = zeros(Float32, 160, 1, 5)
 X[:, 1, :] = Float32.(data)
 
 ## This is the raw TCN estimate using the official data set
-θnn = Float64.(UntransformParameters(net(tabular2conv(permutedims(Float32.(X), (3, 2, 1))))))[:]
+θnn = Float64.(UntransformParameters(net(tabular2conv(permutedims(X, (3, 2, 1))))))[:]
 
 #################### Define functions for MCMC ###############################
 
@@ -119,4 +132,5 @@ chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", 
 plot(chn)
 savefig("chain.png")
 display(chn)
-pretty_table([TrueParameters() θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["θtrue", "θnn", "θmcmc"]))
+names = ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"] 
+pretty_table([names TrueParameters() θnn mean(chain[:,1:end-2],dims=1)[:]], header = (["parameter", "θtrue", "θnn", "θmcmc"]))

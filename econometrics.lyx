@@ -31920,10 +31920,11 @@ Given a draw of the parameters other than
  The model is solved using SolveDSGE.jl,
  using a third order perturbation about the steady state.
  Once the model is solved,
- a simulation of length 360 is done,
+ a simulation of length 660 is done,
  initialized at the steady state.
- We drop the first 200 observations,
- retaining the last 160 observations,
+ We drop the first 500 observations as a burning period,
+ to eliminate startup bias,
+ and retain the last 160 observations,
  which mimic 40 years of quarterly data.
  The observable variables are 
 \begin_inset Formula $y,\,c,\,n,\,w,$
@@ -32078,8 +32079,36 @@ this data file will be treated as the true sample file in the examples that foll
 
 \end_layout
 
+\begin_layout Standard
+In order to have a number of samples with which we can compare estimation methods via Monte Carlo,
+ 1000 samples were generated from the model at the above stated true parameters,
+ using the script 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/DSGE/GenData/MakeMonteCarloData.jl}{MakeMonteCarloData.jl} 
+\end_layout
+
+\end_inset
+
+.
+ The 1000 samples are in the directory 
+\family typewriter
+./Examples/DSGE/GenData/MCdata
+\family default
+.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chapter
-Maximum likelihood estimation
+Maximum likelihood
 \end_layout
 
 \begin_layout Standard
@@ -47614,34 +47643,6 @@ name "DSGE GMM results"
 \end_layout
 
 \begin_layout Standard
-For comparision,
- the ML estimates,
- using 
-\begin_inset Formula $c$
-\end_inset
-
- and 
-\begin_inset Formula $n$
-\end_inset
-
- as the variables for estimation are
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Graphics
-	filename Examples/DSGE/ML/cn.png
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 
 \family typewriter
 \begin_inset Newpage newpage
@@ -47652,11 +47653,7 @@ For comparision,
 
 \begin_layout Itemize
 the point estimates for 
-\begin_inset Formula $\beta,$
-\end_inset
-
-
-\begin_inset Formula $\gamma$
+\begin_inset Formula $\beta$
 \end_inset
 
  and 
@@ -47669,7 +47666,16 @@ the point estimates for
 \end_layout
 
 \begin_layout Itemize
-The two rhos and two sigmas seem to be confused (recall that the true parameter values are in Table 
+the estimate of 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ (true value is 2.0) is not very precise:
+ the confidence interval is quite wide.
+\end_layout
+
+\begin_layout Itemize
+The two sigmas seem to be confused (recall that the true parameter values are in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:True-parameters-and"
@@ -47683,6 +47689,7 @@ nolink "false"
 ).
  There seems to be an identification problem here,
  the two sources of randomness are not well picked out by the chosen moment conditions.
+ The ML estimator has the same problem.
 \end_layout
 
 \begin_layout Itemize
@@ -51335,39 +51342,14 @@ status open
 
  
 \backslash
-href{./Examples/DSGE/Bayesian/CKmcmc
-\backslash
-_cn.mod}{CKmcmc
-\backslash
-_cn.mod} 
+href{./Examples/DSGE/Bayesian/Estimate.jl}{Estimate.jl} 
 \end_layout
 
 \end_inset
 
  allows estimation of the same model using Bayesian methods,
  with Metropolis-Hastings MCMC.
- To run it,
- go to the 
-\family typewriter
-\color blue
-./Examples/DSGE/Bayesian
-\family default
-\color inherit
- directory,
- start Julia with 
-\family typewriter
-\color blue
-julia –-proj
-\family default
-\color inherit
- and enter 
-\family typewriter
-\color blue
-context = @dynare CKmcmc_cn.mod;
-
-\family default
-\color inherit
- (including the semicolon).
+ 
 \end_layout
 
 \begin_layout Standard
@@ -51384,13 +51366,15 @@ nolink "false"
 \end_layout
 
 \begin_layout Standard
+
+\series bold
 Some conclusions we can draw:
 \end_layout
 
 \begin_layout Itemize
 Estimation of the parameters can be good.
  The first panel uses the variables c and n,
- and the second uses y and w (using the other .mod file).
+ and the second uses y and n (using the other .mod file).
  Note that the results for the parameter 
 \begin_inset Formula $\gamma$
 \end_inset
@@ -51412,7 +51396,7 @@ The first panel gives results that are substantially similar to those obtained i
 \end_layout
 
 \begin_layout Itemize
-The second panel uses y and w as the observed variables,
+The second panel uses y and n as the observed variables,
  and the results are not as good,
  especially for 
 \begin_inset Formula $\gamma.$
@@ -51486,7 +51470,7 @@ MCMC,
 MCMC,
  ver.
  2:
- Y and W
+ Y and N
 \end_layout
 
 \begin_layout Plain Layout
@@ -51560,6 +51544,46 @@ CGHK model,
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Following are Monte Carlo results for MCMC with the linearized model,
+ using c and n as the observered variables,
+ using the 1000 data sets that were generated at the true parameters.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/Bayesian/MonteCarlo/montecarlo.png
+	width 20cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+estimation of 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is no so good:
+ there is bias,
+ and the RMSE is somewhat high
+\end_layout
+
+\begin_layout Itemize
+the two autoregressive parameters are estimated with moderate bias,
+ and good precision
+\end_layout
+
+\begin_layout Itemize
+the two standard deviations of the shocks appear to be confused,
+ it seems that the linearization is leading to a loss of identification
 \begin_inset Newpage newpage
 \end_inset
 
@@ -51683,8 +51707,7 @@ The results for all parameters follow.
 
 \begin_layout Standard
 For reference,
- the results from ordinary CUE-GMM (extremum estimator),
- from Section 
+ the results from ordinary CUE-GMM (extremum estimator) are in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:GMM-estimation-of"
@@ -51695,7 +51718,7 @@ nolink "false"
 
 \end_inset
 
- are in the panel above.
+.
  Note that the point estimates are very close to the Bayesian GMM point estimates,
  but the standard deviations and confidence intervals are quite different.
  The standard errors from the asymptotics are considerably larger than what we get from the Bayesian version.
@@ -53768,11 +53791,34 @@ href{./Examples/DSGE/SimulatedNeuralMoments/Estimate.jl}{Estimate.jl}
 \end_inset
 
  allows you to estimate the simple example DSGE model using Simulated Neural Moments.
- The results of a Monte Carlo study of 1000 draws of the raw NN estimator are on the next page.
 \begin_inset Newpage newpage
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Here are the fits to several data sets which were drawn using parameters sampled from the prior:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/SimulatedNeuralMoments/fitpriordraws.png
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The NN fit tracks the parameters pretty well.
+ Thus,
+ it seems to be an informative statistic upon which to base MSM or Bayesian MSM.
+\begin_inset Newpage newpage
+\end_inset
+
+ The results of a Monte Carlo study of 1000 draws of the raw NN estimator applied to the Monte Carlo data sets that were drawn at the true parameters are:
 \end_layout
 
 \begin_layout Standard
@@ -53791,12 +53837,21 @@ name "SNM for DSGE results"
 \end_inset
 
 
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 there is some bias,
  but the results are quite good,
  overall.
+\end_layout
+
+\begin_layout Itemize
+the two standard deviations of the shocks are well estimated.
+ Those were problematic for the methods seen up to now.
 \end_layout
 
 \begin_layout Itemize
@@ -53833,7 +53888,8 @@ They are also exactly identifying,
 \end_layout
 
 \begin_layout Standard
-The Bayesian MSM results for a single sample drawn at the true parameters,
+The Bayesian MSM results for the typical data set that we've been using,
+ drawn at the true parameters,
  using the NN statistics as the moments,
  are
 \end_layout
@@ -54009,6 +54065,8 @@ the TCN results are better overall,
 \end_inset
 
  and the two AR(1) parameters.
+ They are considerably better than we have seen for other estimators,
+ overall.
 \end_layout
 
 \begin_layout Itemize
@@ -54016,12 +54074,6 @@ This shows that there may be information lost when using summary statistics,
  and that we can do better with a well-chosen neural net that uses the full sample information.
  However,
  more evidence would be needed to confirm these results (there is some in the above-cited paper).
-\end_layout
-
-\begin_layout Itemize
-95% confidence intervals are tight,
- and contain the true parameter values,
- for all parameters.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -54029,7 +54081,8 @@ This shows that there may be information lost when using summary statistics,
 \end_layout
 
 \begin_layout Standard
-Results for CUE-GMM using the TCN fit as the simulated moments are
+Results for CUE-GMM using the typical data set we have used for all the methods,
+ using the TCN fit as the simulated moments are
 \end_layout
 
 \begin_layout Standard
@@ -54048,17 +54101,14 @@ The point estimates are very close to the true values,
 \end_layout
 
 \begin_layout Itemize
-the 95% CIs contain the true parameters,
+the 95% CIs are tight,
+ and contain the true parameters,
  in all cases.
 \end_layout
 
 \begin_layout Itemize
 in general,
  the results are better than what we have seen with other estimators.
- However,
- the comparison is for only one sample.
- We would need to do a more careful Monte Carlo to draw stronger conclusions.
- The problem with that is that some of the estimators are tedious and time consuming to compute.
 \begin_inset Newpage newpage
 \end_inset
 

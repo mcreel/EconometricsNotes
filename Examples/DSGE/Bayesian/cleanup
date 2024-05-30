@@ -1,5 +1,4 @@
 #!/bin/bash
-rm -R -f CKmcmc_cn
-rm -R -f CKmcmc_yw
+rm -R -f CK
 rm *.log
 
