@@ -90,10 +90,10 @@ function TrueParameters()
  [
  0.99,  # β
  2.0,   # γ     
- 0.9,   # ρ₁  
- 0.02,  # σ₁   
- 0.7,   # ρ₂  
- 0.01,  # σ₂   
+ 0.9,   # ρz  
+ 0.02,  # σz   
+ 0.7,   # ρη   
+ 0.01,  # ση    
  8.0/24.0]  # nss
 end    
 
@@ -125,7 +125,7 @@ end
 function ParamsAndSS(params)
     α = 0.33
     δ = 0.025
-    β, γ, ρ₁, σ₁, ρ₂, σ₂, nss = params
+    β, γ, ρz, σz, ρη , ση , nss = params
     c1 = ((1/β  + δ - 1)/α)^(1/(1-α))
     kss = nss/c1
     iss = δ*kss
@@ -136,7 +136,7 @@ function ParamsAndSS(params)
     wss = (1-α)* (kss)^α * nss^(-α)
     MULss = wss*MUCss
     ψ =  (css^(-γ)) * (1-α) * (kss^α) * (nss^(-α))
-    p = [β, γ, ρ₁ , σ₁, ρ₂, σ₂, ψ]
+    p = [β, γ, ρz , σz, ρη , ση , ψ]
     ss = [0.0, 0.0, kss, yss, css, nss, rss, wss, MUCss, MULss]
     return p, ss
 end   

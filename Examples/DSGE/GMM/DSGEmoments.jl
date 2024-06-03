@@ -20,23 +20,23 @@ function DSGEmoments(θ, data)
         ψ =  (css^(-γ)) * (1-α) * (kss^α) * (nss^(-α))
         # use MPL-MRS to get η, the preference shock
         η = log.(w) .- γ*log.(c) .- log.(ψ)
-        u = (η[2:end]-η[1:end-1]*ρ_η)/σ_η 
+        u = (η[2:end]-η[1:end-1]*ρ_η )/σ_η   
         e1 = η[1:end-1].*u
         e2 = u.^2.0 .- 1.0 
         pref_shock = copy(u)
         # now the Euler eqn
         euler = 100.0*((1.0 .+ r .- δ).*β.*(c.^(-γ)) .- lag(c,1).^(-γ))[2:end]
         # recover K from MPK/MPL
-        k = (α/(1.0-α))*n.*w./r
+        k = lag((α/(1.0-α))*n.*w./r,1)
         # get z, the production shock, from the production function
         z = log.(y) - α*log.(k) - (1.0-α)*log.(n)
-        u = (z[2:end]-z[1:end-1]*ρ_z)/σ_z
+        u = (z[2:end]-z[1:end-1]*ρ_z )/σ_z  
         e4 = z[1:end-1].*u
         e5 = u.^2.0 .- 1.0
         tech_shock = copy(u)
         # make moment conditions
         data, junk, junk = stnorm(log.(data)[1:end-1,:])
-        errors = [100.0*e1 e2 100.0*e4 e5 euler tech_shock.*data pref_shock.*data  euler.*data]
+        errors = [100.0*e1 e2 100.0*e4 e5 euler data.*tech_shock data.*pref_shock data.*euler ]
         return errors
 end
 

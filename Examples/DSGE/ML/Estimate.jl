@@ -2,4 +2,5 @@ using Dynare
 
 cd(@__DIR__)
 
-context = @dynare "CKml.mod";
+context = @dynare "ML.mod" ;
+; # don't want to see all that output

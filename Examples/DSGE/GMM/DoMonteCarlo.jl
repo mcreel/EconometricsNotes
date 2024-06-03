@@ -20,8 +20,9 @@ function main()
         weight = theta -> inv(cov(moments(theta)))
         obj = theta -> m(theta)'*weight(theta)*m(theta)
         # estimate by simulated annealing
-        θhat, objvalue, converged, details = samin(obj, θtrue, lb, ub; ns = 20, nt=5, verbosity = 2, rt = 0.5)
+        θhat, objvalue, converged, details = samin(obj, θtrue, lb, ub; ns = 10, nt=5, verbosity = 1, rt = 0.25)
         results[rep,:] = θhat
+        println("rep $rep done")
     end
     errs = results .- θtrue'
     b = mean(errs, dims=1)[:]

@@ -72,6 +72,6 @@ end;
 varobs c n;  // experiment choosing one or two from y c n r w
 
 // Does a single fairly short chain 
-estimation(datafile='../../GenData/MCdata/mcdata-design-14.csv') ;
+estimation(datafile='../../GenData/MCdata/mcdata-design-1000.csv') ;
 
 

@@ -5,7 +5,7 @@ cd(@__DIR__)
 include("DSGEmoments.jl")  # computes errors
 include("CKlib.jl")
 # needed to explore other data sets 
-global const dsge = retrieve_processed_model("../GenData/CK_processed.txt")
+global const dsge = retrieve_processed_model("CK_processed.txt")
 
 function main(defaultdata = true)
 cd(@__DIR__)

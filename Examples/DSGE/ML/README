@@ -1,6 +1,1 @@
-NOTE: ML is not working with dynare.jl v0.9.12. Wait for an update, and then run.
-
-The results in the notes are currently maximum posterior. This needs to be fixed, when possible.
-
-
-with uniform prior, max post is same as mle. So, need to extract the post. mode, and write to disk
+with uniform prior, max post is same as mle. So, need to extract the post. mode, and write to disk, following what is done with Bayesian for post mean.

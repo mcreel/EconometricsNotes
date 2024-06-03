@@ -59,7 +59,7 @@ m = b .+ θtrue
 s = std(errs, dims=1)[:]
 r = sqrt.(b.^2 + s.^2)[:]
 names = ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"] 
-printstyled("Monte Carlo SNM neural net results for the DSGE model, $(reps) reps\n", color=:green)
+printstyled("Monte Carlo SNM neural net results for the DSGE model, 1000 reps\n", color=:green)
 pretty_table([names round.([TrueParameters() m b s r],digits=4)],
  header=["parameter", "True", "mean", "bias", "st. dev.", "rmse"])
 
@@ -82,7 +82,7 @@ tuninglength = 500
 finallength = 1000
 burnin = 100
 verbosity = 100 # show results every X draws
-tuning = 0.75 # pre-checked to work ok
+tuning = 0.1 # pre-checked to work ok
 
 ## define the proposal and the log-likelihood
 junk, Σp = mΣ(θnn, covreps, model, nnmodel, nninfo)
@@ -103,7 +103,7 @@ start = 0.
 # update proposal until acceptance rate is good
 while acceptance < 0.2 || acceptance > 0.3
     global tuning, chain, acceptance, start
-    acceptance < 0.2 ? tuning *= 0.75 : nothing
+    acceptance < 0.2 ? tuning *= 0.5 : nothing
     acceptance > 0.3 ? tuning *= 1.5 : nothing
     proposal(θ) = rand(MvNormal(θ, tuning*Σp))
     start = mean(chain[:,1:end-2], dims=1)[:]

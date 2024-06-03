@@ -20,15 +20,15 @@ nss =1/3;
 model;
   MUC = (c)^(-gam);
   MUL = psi*exp(z2);
-  r = alppha * exp(z1) * (k(-1))^(alppha-1) * n^(1-alppha);
-  w = (1-alppha)*exp(z1)* (k(-1))^alppha * n^(-alppha);
+  r = alppha * exp(z1) * k^(alppha-1) * n^(1-alppha);
+  w = (1-alppha)*exp(z1)* k^alppha * n^(-alppha);
   MUC = betta*MUC(+1) * (1 + r(+1) - delta);
   MUL/MUC = w;
   z1 = rho1*z1(-1) + sigma1*e1;
   z2 = rho2*z2(-1) + sigma2*e2;
-  y = exp(z1) * ((k(-1))^alppha) * (n^(1-alppha));
+  y = exp(z1) * (k^alppha) * (n^(1-alppha));
   invest = y - c;
-  k = invest + (1-delta)*k(-1);
+  k = invest(-1) + (1-delta)*k(-1);
 end;
 
 shocks;
@@ -56,24 +56,22 @@ z1 = 0;
 z2 = 0;
 end;
 
-steady;
-
 estimated_params;
 // start values for the optimization 
 // the numbers after the comment are the true 
 // values used to generate the data.
-betta   ,   0.99    ,   0.95  , 0.995 ;     // 0.99
-gam     ,   2.0     ,   0.    , 5.0   ;     // 2.0
-rho1    ,   0.9     ,   0.    , 0.995 ;     // 0.9
-sigma1  ,   0.02    ,   0.    , 0.1   ;     // 0.02
-rho2    ,   0.7     ,   0.    , 0.995 ;     // 0.7
-sigma2  ,   0.01    ,   0.    , 0.1   ;     // 0.01
-nss     ,   .3333   ,   6/24  , 9/24  ;     // 1/3
+betta   ,   0.99    ,   uniform_pdf     ,   0.9724  ,   0.01299;    // 0.99
+gam     ,   2.0     ,   uniform_pdf     ,   2.5     ,   1.4434;     // 2.0
+rho1    ,   0.9     ,   uniform_pdf     ,   0.4975  ,   0.28723;    // 0.9
+sigma1  ,   0.02    ,   uniform_pdf     ,   0.05    ,   0.02887;    // 0.02
+rho2    ,   0.7     ,   uniform_pdf     ,   0.4975  ,   0.28723;    // 0.7
+sigma2  ,   0.01    ,   uniform_pdf     ,   0.05    ,   0.02887;    // 0.01
+nss     ,   .3333   ,   uniform_pdf     ,   0.3125  ,    0.03608;   // 1/3
 end;
 
 varobs c n;  // experiment choosing one or two from y c n r w
 
-// computes only the posterior mode for demonstration. 
-estimation(datafile='dsgedata.csv') ;
+// Does a single fairly short chain 
+estimation(order=1, datafile='../../GenData/MCdata/mcdata-design-2.csv', mh_replic=5000, mh_jscale=5.) ;
 
 

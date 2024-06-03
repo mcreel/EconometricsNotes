@@ -1,0 +1,41 @@
+Dynare version: 0.9.12
+2024-06-01T10:13:41.212: Starting @dynare MonteCarlo.mod
+["MonteCarlo.mod", "language=julia", "json=compute"]
+Dynare preprocessor version: 6.4.0+0
+2024-06-01T10:13:41.267: End of preprocessing
+2024-06-01T10:13:41.327: Start parse_statements!
+ * Status: success
+
+ * Candidate solution
+    Final objective value:     -1.227896e+03
+
+ * Found with
+    Algorithm:     BFGS
+
+ * Convergence measures
+    |x - x'|               = 1.03e-02 ≰ 0.0e+00
+    |x - x'|/|x'|          = 2.99e-03 ≰ 0.0e+00
+    |f(x) - f(x')|         = 4.02e-04 ≰ 0.0e+00
+    |f(x) - f(x')|/|f(x')| = 3.27e-07 ≤ 1.0e-05
+    |g(x)|                 = 5.71e-02 ≰ 1.0e-08
+
+ * Work counters
+    Seconds run:   0  (vs limit Inf)
+    Iterations:    14
+    f(x) calls:    41
+    ∇f(x) calls:   41
+
+  Posterior mode
+
+───────────┬──────────────────────────────────────────────────────────
+ Parameter │ Estimated value  Standard error  80% confidence interval
+──────────────────────────────────────────────────────────────────────
+     betta │          0.9935          0.0014         0.9917 .. 0.9953
+       gam │          1.9923          0.1345         1.8201 .. 2.1645
+      rho1 │          0.9094          0.0064         0.9012 .. 0.9175
+    sigma1 │          0.0228          0.0016         0.0208 .. 0.0249
+      rho2 │          0.7264          0.0498         0.6626 .. 0.7902
+    sigma2 │          0.0084          0.0008         0.0074 .. 0.0094
+       nss │          0.3314          0.0015         0.3294 .. 0.3333
+───────────┴──────────────────────────────────────────────────────────
+

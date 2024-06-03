@@ -2,9 +2,8 @@ using SolveDSGE, Plots, DelimitedFiles, DataFrames, CSV
 cd(@__DIR__)
 include("CKlib.jl")
 
-if !isfile("./CK_processed.txt") 
-    process_model("./CK.txt")
-end    
+process_model("./CK.txt")
+   
 global const dsge = retrieve_processed_model("./CK_processed.txt")
 
 function GenData(silent=false)
@@ -14,7 +13,7 @@ data = dgp(TrueParameters(), dsge, 1)[1]
 df = DataFrame(data, ["y", "c", "n","r","w"])
 if !silent
     display(plot(data, legend=:outertopright, label=["output" "cons" "hours" "r" "w"]))
-    savefig("dsgedata.svg")
+#    savefig("dsgedata.svg")
     display(df)
 end    
 CSV.write("dsgedata.csv", df)
