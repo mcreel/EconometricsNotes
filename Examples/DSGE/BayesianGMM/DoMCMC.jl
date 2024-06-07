@@ -11,14 +11,7 @@ function main()
     lb, ub = PriorSupport()
     θtrue = TrueParameters()
     # start values from GMM
-    θinit = [
-    0.9900485808486286,
-    2.0271722237817826,
-    0.9013513634634782,
-    0.01901778177965745,
-    0.7131947676648516,
-    0.010190093131189638,
-    0.333600599933210]
+    θinit = θtrue
     lnL = θ -> logL(θ, data)
     # define things for MCMC
     verbosity = true
@@ -64,12 +57,12 @@ chain = main()
 ## visualize results
 p = npdensity(chain[:,2]) # example of posterior plot
 display(p)
-#savefig("gamma.svg")
+savefig("gamma.svg")
 
 ##
 chn = Chains(chain[:,1:7], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 display(chn)
 display(plot(chn))
-#savefig("allparams.svg")
+savefig("allparams.svg")
 
 

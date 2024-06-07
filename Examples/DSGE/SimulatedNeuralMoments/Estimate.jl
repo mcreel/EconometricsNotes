@@ -8,6 +8,8 @@ https://github.com/mcreel/SNM  for how to do that.
 Start julia as "julia --proj -t auto" to use threads
 
 =#
+
+
 using Pkg
 cd(@__DIR__)
 Pkg.activate("../../..")
@@ -15,8 +17,18 @@ using SimulatedNeuralMoments, Flux, SolveDSGE, MCMCChains
 using Distributions, StatsPlots, CSV, PrettyTables, DataFrames
 using BSON:@save
 using BSON:@load
+
 # get the things to define the structure for the model
 include("CKlib.jl") # contains the functions for the DSGE model
+n = 160
+lb,ub = PriorSupport()
+model = SNMmodel("DSGE example", n, lb, ub, GoodData, InSupport, Prior, PriorDraw, auxstat)
+
+# train the net (you probably don't want to do this!)
+# nnmodel, nninfo, params, stats, transf_stats = MakeNeuralMoments(model, TrainTestSize=100000, Epochs=1000)
+# @save "neuralmodel.bson" nnmodel nninfo # save the trained model
+
+# load the trained model
 @load "neuralmodel.bson" nnmodel nninfo # use this to load a trained net
 # fill in the structure that defines the model
 n = 160

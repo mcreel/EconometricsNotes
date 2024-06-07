@@ -38322,7 +38322,7 @@ status open
 
  
 \backslash
-href{./Examples/DSGE/ML/CKml.mod}{CKml.mod} 
+href{./Examples/DSGE/ML/Estimate.jl}{Estimate.jl} 
 \end_layout
 
 \end_inset
@@ -38338,32 +38338,22 @@ literal "false"
 \end_inset
 
  Julia package.
- To run it,
- go to the 
-\family typewriter
-\color blue
-./Examples/DSGE/ML
-\family default
-\color inherit
- directory,
- start Julia with 
-\family typewriter
-\color blue
-julia –-proj
-\family default
-\color inherit
- and enter 
-\family typewriter
-\color blue
-context = @dynare CKml.mod;
-
-\family default
-\color inherit
- (including the semicolon).
  Note that Dynare is doing ML by first linearizing the model,
  then using Kalman filtering to compute the likelihood,
- then doing quasi-ML.
- Presumably,
+ and then is maximizing the Bayesian posterior likelihood (see Chapter 17 for more information).
+ Because the priors are uniform,
+ the posterior maximizes at the same place as does the likelihood,
+ so these are (quasi) ML estimates.
+ I say 
+\begin_inset Quotes sld
+\end_inset
+
+quasi
+\begin_inset Quotes srd
+\end_inset
+
+ because,
+ presumably,
  some information is lost in the linearization,
  depending on how nonlinear is the original model,
  so this is not actually ML.
@@ -38418,10 +38408,7 @@ using y and w:
 
 \begin_layout Itemize
 the parameter estimates are pretty good.
- However,
- the true values were used as start values,
- so in real life,
- it may be more difficult.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -38431,6 +38418,13 @@ note that the standard errors and t statistics change quite a bit depending on w
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+It's hard to say if confidence intervals are reliable,
+ as these are 80% intervals.
+ They do appear to be questionable,
+ though.
 \end_layout
 
 \begin_layout Itemize
@@ -38486,17 +38480,7 @@ stochastic singularity
  which means that at most two observed variables may be used to compute the likelihood function.
  The code lets you explore the choice.
  It seems to work best using c and n.
- It won't work using y and r.
- 
-\end_layout
-
-\begin_layout Itemize
-Not using all of the observed variables for estimation is likely to cause problems of lack of identification and inefficiency.
- This can be confirmed if you experiment with the estimation script.
- Using c and n,
- we get the above results.
- Using other variables,
- we get results that aren't so good.
+ It won't work using y and r..
  When you don't know the true parameters,
  how will you choose which results to believe?
 \end_layout
@@ -38512,24 +38496,38 @@ This is not a problem of the ML method,
 \end_layout
 
 \begin_layout Itemize
-The intention of presenting this example is to show that ML may be used for estimation of complex models.
- The problem here is that the econometric model is not complex enough:
- the linearization throws information,
- so that estimation may be unreliable.
- A better solution is to try to actually do ML estimation for the true nonlinear model:
- see papers by Fernández-Villaverde and Rubio-Ramírez,
- which use particle filterin
-\strikeout on
-g.
- You can also modify the script to do this,
- by setting order=2 in the code,
- as Dynare supports the particle filter option
-\strikeout default
- (this no longer works for this simple model,
- one would need to add measurement error,
- which is a way of dealing with stochastic singularity).
- This is very time-consuming,
- though.
+There exist other estimation methods that do not require linearizing the model,
+ and which may be more reliable,
+ and some of these are included in the Dynare.jl package.
+ Going into that is outside the scope of this course.
+ The message here is simply that one should be careful when choosing estimation methods for expediency,
+ as it can introduce inaccuracies or lead to missleading conclusions- 
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here are Monte Carlo results for ML estimation,
+ using c and n as the observed variables
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Examples/DSGE/ML/montecarlo.png
+	width 20cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+the results are quite good:
+ small bias and fairly precise.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -47652,44 +47650,21 @@ name "DSGE GMM results"
 \end_layout
 
 \begin_layout Itemize
-the point estimates for 
-\begin_inset Formula $\beta$
-\end_inset
-
- and 
-\begin_inset Formula $nss$
-\end_inset
-
- are good:
- the standard deviations are lower than those of the ML estimator,
- and the 95% confidence intervals contain the true values.
+the point estimates are very good,
+ at least as good as ML.
 \end_layout
 
 \begin_layout Itemize
-the estimate of 
-\begin_inset Formula $\gamma$
-\end_inset
-
- (true value is 2.0) is not very precise:
- the confidence interval is quite wide.
+the standard errors are small,
+ often smaller than those of the ML estimator
 \end_layout
 
 \begin_layout Itemize
-The two sigmas seem to be confused (recall that the true parameter values are in Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:True-parameters-and"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-
-\end_inset
-
-).
- There seems to be an identification problem here,
- the two sources of randomness are not well picked out by the chosen moment conditions.
- The ML estimator has the same problem.
+unfortunately,
+ the standard error estimates appear to be too small:
+ the 95% confidence intervals do not contain the true parameters for 4 of the 7 cases.
+ This is a common problem with overidentified GMM:
+ the true probability of type 1 error is higher than it should be.
 \end_layout
 
 \begin_layout Itemize
@@ -47715,17 +47690,97 @@ Simulated annealing,
  it doesn't take too long,
  only about 11 seconds.
  This doesn't seem like too much time to get a reliable answer.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here are Monte Carlo results for 1000 replications of the GMM estimator,
+ using sample drawn at the true parameter values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Examples/DSGE/GMM/montecarlo.png
+	width 20cm
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-The take home conclusions here are:
+the results,
+ overall,
+ are at least as good as the results using maximum likelihood.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+for 
+\begin_inset Formula $\gamma,$
+\end_inset
+
+ there is some bias,
+ but RMSE is lower
+\end_layout
+
+\begin_layout Itemize
+for 
+\begin_inset Formula $\rho_{2},$
+\end_inset
+
+ there is less bias and lower RMSE
+\end_layout
+
+\begin_layout Itemize
+for 
+\begin_inset Formula $\beta$
+\end_inset
+
+,
+ RMSE is lower by about half
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+note the 
+\begin_inset Quotes sld
+\end_inset
+
+MLE
+\begin_inset Quotes srd
+\end_inset
+
+ is based upon the linearized model,
+ it is not truly MLE.
+ Also,
+ it can use only two observed variables,
+ due to stochastic singularity.
+ GMM is based on the actual nonlinear model,
+ and uses all of the observed variables.
+ Perhaps the linearization and limited use of observed variables provokes a loss of information for the ML estimator,
+ with a consequent somewhat poorer performance.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Some take home conclusions here are:
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
 that GMM can give reliable estimates,
- at least for some parameters,
- but perhaps we should try to improve estimation of some parameters by looking for better moment conditions.
+ but we need to be aware of confidence intervals potentially being too tight.
 \end_layout
 
 \begin_layout Itemize
@@ -49417,7 +49472,7 @@ Suppose that we have a rational expectations model.
 \begin_deeper
 \begin_layout Enumerate
 Consider the linear regression 
-\begin_inset Formula $\log w_{t}=c+\alpha(\log k_{t}-\log w_{t})+\epsilon_{t}$
+\begin_inset Formula $\log w_{t}=c+\alpha(\log k_{t}-\log n_{t})+\epsilon_{t}$
 \end_inset
 
 .
@@ -51372,55 +51427,37 @@ Some conclusions we can draw:
 \end_layout
 
 \begin_layout Itemize
-Estimation of the parameters can be good.
+Estimation of the parameters is quite good,
+ in general.
  The first panel uses the variables c and n,
- and the second uses y and n (using the other .mod file).
- Note that the results for the parameter 
-\begin_inset Formula $\gamma$
-\end_inset
-
- change quite a bit,
- depending on which observable variables are used.
- This is probably due to the stochastic singularity problem,
- when a first order solution is used.
- When we don't know the true parameter values,
- how do we choose which results to use?
-\end_layout
-
-\begin_layout Itemize
-The first panel gives results that are substantially similar to those obtained in the Section on ML estimation,
- which also used c and n as the observables.
- This is not surprising,
- it just means that the sample is large enough so that the prior does not have a large impact on the posterior.
+ and the second uses y and n.
+ (using the other .mod file).
  
 \end_layout
 
 \begin_layout Itemize
-The second panel uses y and n as the observed variables,
- and the results are not as good,
- especially for 
-\begin_inset Formula $\gamma.$
+The standard deviation of 
+\begin_inset Formula $\gamma$
 \end_inset
 
-
+ changes quite a bit,
+ depending on which observable variables are used.
+ The other results are more similar across the two possibilities we're looking at.
 \end_layout
 
 \begin_layout Itemize
-Due to the stochastic singularity problem,
- the results that are obtained depend on which variables are selected for estimation.
-\end_layout
+95% confidence intervals are not too reliable:
+ the true parameters are not inside the intervals as often as they should be.
+ This may due to the fact that the 
+\begin_inset Quotes sld
+\end_inset
 
-\begin_layout Itemize
-Both versions seem to have trouble identifying the shocks from one another,
- similarly to what we saw with GMM.
-\end_layout
+likelihood
+\begin_inset Quotes srd
+\end_inset
 
-\begin_layout Itemize
-For more conclusive results,
- we would need to do Monte Carlo,
- with repeated samples.
- What we see here is just an example of estimation,
- more clear interpretation would require more investigation.
+ is misspecified,
+ being based on the linearized model.
 \end_layout
 
 \begin_layout Standard
@@ -51551,14 +51588,14 @@ CGHK model,
 \end_layout
 
 \begin_layout Standard
-Following are Monte Carlo results for MCMC with the linearized model,
+Following are Monte Carlo results for the posterior mean computed from MCMC with the linearized model,
  using c and n as the observered variables,
  using the 1000 data sets that were generated at the true parameters.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename Examples/DSGE/Bayesian/MonteCarlo/montecarlo.png
+	filename Examples/DSGE/Bayesian/montecarlo.png
 	width 20cm
 
 \end_inset
@@ -51567,23 +51604,36 @@ Following are Monte Carlo results for MCMC with the linearized model,
 \end_layout
 
 \begin_layout Itemize
-estimation of 
+the results are good.
+ Estimation of 
 \begin_inset Formula $\gamma$
 \end_inset
 
- is no so good:
- there is bias,
- and the RMSE is somewhat high
+ is most difficult,
+ but is still quite good
 \end_layout
 
 \begin_layout Itemize
-the two autoregressive parameters are estimated with moderate bias,
- and good precision
-\end_layout
+if you compare with the ML results from Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:DSGE-ML"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
 
-\begin_layout Itemize
-the two standard deviations of the shocks appear to be confused,
- it seems that the linearization is leading to a loss of identification
+\end_inset
+
+,
+ these are almost identical.
+ ML is equivalent to the posterior mode,
+ because the priors are uniform in this example.
+ So,
+ we see that using the posterior mode or the posterior mean doesn't make much difference in this example.
+ That is not always the case,
+ though,
+ when the posterior is more asymmetric.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -51655,40 +51705,6 @@ href{./Examples/DSGE/BayesianGMM/DoMCMC.jl}{DoMCMC.jl}
 
 \begin_layout Standard
 The results for all parameters follow.
- The point estimates (mean and 50% quantile) are very close to the true values,
- except for 
-\begin_inset Formula $\sigma_{1}$
-\end_inset
-
- and 
-\begin_inset Formula $\sigma_{2},$
-\end_inset
-
- which we have already seen to be confused for this data set,
- by the GMM and Bayesian methods.
- The true values of most parameters are inside the 95% confidence intervals,
- with 
-\begin_inset Formula $\sigma_{1}$
-\end_inset
-
- and 
-\begin_inset Formula $\sigma_{2}$
-\end_inset
-
- being the exceptions.
- A notable difference with respect to extremum-based GMM,
- which computes confidence intervals using asymptotic theory,
- is that the confidence intervals for 
-\begin_inset Formula $\gamma$
-\end_inset
-
- and 
-\begin_inset Formula $\rho_{2}$
-\end_inset
-
- are much tighter here.
- Remember that overidentified GMM does not necessarily lead to reliable inferences:
- perhaps these confidence intervals are too tight.
 \begin_inset VSpace defskip
 \end_inset
 
@@ -51698,14 +51714,41 @@ The results for all parameters follow.
 \begin_layout Standard
 \begin_inset Graphics
 	filename Examples/DSGE/BayesianGMM/results.png
-	width 15cm
+	width 20cm
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
+The point estimates (mean and 50% quantile) are very close to the true values
+\end_layout
+
+\begin_layout Itemize
+The estimated standard deviations are low,
+ comparable or better to what we saw with ML and GMM.
+\end_layout
+
+\begin_layout Itemize
+and the 95% confidence intervals contain the true parameters in 6 of 7 cases (
+\begin_inset Formula $\sigma_{2},$
+\end_inset
+
+ the standard deviation of the preference shock,
+ is the exception),
+ and the last case is a very marginal rejection.
+ So,
+ the evidence is that the CIs are working more or less properly.
+\end_layout
+
+\begin_layout Itemize
+Overall,
+ these results are the best so far.
+ The use of MCMC seems to be improving on the unreliable asymptotic theory confidence intervals that come from ordinary extremum-estimation GMM.
+\end_layout
+
+\begin_layout Itemize
 For reference,
  the results from ordinary CUE-GMM (extremum estimator) are in Section 
 \begin_inset CommandInset ref
@@ -51719,11 +51762,7 @@ nolink "false"
 \end_inset
 
 .
- Note that the point estimates are very close to the Bayesian GMM point estimates,
- but the standard deviations and confidence intervals are quite different.
- The standard errors from the asymptotics are considerably larger than what we get from the Bayesian version.
- Which of the two versions of confidence intervals are more accurate is still an open question.
- We will return to this issue later.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -51736,7 +51775,13 @@ nolink "false"
 \begin_layout Standard
 Here is a summary of the chain,
  using the very nice MCMCChains.jl package.
- 
+ The posteriors look fine.
+ There is an odd bimodality in the case of 
+\begin_inset Formula $\beta$
+\end_inset
+
+,
+ the reason for which escapes me.
 \end_layout
 
 \begin_layout Standard
@@ -53850,8 +53895,8 @@ there is some bias,
 \end_layout
 
 \begin_layout Itemize
-the two standard deviations of the shocks are well estimated.
- Those were problematic for the methods seen up to now.
+RMSE is low,
+ comparable or better than the ML estimator.
 \end_layout
 
 \begin_layout Itemize
@@ -53866,6 +53911,13 @@ the results can be obtained very quickly,
 \begin_layout Itemize
 these can be computed essentially instantly,
  but we don't get any estimated standard deviations for the individual raw NN estimates.
+ 
+\end_layout
+
+\begin_layout Itemize
+We can use the SNM output as a statistic for Bayesian GMM.
+ This will give standard deviations and confidence intervals,
+ and it also has a bias correcting property.
 \end_layout
 
 \begin_layout Itemize
@@ -53905,11 +53957,15 @@ The Bayesian MSM results for the typical data set that we've been using,
 \end_layout
 
 \begin_layout Itemize
-the posterior mean or median point estimates are good
+the posterior mean or median point estimates are good,
+ not much different than the ML or GMM results seen above.
 \end_layout
 
 \begin_layout Itemize
-the 95% confidence intervals always contain the true parameter values
+the 95% confidence intervals always contain the true parameter values.
+ This is different,
+ compared to what we've seen for ML and GMM.
+ Tight standard errors and confidence intervals that don't over-reject true parameter values are something we have yet to see.
 \end_layout
 
 \begin_layout Standard
@@ -53921,6 +53977,8 @@ the 95% confidence intervals always contain the true parameter values
 
 \begin_layout Standard
 The chain follows.
+ It is short,
+ only 1000 draws.
  It seems to mix reasonably well,
  but in practice,
  one would like a longer chain to reduce the variance of the posterior,
