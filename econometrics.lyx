@@ -38422,7 +38422,8 @@ note that the standard errors and t statistics change quite a bit depending on w
 
 \begin_layout Itemize
 It's hard to say if confidence intervals are reliable,
- as these are 80% intervals.
+ as these are 80% intervals,
+ and we are using a single sample.
  They do appear to be questionable,
  though.
 \end_layout
@@ -38450,7 +38451,8 @@ nolink "false"
 ).
  The quasi-likelihood is computed by putting the linearized model in state-space form,
  and then computing the likelihood iteratively using Kalman filtering,
- which relies on the assumption that shocks to the model are normally distributed.
+ which relies on the assumption that shocks to the model are normally distributed (which is true,
+ in this case).
  State space models and Kalman filtering are introduced in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -38460,7 +38462,7 @@ nolink "false"
 \end_inset
 
 .
- Once the likelihood function is available,
+ Once the (quasi) likelihood function is available,
  the methods studied in this Chapter may be applied.
  
 \end_layout
@@ -38480,7 +38482,7 @@ stochastic singularity
  which means that at most two observed variables may be used to compute the likelihood function.
  The code lets you explore the choice.
  It seems to work best using c and n.
- It won't work using y and r..
+ It won't work using y and r.
  When you don't know the true parameters,
  how will you choose which results to believe?
 \end_layout
@@ -38490,7 +38492,7 @@ This is not a problem of the ML method,
  it is a problem due to the fact that we are not really estimating the true model,
  we're working with a linear approximation.
  Sometimes,
- people artificially add measurement error to the variables,
+ people add measurement error to the variables (which may in fact be realistic),
  which gets around the stochastic singularity problem.
  I have not yet seen a careful study of the effect of estimating assuming measurement error when there really is no measurement error.
 \end_layout
@@ -54004,7 +54006,7 @@ The chain follows.
 \end_layout
 
 \begin_layout Subsection
-Full Sample Neural Moments
+Deep Simulated Moments
 \end_layout
 
 \begin_layout Itemize
@@ -54116,22 +54118,18 @@ nolink "false"
 \end_layout
 
 \begin_layout Itemize
-the TCN results are better overall,
- both in terms of bias and rmse,
- and are considerably better for 
-\begin_inset Formula $\gamma$
-\end_inset
-
- and the two AR(1) parameters.
- They are considerably better than we have seen for other estimators,
+the results for the two neural net estimators are quite similar,
  overall.
 \end_layout
 
 \begin_layout Itemize
-This shows that there may be information lost when using summary statistics,
- and that we can do better with a well-chosen neural net that uses the full sample information.
- However,
- more evidence would be needed to confirm these results (there is some in the above-cited paper).
+In principle,
+ there may be information lost when using summary statistics.
+ In the present case,
+ the feed forward net that uses summary statistics seems not to have lost much information,
+ as the full sample version (using the TCN net,
+ on the L) has performance that is just as good,
+ and is better that the (quasi) ML estimator.
 \begin_inset Newpage newpage
 \end_inset
 
@@ -54166,7 +54164,40 @@ the 95% CIs are tight,
 
 \begin_layout Itemize
 in general,
- the results are better than what we have seen with other estimators.
+ the results are very similar to the SNM (neural net with summary statistics) results,
+ and better than what we have seen with the other estimators.
+ 
+\end_layout
+
+\begin_layout Itemize
+The two neural net estimators have in common the use of Bayesian MSM,
+ which can help to correct bias,
+ and the use of a just-identifying statistic for the indirect inference 
+\begin_inset Quotes sld
+\end_inset
+
+likelihood
+\begin_inset Quotes srd
+\end_inset
+
+.
+ This combination seems to work well.
+\end_layout
+
+\begin_layout Itemize
+The possible advantage of the 
+\begin_inset Quotes sld
+\end_inset
+
+Deep Simulated Moments
+\begin_inset Quotes srd
+\end_inset
+
+ TCN-based neural net version is that it doesn't require specifying the initial statistics.
+ The disadvantage is that training such a net is more time consuming,
+ and essentially requires using GPUs,
+ which could be a barrier for many people.
+ 
 \begin_inset Newpage newpage
 \end_inset
 

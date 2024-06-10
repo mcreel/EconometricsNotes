@@ -126,7 +126,7 @@ obj = θ -> bmsmobjective(θ, θnn, S)
 prop = θ -> proposal(θ, δ, Σₚ)
 
 ## run the chain
-chain = mcmc(θnn, Lₙ=obj, proposal=prop, N=500)
+chain = mcmc(θnn, Lₙ=obj, proposal=prop, burnin = 100, N=2000)
 # report results
 chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 plot(chn)
