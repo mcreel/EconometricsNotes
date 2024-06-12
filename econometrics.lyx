@@ -30542,7 +30542,7 @@ The steady state
 \end_layout
 
 \begin_layout Standard
-We use a third-order perturbation solution,
+I use a third-order perturbation solution,
  which combines good accuracy with moderate computational demands 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -30807,7 +30807,7 @@ nolink "false"
 \end_inset
 
 ,
- we obtain (using equation 
+ we can obtain (using equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "steadystate2"
@@ -31493,7 +31493,7 @@ nolink "false"
 \begin_inset Newpage newpage
 \end_inset
 
-We use independent uniform priors for all parameters except 
+I use independent uniform priors for all parameters except 
 \begin_inset Formula $\psi,$
 \end_inset
 
@@ -31511,7 +31511,7 @@ nolink "false"
 \end_inset
 
 .
- We believe that most economists will find these priors to be quite loose,
+ I believe that most economists will find these priors to be quite loose,
  and the parameter values to be reasonable.
  
 \end_layout
@@ -31977,13 +31977,13 @@ href{./Examples/DSGE/GenData/CK.txt}{CK.txt}
  we can generate samples at the chosen parameter values.
  The script that generates the data file 
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
  
 \backslash
-href{./Examples/DSGE/GenData/dsgedata.txt}{dsgedata.txt} 
+href{./Examples/DSGE/GenData/dsgedata.csv}{dsgedata.csv} 
 \end_layout
 
 \end_inset
@@ -38407,7 +38407,13 @@ using y and w:
 \end_layout
 
 \begin_layout Itemize
-the parameter estimates are pretty good.
+the parameter estimates are pretty good,
+ 
+\begin_inset Formula $\rho_{2}$
+\end_inset
+
+ is the parameter that is farther from it's true value,
+ the rest are quite close.
  
 \end_layout
 
@@ -53851,7 +53857,6 @@ Here are the fits to several data sets which were drawn using parameters sampled
 \begin_layout Standard
 \begin_inset Graphics
 	filename Examples/DSGE/SimulatedNeuralMoments/fitpriordraws.png
-	width 15cm
 
 \end_inset
 
@@ -53869,13 +53874,6 @@ The NN fit tracks the parameters pretty well.
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "SNM for DSGE results"
-
-\end_inset
-
-
 \begin_inset Graphics
 	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
 	width 18cm
@@ -53904,10 +53902,6 @@ RMSE is low,
 \begin_layout Itemize
 the results can be obtained very quickly,
  if a previously trained net is used
-\begin_inset Newpage newpage
-\end_inset
-
-
 \end_layout
 
 \begin_layout Itemize
@@ -54078,21 +54072,8 @@ href{./Examples/DSGE/SNM-TCN/Estimate.jl}{Estimate.jl}
 
 \begin_layout Standard
 Monte Carlo results for 1000 replications of the TCN neural net estimator,
- for the simple DSGE model are below,
- on the L.
- Results for the SNM feed forward neural net that takes a summary statistic as the input (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "SNM for DSGE results"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-
-\end_inset
-
-) are on the R,
- for comparison.
+ for the simple DSGE model are below.
+ 
 \begin_inset Newline newline
 \end_inset
 
@@ -54102,15 +54083,7 @@ nolink "false"
 \begin_layout Standard
 \begin_inset Graphics
 	filename Examples/DSGE/SNM-TCN/montecarlo.png
-	width 12cm
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
-	width 12cm
-	special height=15cm
+	width 18cm
 
 \end_inset
 
@@ -54118,8 +54091,9 @@ nolink "false"
 \end_layout
 
 \begin_layout Itemize
-the results for the two neural net estimators are quite similar,
- overall.
+These are perhaps a little better than the neural net results that are based on an auxiliary statistic,
+ above.
+ They are certainly not worse.
 \end_layout
 
 \begin_layout Itemize
@@ -54128,8 +54102,12 @@ In principle,
  In the present case,
  the feed forward net that uses summary statistics seems not to have lost much information,
  as the full sample version (using the TCN net,
- on the L) has performance that is just as good,
- and is better that the (quasi) ML estimator.
+ on the L) has performance that is just as good.
+\end_layout
+
+\begin_layout Itemize
+The performance is better than the quasi ML estimator,
+ which may be further evidence that information has not been lost.
 \begin_inset Newpage newpage
 \end_inset
 
