@@ -1,4 +1,4 @@
-# this script will precompile somie commonly used functions
+# this script will precompile some commonly used functions
 using Econometrics, StatsPlots, CSV, DataFrames
 ols()
 mleresults()
