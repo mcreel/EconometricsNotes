@@ -1,3 +1,4 @@
+##
 using Econometrics, Plots
 function GridExample(points, doprint=false)
     # plot the line
@@ -15,3 +16,12 @@ function GridExample(points, doprint=false)
     if doprint savefig("gridsearch.png") end
     return p
 end
+
+##
+GridExample(5)
+
+##
+GridExample(10)
+
+## 
+GridExample(20)
