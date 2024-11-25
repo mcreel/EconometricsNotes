@@ -13,8 +13,8 @@ iters = 25
 # plot the true minimizer
 display(scatter!([1.0, 1.0], color=:yellow, markershape=:star5, markersize=20))
 for i = 1:iters    
-    #global θ = optimize(rosenbrock, θ, GradientDescent(), Optim.Options(iterations=1)).minimizer
-    global θ = optimize(rosenbrock, θ, Newton(), Optim.Options(iterations=1)).minimizer
+    global θ = optimize(rosenbrock, θ, GradientDescent(), Optim.Options(iterations=1)).minimizer
+    #global θ = optimize(rosenbrock, θ, Newton(), Optim.Options(iterations=1)).minimizer
     θs[i,:] = θ'
     display(scatter!(θs[1:i,1], θs[1:i,2], legend=false))
     gui()

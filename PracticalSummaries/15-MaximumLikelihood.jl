@@ -48,7 +48,7 @@ V2 = inv(-Jhat)/n
 se2 = sqrt(V2)
 V3 =  inv(Jhat)*Ihat*inv(Jhat)/n
 se3 = sqrt(V3)
-@show [se1 se2 se3]   # note that the estimators are a little different from one another
+display(round.([se1 se2 se3],digits=4))   # note that the estimators are a little different from one another
                 # the last one, sandwich, is what's reported in mleresults.
 ##
 
@@ -107,7 +107,7 @@ logℒᵢ = β -> [logpdf(Chisq(exp(x[i,:]'*β)),y[i]) for i = 1:n]
 sc =  ForwardDiff.jacobian(logℒᵢ, βhat); # get the score contributions
 Ihat = zeros(3,3)
 for i = 1:n
-	Ihat .+= sc[i,:]*sc[i,:]'I
+	Ihat .+= sc[i,:]*sc[i,:]'
 end
 Ihat ./= n
 Jhat = Calculus.hessian(s, βhat, :central)

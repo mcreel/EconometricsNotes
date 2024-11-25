@@ -23641,12 +23641,23 @@ The iteration method can be broken into two problems:
 \begin_inset Newpage newpage
 \end_inset
 
-A locally increasing direction of search
+
 \emph default
+At the point 
+\begin_inset Formula $\theta$
+\end_inset
+
+,
+ a
+\emph on
+ locally increasing direction of search
+\emph default
+,
  
 \begin_inset Formula $d$
 \end_inset
 
+,
  is a direction such that 
 \begin_inset Formula 
 \[
@@ -23656,7 +23667,11 @@ A locally increasing direction of search
 \end_inset
 
  That is,
- if we go in direction 
+ if we go from 
+\begin_inset Formula $\theta$
+\end_inset
+
+ in direction 
 \begin_inset Formula $d$
 \end_inset
 
@@ -23685,7 +23700,7 @@ As long as the gradient at
 \begin_inset Formula $Q^{k}$
 \end_inset
 
- is a symmetric pd matrix and 
+ is a symmetric positive definite matrix and 
 \begin_inset Formula $g\left(\theta\right)=D_{\theta}s(\theta)$
 \end_inset
 
@@ -23694,64 +23709,6 @@ As long as the gradient at
 \end_inset
 
 .
- To see this,
- take a Taylor's series expansion around 
-\begin_inset Formula $a^{0}=0$
-\end_inset
-
-
-\begin_inset Formula 
-\begin{eqnarray*}
-s(\theta+ad) & = & s(\theta+0d)+\left(a-0\right)g(\theta+0d)^{\prime}d+o(1)\\
- & = & s(\theta)+ag(\theta)^{\prime}d+o(1)
-\end{eqnarray*}
-
-\end_inset
-
-For small enough 
-\begin_inset Formula $a$
-\end_inset
-
- the 
-\begin_inset Formula $o(1)$
-\end_inset
-
- term can be ignored.
- If 
-\begin_inset Formula $d$
-\end_inset
-
- is to be an increasing direction,
- we need 
-\begin_inset Formula $g(\theta)^{\prime}d>0,$
-\end_inset
-
- because this term is proportional to the directional derivative in direction 
-\begin_inset Formula $d$
-\end_inset
-
-.
- Defining 
-\begin_inset Formula $d=Qg(\theta),$
-\end_inset
-
- where 
-\begin_inset Formula $Q$
-\end_inset
-
- is positive definite,
- we guarantee that 
-\begin_inset Formula 
-\[
-g(\theta)^{\prime}d=g(\theta)^{\prime}Qg(\theta)>0
-\]
-
-\end_inset
-
-unless 
-\begin_inset Formula $g(\theta)=0.$
-\end_inset
-
  Every increasing direction can be represented in this way (p.d.
  matrices are those such that the angle between 
 \begin_inset Formula $g$
@@ -23829,13 +23786,13 @@ With this,
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 and we keep going until the gradient becomes zero,
  so that there is no increasing direction.
- The problem is now 
+ 
+\end_layout
+
+\begin_layout Itemize
+The problem is now 
 \emph on
 how to choose 
 \begin_inset Formula $a$
@@ -23848,6 +23805,7 @@ how to choose
 
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 
 \series bold
@@ -23884,6 +23842,7 @@ The remaining problem is how to choose
 
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 Note also that this gives no guarantees to find a global maximum.
  
@@ -24153,6 +24112,12 @@ However,
 
 \end_layout
 
+\begin_layout Standard
+
+\emph on
+Quasi-Newton methods
+\end_layout
+
 \begin_layout Itemize
 A potential problem is that the Hessian may not be negative definite when we're far from the maximizing point.
  So 
@@ -24226,10 +24191,13 @@ http://en.wikipedia.org/wiki/Quasi-Newton_method
 \end_layout
 
 \begin_layout Itemize
-Another variation of quasi-Newton methods is to approximate the Hessian by using successive gradient evaluations.
+Another variation of quasi-Newton methods is to approximate the Hessian by using successive gradient evaluations,
+ which makes sense,
+ because the Hessian is the derivative of the gradient,
+ and we observe different gradients during the course of the iterations.
  This avoids actual calculation of the Hessian,
  which is an order of magnitude (in the dimension of the parameter vector) more costly than calculation of the gradient.
- They can be done to ensure that the approximation is p.d.
+ They can be done to ensure that the approximation is positive definite.
  DFP and BFGS are two well-known examples.
  
 \begin_inset Newpage newpage
@@ -29313,7 +29281,7 @@ which is,
  given the above,
 \begin_inset Formula 
 \[
-\sqrt{n}\left(\hat{\beta}-\beta_{0}\right)\stackrel{d}{\rightarrow}N\left[0,\left(\frac{Q_{X}^{-1}}{2}\right)\left(4\sigma_{\epsilon}^{2}Q_{X}\right)\left(\frac{Q_{X}^{-1}}{2}\right)\right]
+\sqrt{n}\left(\hat{\beta}-\beta_{0}\right)\stackrel{d}{\rightarrow}N\left[0,\left(\frac{Q_{X}^{-1}}{2}\right)\left(4{\color{blue}\sigma_{\epsilon}^{2}Q_{X}}\right)\left(\frac{Q_{X}^{-1}}{2}\right)\right]
 \]
 
 \end_inset
@@ -29350,7 +29318,7 @@ it is easy to adapt this to heteroscedasticity and/or autocorrelation of unknown
 \begin_inset Formula $\Omega,$
 \end_inset
 
-say,
+ say,
  and then we would get 
 \begin_inset Formula 
 \[
@@ -32587,7 +32555,7 @@ Where does information about exogeneity come from?
  These assumptions may be incorrect,
  of course.
  We can sometimes test exogeneity (e.g.,
- Hausan test,
+ Hausman test,
  below),
  before simply accepting the results of an econometric model.
 \begin_inset Newpage newpage
@@ -33285,6 +33253,35 @@ For the
 's,
  the OLS and ML estimators are identical,
  for the classical linear model with normal errors.
+\end_layout
+
+\begin_layout Itemize
+An example that shows this is here:
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+href{./Examples/MLE/NerloveMLE.jl}{NerloveMLE.jl} 
+\end_layout
+
+\end_inset
+
+,
+ for the basic Nerlove model (eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "simple nerlove model"
+nolink "false"
+
+\end_inset
+
+).
+ (compare to GRETL)
 \end_layout
 
 \begin_layout Itemize
@@ -34062,7 +34059,16 @@ g(\hat{\theta})\equiv0
 
 are the first order conditions that define the ML estimator.
  With this,
- and appropriate definitions,
+ and using the notation 
+\begin_inset Formula $\mathcal{J}(\theta^{*})$
+\end_inset
+
+ to indicate the Hessian matrix 
+\begin_inset Formula $D_{\theta^{\prime}}g(\theta^{*})$
+\end_inset
+
+,
+ following what we did in the chapter on extremum estimators,
  we get
 \begin_inset Formula 
 \[
@@ -34096,7 +34102,7 @@ Now consider
 \begin_inset Formula $\mathcal{J}(\theta^{*}),$
 \end_inset
 
- the matrix of second derivatives of the average log likelihood function.
+ the matrix of second derivatives of the average log likelihood function (the Hessian matrix).
  This is 
 \begin_inset Formula 
 \begin{eqnarray*}
@@ -34248,7 +34254,7 @@ i.e.,
 \begin_inset Formula $\theta_{0},$
 \end_inset
 
-the inversion of 
+ the inversion of 
 \begin_inset Formula $\mathcal{J}(\theta^{*})$
 \end_inset
 
@@ -35369,10 +35375,23 @@ Alternative variance computations for the OBDV Poisson model
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename Examples/MLE/AlternativeVariances.png
-	width 20cm
-	special height=20cm
+\begin_inset Float figure
+placement document
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+OPG 
+\end_layout
 
 \end_inset
 
@@ -35380,6 +35399,64 @@ Alternative variance computations for the OBDV Poisson model
 \end_layout
 
 \begin_layout Plain Layout
+\begin_inset Graphics
+	filename Examples/MLE/AlternativeVariances1.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+placement document
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Sandwich
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Examples/MLE/AlternativeVariances2.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -36231,7 +36308,9 @@ ML of Nerlove model,
 \end_layout
 
 \begin_layout Standard
-As we saw in Section 
+(We have seen this before,
+ but here it is again,
+ in case you can't find it.) As we saw in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Asymptotic-efficiency"
@@ -36304,21 +36383,7 @@ href{./Examples/OLS/Nerlove.jl}{Nerlove.jl}
 
 ,
  which does OLS.
- The script also provides a basic example of how to use the MLE estimation routine 
-\family typewriter
-mleresults.jl
-\family default
-,
- which is in the 
-\begin_inset CommandInset href
-LatexCommand href
-name "Econometrics.jl"
-target "https://github.com/mcreel/Econometrics.jl"
-literal "false"
-
-\end_inset
-
- package.
+ 
 \begin_inset Newpage newpage
 \end_inset
 
@@ -39711,7 +39776,7 @@ literal "true"
 \end_layout
 
 \begin_layout Itemize
-The GMM estimator is a consistent and asymptotically normal estimator that does not require such strong assumptions as does the ML estimator.
+The GMM estimator is a consistent and asymptotically normal estimator (for at least some of the parameters) that does not require such strong assumptions as does the ML estimator.
 \end_layout
 
 \begin_layout Itemize
@@ -39733,8 +39798,7 @@ GMM theory can be a simpler way to formulate theory than some of the original pr
 \end_layout
 
 \begin_layout Itemize
-,
- it is a convenient and relatively simple way to think of things,
+It is a convenient and relatively simple way to think of things,
  and it has wide application.
 \end_layout
 
@@ -40832,7 +40896,11 @@ All of the moments of
  For example,
  for the first model,
  
-\begin_inset Formula $V(y_{t})=V(\epsilon_{t})+\theta^{2}V(\epsilon_{t-1})=1+\theta^{2}).$
+\begin_inset Formula 
+\[
+V(y_{t})=V(\epsilon_{t})+\theta^{2}V(\epsilon_{t-1})=1+\theta^{2}.
+\]
+
 \end_inset
 
  For the alternative model,
@@ -40842,7 +40910,15 @@ All of the moments of
 
 \begin_layout Itemize
 So,
- a method of moments estimator can't distinguish between the two parameter vales.
+ a method of moments estimator can't distinguish between the two parameter values 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and 
+\begin_inset Formula $1/\theta$
+\end_inset
+
+.
  If 
 \begin_inset Formula $m_{\infty}(\theta)$
 \end_inset
@@ -40990,10 +41066,16 @@ nolink "false"
 \end_inset
 
  (this is analogous to 
-\begin_inset Formula $\frac{\partial}{\partial\beta}\beta^{\prime}X^{\prime}X\beta=2X^{\prime}X\beta$
+\begin_inset Formula $\frac{\partial}{\partial\beta}\left(\beta^{\prime}X^{\prime}X\beta\right)=2X^{\prime}X\beta$
 \end_inset
 
- which appears when computing the first order conditions for the OLS estimator).
+,
+ which appears when computing the first order conditions for the OLS estimator,
+ because 
+\begin_inset Formula $\frac{\partial}{\partial\beta}\beta^{\prime}=I_{K}$
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
@@ -41046,8 +41128,18 @@ D_{n}(\theta)\equiv\frac{\partial}{\partial\theta}\bar{m}_{n}^{\prime}\left(\the
 \color blue
 This is the gradient vector.
  To get the GMM estimator,
- set these equal to zero,
- and solve.
+ set this equal to zero,
+ and solve:
+\color inherit
+
+\begin_inset Formula 
+\[
+D(\hat{\theta})W\bar{m}\left(\hat{\theta}\right)=0.
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -41089,7 +41181,7 @@ To take second derivatives,
 is a scalar
 \series default
 .
- It element in the 
+ It is the element in the 
 \begin_inset Formula $i$
 \end_inset
 
@@ -43005,7 +43097,7 @@ conditional
 
 \begin_layout Itemize
 Suppose a model tells us that the function 
-\begin_inset Formula $\epsilon(y_{t},x_{t},\theta_{0})$
+\begin_inset Formula $\epsilon(z_{t},\theta_{0})$
 \end_inset
 
  has expectation,
@@ -43016,12 +43108,40 @@ Suppose a model tells us that the function
  equal to zero
 \begin_inset Formula 
 \[
-E\left(\epsilon(y_{t},x_{t},\theta_{0})|I_{t}\right)=0.
+E\left(\epsilon(d_{t},\theta_{0})|I_{t}\right)=0
 \]
 
 \end_inset
 
+ where 
+\begin_inset Formula $\epsilon$
+\end_inset
 
+ is meant to suggest 
+\begin_inset Quotes sld
+\end_inset
+
+error
+\begin_inset Quotes srd
+\end_inset
+
+ and 
+\begin_inset Formula $d_{t}$
+\end_inset
+
+ is just a vector of endogenous and exogenous variables (
+\begin_inset Formula $d$
+\end_inset
+
+ is for 
+\begin_inset Quotes sld
+\end_inset
+
+data
+\begin_inset Quotes srd
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
@@ -43069,12 +43189,12 @@ q_{t}=\beta_{1}^{0}+\beta{}_{2}^{0}p_{t}+\varepsilon_{2t}
 
  where income,
  
-\begin_inset Formula $y_{t},$
+\begin_inset Formula $m_{t},$
 \end_inset
 
  is exogenous,
  and 
-\begin_inset Formula $E(\epsilon|y)=0$
+\begin_inset Formula $E(\epsilon_{2t}|m_{t})=0$
 \end_inset
 
 .
@@ -43096,7 +43216,7 @@ q_{t}=\beta_{1}^{0}+\beta{}_{2}^{0}p_{t}+\varepsilon_{2t}
 \noun off
 \color none
 Set 
-\begin_inset Formula $\epsilon(y_{t},x_{t},\theta_{0})=$
+\begin_inset Formula $\epsilon(q_{t},p_{t},\theta_{0})=$
 \end_inset
 
 
@@ -43105,7 +43225,11 @@ Set
 
 .
  Note:
- the parameter vector 
+ 
+\begin_inset Formula $d_{t}=(q_{t},p_{t}),$
+\end_inset
+
+ and the parameter vector 
 \begin_inset Formula $\theta$
 \end_inset
 
@@ -43134,13 +43258,13 @@ Set
 \noun off
 \color none
 So 
-\begin_inset Formula $\epsilon(y_{t},x_{t},\theta_{0})=\epsilon_{2t}$
+\begin_inset Formula $\epsilon(q_{t},p_{t},\theta_{0})=\epsilon_{2t}$
 \end_inset
 
 ,
  which has conditional expectation,
  given 
-\begin_inset Formula $y_{t},$
+\begin_inset Formula $m_{t},$
 \end_inset
 
  equal to zero,
@@ -43151,7 +43275,7 @@ So
 \begin_layout Itemize
 At other parameter values,
  
-\begin_inset Formula $\epsilon(y_{t},x_{t},\theta)=q_{t}-\beta_{1}+\beta_{2}p_{t}\ne\epsilon_{2t},$
+\begin_inset Formula $\epsilon(q_{t},p_{t},\theta)=q_{t}-\beta_{1}+\beta_{2}p_{t}\ne\epsilon_{2t},$
 \end_inset
 
  and this will not have conditional expectation equal to zero.
@@ -43166,7 +43290,7 @@ Returning to the general case,
  then we will have
 \begin_inset Formula 
 \[
-E\epsilon_{t}(\theta)|I_{t}\ne0,\,\theta\ne\theta_{0}.
+E\epsilon_{t}(d_{t},\theta)|I_{t}\ne0,\,\theta\ne\theta_{0}.
 \]
 
 \end_inset
@@ -43202,7 +43326,7 @@ This is a scalar moment condition,
 to obtain the moment contributions 
 \begin_inset Formula 
 \[
-m_{t}(\theta)=Z(w_{t})\epsilon_{t}(\theta).
+m_{t}(\theta)=Z(w_{t})\epsilon_{t}(d_{t},\theta).
 \]
 
 \end_inset
@@ -43264,7 +43388,7 @@ nolink "false"
 
 ),
  
-\begin_inset Formula $E(m_{t}(\theta_{0})=0.$
+\begin_inset Formula $E(m_{t}(\theta_{0}))=0.$
 \end_inset
 
 
@@ -43274,7 +43398,7 @@ nolink "false"
 The other thing we need,
  for identification,
  is that 
-\begin_inset Formula $E(m_{t}(\theta)\ne0,\,\forall\theta\ne\theta⁰$
+\begin_inset Formula $E(m_{t}(\theta))\ne0,\,\forall\theta\ne\theta⁰$
 \end_inset
 
 .
@@ -43283,22 +43407,22 @@ The other thing we need,
 \begin_layout Itemize
 In the above supply function example,
  
-\begin_inset Formula $y_{t}$
+\begin_inset Formula $m_{t}$
 \end_inset
 
  (income) is a variable in the information set.
  We can create instruments by using functions of 
-\begin_inset Formula $y_{t}.$
+\begin_inset Formula $m_{t}.$
 \end_inset
 
  Using only 
-\begin_inset Formula $y_{t}$
+\begin_inset Formula $m_{t}$
 \end_inset
 
  itself,
  by the law of iterated expectations,
  
-\begin_inset Formula $E\left(y_{t}\epsilon_{t}(\theta_{0})\right)=0.$
+\begin_inset Formula $E\left(m_{t}\epsilon_{t}(\theta_{0})\right)=0.$
 \end_inset
 
  
@@ -43312,7 +43436,7 @@ In this example,
  We would need additional instruments to identify the parameters.
  We can use the constant as an instrument:
  
-\begin_inset Formula $Z(y_{t}^{0})=1,\forall t$
+\begin_inset Formula $Z(m_{t}^{0})=1,\forall t$
 \end_inset
 
 .
@@ -43403,6 +43527,12 @@ This fits the previous treatment.
  It is an example of how moment conditions may be defined from conditional expectations and instrumental variables created using the conditioning information.
 \end_layout
 
+\begin_layout Itemize
+once we have this,
+ we just go on to do GMM,
+ as usual.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -43438,7 +43568,7 @@ special case of a linear model
 \begin_inset Formula 
 \begin{eqnarray*}
 y_{t} & = & x_{t}^{\prime}\theta_{0}+\varepsilon_{t}\\
-\mathcal{E}(x_{t}\varepsilon_{t}) & \neq & 0
+\mathcal{E}(\varepsilon_{t}|x_{t}) & \neq & 0
 \end{eqnarray*}
 
 \end_inset
@@ -43543,7 +43673,7 @@ Let
 \end_inset
 
  Assume that 
-\begin_inset Formula $E(z_{t}\epsilon_{t})=0.$
+\begin_inset Formula $E(\epsilon_{t}|z_{t})=0.$
 \end_inset
 
  The variables 

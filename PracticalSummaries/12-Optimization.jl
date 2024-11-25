@@ -20,7 +20,7 @@ ols(y,x)
 using Econometrics, Statistics
 objᵢ = β -> (y-x*β).^2.  	# iᵗʰ obs contrib to sum of squares
 obj = β -> mean(objᵢ(β))	# average objective
-fminunc(obj, zeros(2))
+βhat, objval = fminunc(obj, zeros(2))
 
 ##
 # fminunc is just a frontend to the Optim.jl package's LBFGS unconstrained

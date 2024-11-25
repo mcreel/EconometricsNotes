@@ -6,31 +6,36 @@
 using Econometrics, Distributions
 n = 100
 # random true parameters
-theta = [1.0,-1.0,0.0,1.0]
-b = theta[1:3]
-sig = theta[4]
+θ₀ = [1.0,-1.0,0.0,1.0]
+b = θ₀[1:3]
+sig = θ₀[4]
 # generate random data
 x = [ones(n,1) rand(n,2)]
 e = sig*randn(n,1)
 y = x*b + e
 
 ## do ML
-obj = theta -> -mean(normal(theta, y, x))
-thetahat, logL, junk = fminunc(obj, theta)
+obj = θ -> -mean(normal(θ, y, x))
+θhat, logL, junk = fminunc(obj, θ₀)
 logL = -logL
 
 ## restricted ML
 R = [0 1 0 0]
 r = -1.5
-thetahatr, logLr, junk = fmincon(obj, theta, R, r)
+θhatr, logLr, junk = fmincon(obj, θ₀, R, r)
 logLr = -logLr
 
 ## LR rest
 LR = 2.0*n*(logL-logLr)
 
 ## results
-println("the true parameters: ", theta)
-println("the ML estimates: ", thetahat)
-println("the restricted ML estimates: ", thetahatr)
-println("the LR test: ", LR);
-println("p-value of the LR test: ", 1.0-cdf(Chisq(1),LR))
+println("the true parameters:")
+display(θ₀)
+println("\nthe ML estimates: ")
+display(θhat)
+println("\nthe restricted ML estimates: ")
+display(θhatr)
+println("\nthe LR test: ")
+display(LR)
+println("\np-value of the LR test: ")
+display(1.0-cdf(Chisq(1),LR))

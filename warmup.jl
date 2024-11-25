@@ -15,5 +15,5 @@ scatter(1:10)
 d = DataFrame(rand(2,2), :auto)
 CSV.write(tempdir()*"/junk.csv", d)
 d = CSV.read(tempdir()*"/junk.csv", DataFrame)
-
+clc()
 

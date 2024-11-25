@@ -42,5 +42,6 @@ names = ["constant", "pub. ins.","priv. ins.", "sex", "age","edu","inc"]
 title = "Poisson model, "*dep* ",  MEPS 1996 full data set"
 model = theta -> poisson(theta, y, x)
 θstart = zeros(size(x,2)) # start values for estimation
+# NOTE: vc=1 uses default sandwich covariance estimator.
 # try adding the option vc=2 for "Hessian" or vc=3 for OPG
 θhat, objvalue, V, converged = mleresults(model, θstart, title, names, vc=1);

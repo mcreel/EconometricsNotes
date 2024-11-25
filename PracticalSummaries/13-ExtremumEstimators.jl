@@ -46,7 +46,7 @@ using ForwardDiff
 sc =  ForwardDiff.jacobian(objᵢ, βhat) # get the score contributions
 # from theory, we know that sc = -2x.*ϵcat. Let's use this verify
 # that the automatic differentiation worked.
-sc - (-2x.*(y - x*βhat))  # test that this is a matrix of zeros
+all(isequal.(sc, (-2x.*(y - x*βhat))))  # true or not?
 
 ##
 
@@ -66,7 +66,7 @@ Ihat ./= n
 Jhat = ForwardDiff.hessian(obj, βhat)
 
 # We know that this should be 2x'x/n. Let's check:
-2x'x/n
+all(isequal.(Jhat, 2x'x/n))
 ##
 
 # now, we can compute the estimated standard errors, to compare to what we saw
