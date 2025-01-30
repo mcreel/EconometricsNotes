@@ -43097,7 +43097,7 @@ conditional
 
 \begin_layout Itemize
 Suppose a model tells us that the function 
-\begin_inset Formula $\epsilon(z_{t},\theta_{0})$
+\begin_inset Formula $\epsilon(d_{t},\theta_{0})$
 \end_inset
 
  has expectation,
@@ -43295,7 +43295,11 @@ E\epsilon_{t}(d_{t},\theta)|I_{t}\ne0,\,\theta\ne\theta_{0}.
 
 \end_inset
 
-This is a scalar moment condition,
+This is a 
+\series bold
+scalar
+\series default
+ moment condition,
  which isn't sufficient to identify a 
 \begin_inset Formula $K$
 \end_inset
@@ -43774,7 +43778,9 @@ D_{n}W_{n}Z^{\prime}X\hat{\theta}_{IV}=D_{n}W_{n}Z^{\prime}y
 \end_layout
 
 \begin_layout Exercise
-Verify that 
+Verify that,
+ in our special case,
+ 
 \begin_inset Formula $D_{n}=-\frac{X^{\prime}Z}{n}$
 \end_inset
 
@@ -43807,7 +43813,7 @@ Verify that the efficient weight matrix is
 \end_inset
 
 If we accept what is stated in these two exercises,
- then
+ then the f.o.c.
 \begin_inset Formula 
 \[
 D_{n}W_{n}Z^{\prime}X\hat{\theta}_{IV}=D_{n}W_{n}Z^{\prime}y
@@ -43815,7 +43821,7 @@ D_{n}W_{n}Z^{\prime}X\hat{\theta}_{IV}=D_{n}W_{n}Z^{\prime}y
 
 \end_inset
 
-becomes
+become
 \begin_inset Formula 
 \[
 \frac{X^{\prime}Z}{n}\left(\frac{Z^{\prime}Z}{n}\right)^{-1}Z^{\prime}X\hat{\theta}_{IV}=\frac{X^{\prime}Z}{n}\left(\frac{Z^{\prime}Z}{n}\right)^{-1}Z^{\prime}y
@@ -47492,11 +47498,11 @@ nolink "false"
  and following),
  we have 
 \begin_inset Formula 
-\begin{eqnarray*}
-w_{t} & = & \psi\eta_{t}c_{t}^{\gamma}\\
-\eta_{t} & = & \frac{w_{t}}{\psi c_{t}^{\gamma}}\\
-\ln\eta_{t} & = & \ln w_{t}-\ln\psi-\gamma\ln c_{t}
-\end{eqnarray*}
+\begin{eqnarray}
+w_{t} & = & \psi\eta_{t}c_{t}^{\gamma}\nonumber \\
+\eta_{t} & = & \frac{w_{t}}{\psi c_{t}^{\gamma}}\nonumber \\
+\ln\eta_{t} & = & \ln w_{t}-\ln\psi-\gamma\ln c_{t}\label{eq:-2}
+\end{eqnarray}
 
 \end_inset
 
@@ -54006,7 +54012,7 @@ The NN fit tracks the parameters pretty well.
 \begin_layout Standard
 \begin_inset Graphics
 	filename Examples/DSGE/SimulatedNeuralMoments/nnfit.png
-	width 18cm
+	width 12cm
 	special height=15cm
 
 \end_inset

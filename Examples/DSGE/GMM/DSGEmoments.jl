@@ -18,14 +18,14 @@ function DSGEmoments(θ, data)
         yss = kss^α * nss^(1-α)
         css = yss - iss
         ψ =  (css^(-γ)) * (1-α) * (kss^α) * (nss^(-α))
-        # use MPL-MRS to get η, the preference shock
-        η = log.(w) .- γ*log.(c) .- log.(ψ)
-        u = (η[2:end]-η[1:end-1]*ρ_η )/σ_η   
-        e1 = η[1:end-1].*u
+        # use MPL-MRS to get η, the preference shock: see Eqn. 16.17 in notes
+        lnη = log.(w) .- log.(ψ) .- γ*log.(c)
+        u = (lnη[2:end]-lnη[1:end-1]*ρ_η )/σ_η  # this should be N(0,1) 
+        e1 = lnη[1:end-1].*u
         e2 = u.^2.0 .- 1.0 
         pref_shock = copy(u)
-        # now the Euler eqn
-        euler = 100.0*((1.0 .+ r .- δ).*β.*(c.^(-γ)) .- lag(c,1).^(-γ))[2:end]
+        # now the Euler eqn, see Eqn. 16.18 in notes
+        euler = 100.0 *  ((1.0 .+ r .- δ).*β.*(c.^(-γ)) .- lag(c,1).^(-γ))[2:end]
         # recover K from MPK/MPL
         k = lag((α/(1.0-α))*n.*w./r,1)
         # get z, the production shock, from the production function

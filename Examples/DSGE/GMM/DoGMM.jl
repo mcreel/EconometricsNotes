@@ -23,7 +23,7 @@ obj = theta -> m(theta)'*weight(theta)*m(theta)
 thetastart = (ub+lb)/2.0 # prior mean as start
 
 # estimate by simulated annealing
-thetahat, objvalue, converged, details = samin(obj, thetastart, lb, ub; ns = 20, nt=5, verbosity = 1, rt = 0.5)
+thetahat, objvalue, converged, details = samin(obj, thetastart, lb, ub; ns = 20, nt=5, verbosity = 1, rt = 0.75)
 # compute the estimated standard errors and CIs
 D = ForwardDiff.jacobian(m, vec(thetahat))
 W = weight(thetahat)
@@ -39,4 +39,4 @@ println("parameter values:")
 prettyprint(thetahat2)
 return thetahat
 end
-θhat = main()
+θhat = main();
