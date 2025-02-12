@@ -1,7 +1,7 @@
 # try doing MCMC on GPU
 # this appears to be about 40% faster than on CPU, rough guess
 
-using PrettyTables, Pkg, DelimitedFiles, Distributions, LinearAlgebra, MCMCChains, StatsPlots
+using PrettyTables, Pkg, CSV, Distributions, LinearAlgebra, MCMCChains, StatsPlots, CUDA
 cd(@__DIR__)
 Pkg.activate(".")
 # defines the net and the DSGE model, and needed functions
@@ -12,11 +12,10 @@ function main()
 net = load_trained()
 Flux.testmode!(net)
 net |> gpu
-CKmodel |> gpu
 
 ## Now, let's move on to Bayesian MSM using either the typical data set, or generate a new one
 # load the data
-data = readdlm("dsgedata.txt")
+data = CSV.File("dsgedata.csv") |> CSV.Tables.matrix
 # transform the data the same way as was used to train net
 data .-= [0.84, 0.69, 0.33, 0.05, 1.72]'
 data ./= [0.51, 0.44, 0.36, 0.018, 0.34]'
@@ -26,40 +25,41 @@ data = tabular2conv(permutedims(Float32.(X), (3, 2, 1)))
 data |> gpu
 fit = net(data)
 ## This is the raw TCN estimate using the official data set
-θnn = Float64.(UntransformParameters(fit))[:]
+θnn = Float32.(UntransformParameters(fit))[:]
 θnn |> gpu
 
 
 #################### Define functions for MCMC ###############################
 
 # compute mean and cov of moments, for obj fn and proposal
-function simmomentscov(θ::Vector{Float64}, S::Int64)
-    data = MakeData(θ, S, CKmodel)
+function simmomentscov(θ, S::Int64)
+    data = Float32.(MakeData(θ, S, CKmodel))
+    data |> gpu
     fit = net(data)
-    m = Float64.(UntransformParameters(fit)')
+    m = Float32.(UntransformParameters(fit)')
     mean(m, dims=1)[:], cov(m)
 end
 
 # CUE objective, written to MAXIMIZE
-@inbounds function bmsmobjective(θ::Vector{Float64}, θnn::Vector{Float64}, S::Int64)    # Make sure the trial parameter value is in the support
+@inbounds function bmsmobjective(θ, θnn, S::Int64)    # Make sure the trial parameter value is in the support
     InSupport(θ) || return -Inf
     # Compute simulated moments and covariance
     θbar, Σ = simmomentscov(θ, S)
     n = 160 # sample size
     Σ *= n * (1+1/S) # 1 for θhat, 1/S for θbar
     isposdef(Σ) || return -Inf
-    err = sqrt(n)*(θnn-θbar) 
+    err = sqrt(n)*(θnn-θbar)
     W = inv(Σ)
-    -0.5*dot(err, W, err)
+    Float32.(-0.5*dot(err, W, err))
 end
 
 # proposal: MVN random walk
-@inbounds function proposal(current::Vector{Float64}, δ::Float64, Σ::Array{Float64})
-    rand(MvNormal(current, δ*Σ))
+@inbounds function proposal(current, δ, Σ)
+    Float32.(rand(MvNormal(current, δ*Σ)))
 end
 
 @views function mcmc(
-    θ::Vector{Float64}; # TODO: prior? not needed at present, as priors are uniform
+    θ; # TODO: prior? not needed at present, as priors are uniform
     Lₙ::Function, proposal::Function, burnin::Int=100, N::Int=1_000,
     verbosity::Int=10
 )
@@ -68,6 +68,7 @@ end
     accept = false
     acceptance_rate = 1f0
     chain = zeros(N, size(θ, 1) + 2)
+    t = time()
     for i ∈ 1:burnin+N
         θᵗ = proposal(θ) # new trial value
         Lₙθᵗ = Lₙ(θᵗ) # Objective at trial value
@@ -87,8 +88,13 @@ end
         end
         # Report
         if verbosity > 0 && mod(i, verbosity) == 0
+            tt = time()
+            ttt = round(tt-t, digits=2)
+            println("time for $verbosity mcmc iters: ", ttt)
+            t = tt
             acceptance_rate = naccept / verbosity
-            @info "Current parameters (iteration i=$i)" round.(θ, digits=3)' acceptance_rate
+            println("Current parameters (iteration i=$i)\n", round.(θ, digits=3)')
+            println("acceptance_rate: ", acceptance_rate)
             naccept = 0
         end
     end
@@ -103,15 +109,15 @@ end
 # proposal
 covreps = 1000
 _,Σₚ = simmomentscov(θnn, covreps)
-δ = 0.75 # tuning
+δ = 0.25 # tuning
 
 # define objective and proposal
-S = 50  # number of simulations for moments
+S = 25  # number of simulations for moments
 obj = θ -> bmsmobjective(θ, θnn, S)
 prop = θ -> proposal(θ, δ, Σₚ)
 
 ## run the chain
-chain = mcmc(θnn, Lₙ=obj, proposal=prop, N=2000)
+chain = mcmc(θnn, Lₙ=obj, proposal=prop, N=200)
 # report results
 chn = Chains(chain[:,1:end-2], ["β", "γ", "ρ₁", "σ₁", "ρ₂", "σ₂", "nss"])
 plot(chn)

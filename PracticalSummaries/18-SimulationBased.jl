@@ -12,46 +12,42 @@
 
 
 ########################### MSM Example ###############################
-cd(@__DIR__)
-using Pkg
+using Term, Pkg
 Pkg.activate("../")
+println(@yellow "Start of MSM example. We generate data that follows a Gaussian distribution, and estimate using some simple simulated moments")
+cd(@__DIR__)
 
-using Term
-println(@yellow "Start of MSM example")
-#  MSM exampl. We generate data that follows a Gaussian
-#  distribution, and estimate using some
-#  simple simulated moments
-#
-# conditional mean is usual linear function
+
+## DATA
+using Distributions
+println(@yellow "Generate the 'true' data. The conditional mean is usual linear function")
 function μ(x,θ)
     x*θ
 end
-
-## generate the "true" data
-using Distributions
 n = 100
 x = randn(n,2)
 θ₀ = [1.,1.] # true params
 y = rand.(Normal.(μ(x,θ₀),1.0))
 
-## the statistics, averaged over observations: these are just off the top of the head,
-# they may not be very good
-function k(x,y)
+## STATISTICS 
+# the statistics, averaged over observations: these are just off
+# the top of the head, they may not be very good
+function Z(x,y)
     vec(mean([y x.*y x.*(y.^2.0) (x.^2.0).*y], dims=1))
 end
-
-## the simulated moments: S replications
+# the simulated moments: S replications
 using Random
 function simulated_moments(θ, x, S, controlchatter)
     controlchatter ? Random.seed!(1234) : nothing
-    [k(x, rand.(Normal.(μ(x,θ),1.0))) for _ = 1:S]
+    [Z(x, rand.(Normal.(μ(x,θ),1.0))) for _ = 1:S]
 end
 
-## Define the MSM criterion 
+## MSM SETUP 
+# Define the and profile MSM criterion 
 # IMPORTANT: try running this with chatter, and without.
 S = 100 # number of simulation replications
-controlchatter = false
-m = θ -> k(x,y) - mean(simulated_moments(θ, x, S, controlchatter)) 
+controlchatter = true # try setting this to false/true, and run this and the next block
+m = θ -> Z(x,y) - mean(simulated_moments(θ, x, S, controlchatter)) 
  # sums of squares of moments: corresponds to GMM with identity weight
 function obj(θ)
     mean(abs2, m(θ))
@@ -59,8 +55,7 @@ end
 function obj(a,b) # a method for plots
     obj([a,b])
 end
-
-## profile the MSM objective function
+# profile the MSM objective function
 using Plots
 gr()
 θ₁ = range(0., length=100, stop=2.0)
@@ -68,7 +63,12 @@ gr()
 p2 = contour(θ₁, θ₂, (θ₁,θ₂)->obj(θ₁,θ₂),c=:viridis)
 xlabel!("x")
 ylabel!("y")
-## The objective function looks horrible, when there is chatter
+
+
+## ESTIMATION
+# The objective function looks horrible, when there is chatter
+# without chatter, it looks good. Experiment estimation with and without
+# chatter, bu
 #  Nevertheless, let's attempt to do gradient-based estimation
 using Econometrics
 # run this next line repeatedly, using CTRL-enter. When chatter
@@ -83,15 +83,15 @@ println(@yellow "(Remember that the true parameters are $θ₀)")
 #  Chernozhukov and Hong (2003)
 # This works even without controlling chatter
 using Turing, AdvancedMH, Term, Econometrics
-k_data = k(x,y) # stats from the real data
+k_data = Z(x,y) # stats from the real data
 #  Define the prior and approximate Gaussian likelihood of the moments
 @model function MSM(k_data, S, x)
     θ ~ arraydist([Normal() for _=1:2]) # the prior (note: it's biased)
     # sample from the model, at the trial parameter value, and compute statistics
-    ks = simulated_moments(θ, x, S, false) # NOTE: no control of chatter
-    kbar = mean(ks) # mean of simulated statistics, over S replications
-    Σ = cov(ks)  # estimated covariance of statistic
-    k_data ~ MvNormal(kbar, Σ) # this corresponds to CUE GMM, but adding the determinant from the MVN 
+    Zs = simulated_moments(θ, x, S, false) # NOTE: no control of chatter
+    Zbar = mean(Zs) # mean of simulated statistics, over S replications
+    Σ = cov(Zs)  # estimated covariance of statistic
+    Z_data ~ MvNormal(Zbar, Σ) # this corresponds to CUE GMM, but adding the determinant from the MVN 
 end
 # do MCMC sampling
 # look at acceptance rate, below, and adjust
@@ -100,7 +100,7 @@ S = 50 # make this as large as possible, given computation time, when doing real
 tuning = 0.05
 length = 2000
 burnin = 200
-chain = sample(MSM(k_data, S, x),
+chain = sample(MSM(Z_data, S, x),
     MH(:θ => AdvancedMH.RandomWalkProposal(MvNormal(zeros(2), tuning*eye(2)))),
     length; init_params=zeros(2), discard_initial=burnin)
 display(chain)

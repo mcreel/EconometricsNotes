@@ -53,6 +53,8 @@ theorems-ams-extended
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement class
+\float_alignment class
 \paperfontsize 20
 \spacing onehalf
 \use_hyperref true
@@ -90,6 +92,7 @@ theorems-ams-extended
 \use_formatted_ref 0
 \use_minted 0
 \use_lineno 0
+\boxbgcolor #fefff3
 \index Index
 \shortcut idx
 \color #008000
@@ -44765,8 +44768,397 @@ nolink "false"
 
 \end_layout
 
+\begin_layout Subsection
+An example
+\end_layout
+
+\begin_layout Standard
+Here's an example in the format of an exam question.
+ Suppose we have the model
+\begin_inset Formula 
+\begin{eqnarray*}
+y_{t} & = & \beta_{1}^{0}+\beta_{2}^{0}x_{t}+\epsilon_{t}
+\end{eqnarray*}
+
+\end_inset
+
+where the shocks 
+\begin_inset Formula $\epsilon_{t}$
+\end_inset
+
+ are independent and identically distributed (i.i.d.) with mean zero and variance 
+\begin_inset Formula $\sigma_{\epsilon}^{2}$
+\end_inset
+
+.
+ Suppose that there is a varable 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ that is i.i.d.
+ with mean zero and variance 
+\begin_inset Formula $\sigma_{z}^{2}$
+\end_inset
+
+.
+ Suppose that 
+\begin_inset Formula $\epsilon_{t}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{s}$
+\end_inset
+
+ are independent for all 
+\begin_inset Formula $t=1,2,...,n$
+\end_inset
+
+ and 
+\begin_inset Formula $s=1,2,...,n$
+\end_inset
+
+,
+ where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of observations.
+ Finally,
+ suppose that 
+\begin_inset Formula $x_{t}=z_{t}+\epsilon_{t}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+What is the covariance between 
+\begin_inset Formula $x_{t}$
+\end_inset
+
+ and 
+\begin_inset Formula $\epsilon_{t}$
+\end_inset
+
+?
+ Is the OLS estimator of the model consistent or no?
+ Explain.
+ What is the covariance between 
+\begin_inset Formula $x_{t}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+?
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "default"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+First,
+ 
+\begin_inset Formula $Cov(x_{t},\epsilon_{t})=E(x_{t}\epsilon_{t}),$
+\end_inset
+
+ because both have mean zero.
+ So,
+ 
+\begin_inset Formula $Cov(x_{t},\epsilon_{t})=E\left((z_{t}+\epsilon_{t})\epsilon_{t}\right)=\sigma_{\epsilon}^{2}$
+\end_inset
+
+.
+ Thus,
+ OLS will not be consistent,
+ as the weak exogeneity assumption does not hold.
+\end_layout
+
+\begin_layout Plain Layout
+Second,
+ 
+\begin_inset Formula $Cov(x_{t},z_{t})=E(x_{t}z_{t}),$
+\end_inset
+
+ because both have mean zero.
+ So,
+ 
+\begin_inset Formula $Cov(x_{t},z_{t})=E\left((z_{t}+\epsilon_{t})z_{t}\right)=\sigma_{z}^{2}.$
+\end_inset
+
+ We can use 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ as an instrument,
+ as it is correlated with the regressor,
+ but not with the error.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Explain in detail how to estimate the parameters 
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\beta_{2}$
+\end_inset
+
+ consistently by GMM,
+ detailing the specific moment conditions you propose.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "default"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+Let's use as instruments a constant and 
+\begin_inset Formula $z_{t},$
+\end_inset
+
+ so
+\begin_inset Formula 
+\begin{align*}
+m_{t}(\beta) & =\left[\begin{array}{c}
+y_{t}-\beta_{1}-\beta_{2}x_{t}\\
+z_{t}(y_{t}-\beta_{1}-\beta_{2}x_{t})
+\end{array}\right]\\
+ & =\left[\begin{array}{c}
+\beta_{1}^{0}+\beta_{2}^{0}x_{t}+\epsilon_{t}-\beta_{1}-\beta_{2}x_{t}\\
+z_{t}(\beta_{1}^{0}+\beta_{2}^{0}x_{t}+\epsilon_{t}-\beta_{1}-\beta_{2}x_{t})
+\end{array}\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+It's easy to verify that the expectation of this is a vector of zeros,
+ when 
+\begin_inset Formula $\beta=\beta^{0},$
+\end_inset
+
+ the vector of true parameter values.
+ So,
+ GMM will be consistent,
+ if the identification requirement is satistfied.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Verify that the proposed moment conditions actually identify the parameters by showing that the limit of the expectation of the Jacobian matrix of the moment conditions,
+ 
+\begin_inset Formula $\lim E\frac{\partial\bar{m_{n}}^{\prime}(\theta)}{\partial\theta}$
+\end_inset
+
+,
+ has rank 2.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "default"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+For the chosen moment conditions,
+ and given the i.i.d.
+ nature of the data,
+ 
+\begin_inset Formula $\lim ED_{n}(\beta)=\lim E\frac{\partial m_{t}^{\prime}(\beta)}{\partial\beta}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+We have
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial m_{t}^{\prime}(\beta)}{\partial\beta} & =\left[\begin{array}{cc}
+-1 & -z_{t}\\
+-x_{t} & -x_{t}z_{t}
+\end{array}\right]
+\end{align*}
+
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+\lim E\frac{\partial m_{t}^{\prime}(\beta)}{\partial\beta}=\left[\begin{array}{cc}
+-1 & 0\\
+0 & -\sigma_{z}^{2}
+\end{array}\right]
+\]
+
+\end_inset
+
+which is rank 2,
+ so the moment conditions identify the parameters.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+What if you use as instruments 
+\begin_inset Formula $z_{t-1}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{t}?$
+\end_inset
+
+ Will the estimator be identified?
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "default"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+In this case 
+\begin_inset Formula 
+\[
+m_{t}(\beta)=\left[\begin{array}{c}
+z_{t-1}(y_{t}-\beta_{1}-\beta_{2}x_{t})\\
+z_{t}(y_{t}-\beta_{1}-\beta_{2}x_{t})
+\end{array}\right]=\left[\begin{array}{c}
+z_{t-1}(\beta_{1}^{0}+\beta_{2}^{0}x_{t}+\epsilon_{t}-\beta_{1}-\beta_{2}x_{t})\\
+z_{t}(\beta_{1}^{0}+\beta_{2}^{0}x_{t}+\epsilon_{t}-\beta_{1}-\beta_{2}x_{t})
+\end{array}\right]
+\]
+
+\end_inset
+
+ which does have expectation zero at the true parameter values.
+ However
+\begin_inset Formula 
+\[
+\frac{\partial m_{t}^{\prime}(\beta)}{\partial\beta}=\left[\begin{array}{cc}
+-z_{t-1} & -z_{t-1}x_{t}\\
+-z_{t} & -z_{t}x_{t}
+\end{array}\right]
+\]
+
+\end_inset
+
+and
+\begin_inset Formula 
+\[
+\lim E\frac{\partial m_{t}^{\prime}(\beta)}{\partial\beta}=\left[\begin{array}{cc}
+0 & 0\\
+0 & -\sigma_{z}^{2}
+\end{array}\right]
+\]
+
+\end_inset
+
+which has rank 1.
+ So,
+ these moment conditions do not identify the parameters.
+ It makes sense that if the data is i.i.d,
+ lags of variables will not work as instruments,
+ because the lags are not correlated with the current period regressors.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Example
-The linear simultaneous equation model 
+For code examples,
+ see the following:
+ The linear simultaneous equation model 
 \series bold
 Klein's model 1
 \series default
@@ -52170,7 +52562,7 @@ Keeping in mind that a model is used to extract the essential,
 \end_deeper
 \begin_layout Itemize
 Simulation based estimation,
- especially the method of simulated moments,
+ especially the method of simulated moments (MSM),
  has become quite standard in applied research,
  so it is important to understand how it works.
 \end_layout
@@ -53010,18 +53402,15 @@ where,
 \uwave off
 \noun off
 \color none
-is an extremum estimator corresponding to some auxiliary model
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\bar default
-\strikeout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
+is an extremum estimator corresponding to some auxiliary model,
+ in the formulation of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "GourierouxMonfortIndirect"
+literal "false"
+
+\end_inset
+
 .
 \end_layout
 
@@ -54227,18 +54616,19 @@ Monte Carlo results for 1000 replications of the TCN neural net estimator,
 \end_layout
 
 \begin_layout Itemize
-These are perhaps a little better than the neural net results that are based on an auxiliary statistic,
+These are quite similar to the neural net results that are based on an auxiliary statistic,
  above.
- They are certainly not worse.
+ They are not worse,
+ but not much better,
+ either.
 \end_layout
 
 \begin_layout Itemize
 In principle,
  there may be information lost when using summary statistics.
  In the present case,
- the feed forward net that uses summary statistics seems not to have lost much information,
- as the full sample version (using the TCN net,
- on the L) has performance that is just as good.
+ the feed forward net that uses summary statistics seems not to have lost much information.
+ This indicates that the chosen summary statistics seem to capture the sample information well.
 \end_layout
 
 \begin_layout Itemize
